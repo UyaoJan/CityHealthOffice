@@ -305,8 +305,6 @@ def X_Ray():
     Image_Box=Frame(Img_Body,width=300,height=390,bg="green",highlightbackground="black",highlightthickness=2)
     Image_Box.place(x=210,y=20)
 
-    # image = Image.open("X-ray")
-    # tk_image = ImageTk.PhotoImage(image)
     Image_upload=Label(Image_Box,width=40,height=25,borderwidth=2,padx=2,pady=2)
     Image_upload.place()
 
