@@ -1,4 +1,4 @@
 import LoginPage
 
-interface=Loginpage,Loginpage()
+interface=LoginPage.Loginpage()
 interface.start()

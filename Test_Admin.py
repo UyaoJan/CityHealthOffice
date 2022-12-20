@@ -76,6 +76,7 @@ def Regist():
         NewEmp.register()
 
     if PageOpen<2:
+        global Registration_Page
         Registration_Page=Toplevel()
         Registration_Page.title("Registration")
         Rig_width=400
@@ -148,8 +149,6 @@ def Regist():
         PageOpen +=1
     else:
         messagebox.showinfo("Error","The Window Registration is already Open!")
-    
-
 
 Admin_Body=Frame(Page_Admin)
 Admin_Body.pack(expand=1,fill=BOTH)
@@ -192,17 +191,66 @@ for Account_Num in range(len(result)):
     Profile_Detail=Frame(Profile_Number,highlightbackground="black",highlightthickness=1,)
     Profile_Detail.place(x=5,y=7,relwidth=0.99,relheight=0.92)
 
-    # Access Image thru result[Account_Num][8] 
+    # Access Image URL thru result[Account_Num][8] 
     Profile_Image=Label(Profile_Detail,text="IMAGE",bg="gray").place(x=10,y=10,relwidth=0.2,relheight=0.88)
 
     Profile_Name=Label(Profile_Detail,text=result[Account_Num][1]+" "+result[Account_Num][2],font=("Arail",25,"bold")).place(x=220,y=10)
 
-    Profile_Edit=Button(Profile_Detail,text="Edit",font=("Arail",12),bg="green",width=4,height=2,command=lambda x= result[Account_Num][0]:editAccount(x))
+    Profile_Edit=Button(Profile_Detail,text="Edit",font=("Arial",12),bg="green",width=4,height=2,command=lambda x= result[Account_Num][0]:editAccount(x))
     Profile_Edit.place(x=900,y=50)
 
 
+# Edit Account : GUI Copy Pasted from Registration
+
 def editAccount(id):
     Account=employee.Employee.findAccount(id)
+
+    Account_Edit=Frame(Registration_Page)
+    Account_Edit.pack(expand=1,fill=BOTH)
+
+    global username2,password2,firstname2,lastname2,age2,address2,profession2
+
+    username2=StringVar()
+    password2=StringVar()
+    firstname2=StringVar()
+    lastname2=StringVar()
+    age2=StringVar()
+    address2=StringVar()
+    profession2=StringVar()
+
+    Label_Username=Label(Account_Edit,text="Username:",font=("Arial",10,"bold")).place(x=160,y=100)
+    Entry_Username=Entry(Account_Edit,text="Username:",textvariable=username,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=120)
+
+    Label_Password=Label(Account_Edit,text="Password:",font=("Arial",10,"bold")).place(x=160,y=150)
+    Entry_Password=Entry(Account_Edit,text="Password:",textvariable=password,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=170)
+
+    Label_FName=Label(Account_Edit,text="First Name:",font=("Arial",10,"bold")).place(x=15,y=220)
+    Entry_FName=Entry(Account_Edit,text="First Name:",textvariable=firstname,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=15,y=240)
+
+    Label_LName=Label(Account_Edit,text="Last Name:",font=("Arial",10,"bold")).place(x=240,y=220)
+    Entry_LName=Entry(Account_Edit,text="Last Name:",textvariable=lastname,font=("Arial",10,"bold"),width=19,borderwidth=3).place(x=240,y=240)
+
+    Label_Age=Label(Account_Edit,text="Age:",font=("Arial",10,"bold")).place(x=15,y=270)
+    Entry_Age=Entry(Account_Edit,text="Age:",textvariable=age,font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=15,y=290)
+
+    Label_Birthdate=Label(Account_Edit,text="Birthdate:",font="Arial 12").place(x=100,y=270)
+    Entry_Birthdate=DateEntry(Account_Edit,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
+    Entry_Birthdate.place(x=100,y=289)
+
+    Label_Address=Label(Account_Edit,text="Address:",textvariable=address,font=("Arial",10,"bold")).place(x=15,y=320)
+    Entry_Address=Entry(Account_Edit,text="Address:",font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=340)
+
+    Label_Pro=Label(Account_Edit,text="Profession:",font=("Arial",10,"bold")).place(x=15,y=370)
+    Entry_Pro=Entry(Account_Edit,text="Profession:",textvariable=profession,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=390)
+
+
+    Reg_Submit=Button(Account_Edit,text="Submit",command=editAccount2()).place(x=320,y=440)
+
+    PageOpen +=1
+
+def editAccount2(Account):
     employee.Employee.editAccount(Account)
+
+# =========================================================================================
 
 AdminGUI.mainloop()

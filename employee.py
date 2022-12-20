@@ -38,6 +38,14 @@ class Employee:
         acc = cursor.fetchone()
         return acc
 
+    def login(uname,passwd):
+        query_find="SELECT * FROM medtechs WHERE username=%s and password=%s"
+        conn=dbConnection.get_connection()
+        cursor=dbConnection.get_cursor(conn)
+        cursor.execute(query_find,(uname,passwd))
+        acc = cursor.fetchone()
+        return acc
+
     @staticmethod 
     def editAccount(account):
         conn=dbConnection.get_connection()
