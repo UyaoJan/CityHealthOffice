@@ -43,9 +43,26 @@ def Regist():
     global PageOpen
     def on_close():
         global PageOpen
-        if tk.messagebox.askokcancel('Close', 'Are you sure you want to close the Registration Page all the data will not be Save?'):
+        if username.get()=="" and password.get()=="" and firstname.get()=="" and lastname.get()=="" and age.get()=="" and address.get()=="" and profession.get() =="":
             PageOpen=1
             Registration_Page.destroy()
+
+        else:
+            if tk.messagebox.askokcancel('Close', 'Are you sure you want to close the Registration Page?\nAll Progress will not be Saved'):
+                PageOpen=1
+
+                username.set("")
+                password.set("")
+                firstname.set("")
+                lastname.set("")
+                age.set("")
+                address.set("")
+                profession.set("")
+
+                Registration_Page.destroy()
+    
+    def submit():
+        print()
 
     if PageOpen<2:
         Registration_Page=Toplevel()
@@ -79,39 +96,48 @@ def Regist():
             img=ImageTk.PhotoImage(img_resized)
             b2 =Button(Image_Box,image=img,borderwidth=5) # using Button 
             b2.place(x=0,y=0)
+            print(filepath)
+        global username,password, firstname,lastname,age,Entry_Birthdate,address,profession
+
+        username=StringVar()
+        password=StringVar()
+        firstname=StringVar()
+        lastname=StringVar()
+        age=StringVar()
+        address=StringVar()
+        profession=StringVar()
 
         Label_Username=Label(Regist_Body,text="Username:",font=("Arial",10,"bold")).place(x=160,y=100)
-        Entry_Username=Entry(Regist_Body,text="Username:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=120)
+        Entry_Username=Entry(Regist_Body,text="Username:",textvariable=username,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=120)
 
         Label_Password=Label(Regist_Body,text="Password:",font=("Arial",10,"bold")).place(x=160,y=150)
-        Entry_Password=Entry(Regist_Body,text="Password:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=170)
+        Entry_Password=Entry(Regist_Body,text="Password:",textvariable=password,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=170)
 
         Label_FName=Label(Regist_Body,text="First Name:",font=("Arial",10,"bold")).place(x=15,y=220)
-        Entry_FName=Entry(Regist_Body,text="First Name:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=15,y=240)
+        Entry_FName=Entry(Regist_Body,text="First Name:",textvariable=firstname,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=15,y=240)
 
         Label_LName=Label(Regist_Body,text="Last Name:",font=("Arial",10,"bold")).place(x=240,y=220)
-        Entry_LName=Entry(Regist_Body,text="Last Name:",font=("Arial",10,"bold"),width=19,borderwidth=3).place(x=240,y=240)
+        Entry_LName=Entry(Regist_Body,text="Last Name:",textvariable=lastname,font=("Arial",10,"bold"),width=19,borderwidth=3).place(x=240,y=240)
 
         Label_Age=Label(Regist_Body,text="Age:",font=("Arial",10,"bold")).place(x=15,y=270)
-        Entry_Age=Entry(Regist_Body,text="Age:",font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=15,y=290)
+        Entry_Age=Entry(Regist_Body,text="Age:",textvariable=age,font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=15,y=290)
 
-        Label_Birthdate=Label(Regist_Body,text="BirthDate:",font="Arial 12").place(x=100,y=270)
+        Label_Birthdate=Label(Regist_Body,text="Birthdate:",font="Arial 12").place(x=100,y=270)
         Entry_Birthdate=DateEntry(Regist_Body,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
         Entry_Birthdate.place(x=100,y=289)
 
-        Label_Address=Label(Regist_Body,text="Address:",font=("Arial",10,"bold")).place(x=15,y=320)
+        Label_Address=Label(Regist_Body,text="Address:",textvariable=address,font=("Arial",10,"bold")).place(x=15,y=320)
         Entry_Address=Entry(Regist_Body,text="Address:",font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=340)
 
-        Label_Pro=Label(Regist_Body,text="Profission:",font=("Arial",10,"bold")).place(x=15,y=370)
-        Entry_Pro=Entry(Regist_Body,text="Profission:",font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=390)
+        Label_Pro=Label(Regist_Body,text="Profession:",font=("Arial",10,"bold")).place(x=15,y=370)
+        Entry_Pro=Entry(Regist_Body,text="Profession:",textvariable=profession,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=390)
 
         Reg_Submit=Button(Regist_Body,text="Submit",).place(x=320,y=440)
 
         PageOpen +=1
     else:
         messagebox.showinfo("Error","The Window Registration is already Open!")
-
-
+    
 
 
 Admin_Body=Frame(Page_Admin)
