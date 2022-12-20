@@ -7,6 +7,8 @@ from PIL import Image, ImageTk
 from tkcalendar import Calendar,DateEntry
 
 
+import employee
+
 AdminGUI=Tk()
 AdminGUI.title('CITY HEALTH')
 width= AdminGUI.winfo_screenwidth()
@@ -62,7 +64,16 @@ def Regist():
                 Registration_Page.destroy()
     
     def submit():
-        print()
+        uname=username.get()
+        passwd=password.get()
+        fname=firstname.get()
+        lname=lastname.get()
+        how_muchyour_age=age.get()
+        addrss=address.get()
+        role=profession.get()
+
+        NewEmp=employee.Employee(uname,passwd,fname,lname,how_muchyour_age,addrss,role,filepath)
+        NewEmp.register()
 
     if PageOpen<2:
         Registration_Page=Toplevel()
@@ -88,7 +99,7 @@ def Regist():
         Upload_button.place(x=0,y=0)
 
         def open_file():
-            global img
+            global img, filepath
             f_types = [('Jpg Files', '*.jpg')]
             filepath = filedialog.askopenfilename(filetypes=f_types)
             img=Image.open(filepath)
@@ -96,7 +107,7 @@ def Regist():
             img=ImageTk.PhotoImage(img_resized)
             b2 =Button(Image_Box,image=img,borderwidth=5) # using Button 
             b2.place(x=0,y=0)
-            print(filepath)
+            
         global username,password, firstname,lastname,age,Entry_Birthdate,address,profession
 
         username=StringVar()
@@ -132,7 +143,7 @@ def Regist():
         Label_Pro=Label(Regist_Body,text="Profession:",font=("Arial",10,"bold")).place(x=15,y=370)
         Entry_Pro=Entry(Regist_Body,text="Profession:",textvariable=profession,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=390)
 
-        Reg_Submit=Button(Regist_Body,text="Submit",).place(x=320,y=440)
+        Reg_Submit=Button(Regist_Body,text="Submit",command=submit).place(x=320,y=440)
 
         PageOpen +=1
     else:
@@ -171,7 +182,9 @@ Profile_BOX.bind('<Configure>',lambda e: Profile_BOX.configure(scrollregion= Pro
 Profile=Frame(Profile_BOX)
 Profile_BOX.create_window((0,0),window=Profile,anchor=NW)
 
-for Account_Num in range(10):
+result=employee.Employee.getAllEmployees()
+
+for Account_Num in range(len(result)):
 
     Profile_Number=Frame(Profile,padx=10, pady=10, width=1023, height=200)
     Profile_Number.grid(row=Account_Num,column=0)
@@ -179,12 +192,17 @@ for Account_Num in range(10):
     Profile_Detail=Frame(Profile_Number,highlightbackground="black",highlightthickness=1,)
     Profile_Detail.place(x=5,y=7,relwidth=0.99,relheight=0.92)
 
+    # Access Image thru result[Account_Num][8] 
     Profile_Image=Label(Profile_Detail,text="IMAGE",bg="gray").place(x=10,y=10,relwidth=0.2,relheight=0.88)
 
-    Profile_Name=Label(Profile_Detail,text="Profile Username",font=("Arail",25,"bold")).place(x=220,y=10)
+    Profile_Name=Label(Profile_Detail,text=result[Account_Num][1]+" "+result[Account_Num][2],font=("Arail",25,"bold")).place(x=220,y=10)
 
-    Profile_Edit=Button(Profile_Detail,text="Edit",font=("Arail",12),bg="green",width=4,height=2)
+    Profile_Edit=Button(Profile_Detail,text="Edit",font=("Arail",12),bg="green",width=4,height=2,command=lambda x= result[Account_Num][0]:editAccount(x))
     Profile_Edit.place(x=900,y=50)
 
+
+def editAccount(id):
+    Account=employee.Employee.findAccount(id)
+    employee.Employee.editAccount(Account)
 
 AdminGUI.mainloop()
