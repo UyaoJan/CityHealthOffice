@@ -7,7 +7,7 @@ class Loginpage():
 
     def loginLogic(self):
         print(username.get(), password.get())
-
+        Test_MAIN.main()
 
     def LoginStart(self):
 

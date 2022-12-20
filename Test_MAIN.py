@@ -6,18 +6,71 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 
 
-Dashboard_GUI=Tk()
-Dashboard_GUI.title('CITY HEALTH')
-width= Dashboard_GUI.winfo_screenwidth()
-height=Dashboard_GUI.winfo_screenheight()
-Dashboard_GUI.geometry("%dx%d"%(width,height))
+global Dashboard_GUI,Page_Dashboard
 
-#DEF Header-------
+def main():   
+    Dashboard_GUI=Tk()
+    Dashboard_GUI.title('CITY HEALTH')
+    width= Dashboard_GUI.winfo_screenwidth()
+    height=Dashboard_GUI.winfo_screenheight()
+    Dashboard_GUI.geometry("%dx%d"%(width,height))
+
+    Page_Dashboard=Frame(Dashboard_GUI,bg="green")
+    Page_Dashboard.pack(expand=1, fill=BOTH)
+    Frame_Header=Frame(Page_Dashboard,width=1360,height=50,highlightbackground="black",highlightthickness=1)
+    Frame_Header.pack()
+
+    IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+    IMG_HEADER.place(x=10,y=8)
+    HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
+
+    HEADER_USERNAME=Label(Frame_Header,text="UserName:",font='Arial 12 ').place(x=1100,y=10)
+    IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+    IMG_USERNAME.place(x=1200,y=8)
+
+    Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
+    Toggle_Button.place(x=1290,y=10)
+    Toggle_Button.menu=Menu(Toggle_Button)
+    Toggle_Button["menu"]=Toggle_Button.menu
+
+    Toggle_Button.menu.add_command(label="HOME",command=lambda:print("I hate this"))
+    Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
+    Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
+    #Header END------------
+
+    #Message
+    Frame_Center=Frame(Page_Dashboard,width=1360,height=413,highlightbackground="black",highlightthickness=1)
+    Frame_Center.pack()
+
+    Frame_Laboratory=Frame(Page_Dashboard,width=1360,height=290,highlightbackground="black",highlightthickness=1)
+    Frame_Laboratory.pack()
+
+    Frame_FrontDesk=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
+    Frame_FrontDesk.place(x=0,y=0)
+    Button_FronDesk=Button(Frame_FrontDesk,text="ENTER",width=8,height=2,bg="green",command=FrontDesk).place(x=120,y=200)
+
+    #Lab-list
+    Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
+    Frame_LabTest.place(x=350,y=0)
+    Frame_LabCH=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
+    Frame_LabCH.place(x=0,y=0)
+    Button_LabCH=Button(Frame_LabCH,text="ENTER",width=8,height=2,bg="green",command=Laboratory).place(x=500,y=50)
+
+    Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
+    Frame_XRay.place(x=0,y=145)
+    Button_XRay=Button(Frame_XRay,text="ENTER",width=8,height=2,bg="green",command=X_Ray).place(x=500,y=50)
+
+    Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
+    Frame_Summary.place(x=1009,y=0)
+    Button_Summary=Button(Frame_Summary,text="ENTER",width=8,height=2,bg="green",command=Summary).place(x=140,y=200)
+
+    Dashboard_GUI.mainloop()
 
 def FrontDesk():
     def Home():
         Page_FrontDesk.destroy()
         Page_Dashboard.pack()
+
     Page_Dashboard.forget()
     Page_FrontDesk=Frame(Dashboard_GUI,bg="green")
     Page_FrontDesk.pack(expand=1, fill=BOTH)
@@ -386,59 +439,3 @@ def Summary():
     Summary_Table.heading("MEDTECH",text="MEDTECH")
     Summary_Table.heading("FILE",text="FILE")
     Summary_Table.pack(expand=1,fill=BOTH)
-
-
-
-
-#Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#Header-------
-Page_Dashboard=Frame(Dashboard_GUI,bg="green")
-Page_Dashboard.pack(expand=1, fill=BOTH)
-Frame_Header=Frame(Page_Dashboard,width=1360,height=50,highlightbackground="black",highlightthickness=1)
-Frame_Header.pack()
-
-IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-IMG_HEADER.place(x=10,y=8)
-HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
-
-HEADER_USERNAME=Label(Frame_Header,text="UserName:",font='Arial 12 ').place(x=1100,y=10)
-IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-IMG_USERNAME.place(x=1200,y=8)
-
-Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
-Toggle_Button.place(x=1290,y=10)
-Toggle_Button.menu=Menu(Toggle_Button)
-Toggle_Button["menu"]=Toggle_Button.menu
-
-Toggle_Button.menu.add_command(label="HOME",command=lambda:print("I hate this"))
-Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
-Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
-#Header END------------
-
-#Message
-Frame_Center=Frame(Page_Dashboard,width=1360,height=413,highlightbackground="black",highlightthickness=1)
-Frame_Center.pack()
-
-Frame_Laboratory=Frame(Page_Dashboard,width=1360,height=290,highlightbackground="black",highlightthickness=1)
-Frame_Laboratory.pack()
-
-Frame_FrontDesk=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
-Frame_FrontDesk.place(x=0,y=0)
-Button_FronDesk=Button(Frame_FrontDesk,text="ENTER",width=8,height=2,bg="green",command=FrontDesk).place(x=120,y=200)
-
-#Lab-list
-Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
-Frame_LabTest.place(x=350,y=0)
-Frame_LabCH=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
-Frame_LabCH.place(x=0,y=0)
-Button_LabCH=Button(Frame_LabCH,text="ENTER",width=8,height=2,bg="green",command=Laboratory).place(x=500,y=50)
-
-Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
-Frame_XRay.place(x=0,y=145)
-Button_XRay=Button(Frame_XRay,text="ENTER",width=8,height=2,bg="green",command=X_Ray).place(x=500,y=50)
-
-Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
-Frame_Summary.place(x=1009,y=0)
-Button_Summary=Button(Frame_Summary,text="ENTER",width=8,height=2,bg="green",command=Summary).place(x=140,y=200)
-
-Dashboard_GUI.mainloop()
