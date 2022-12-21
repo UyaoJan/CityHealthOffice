@@ -182,6 +182,8 @@ Profile_BOX.create_window((0,0),window=Profile,anchor=NW)
 
 result=employee.Employee.getAllEmployees()
 
+global labels
+labels=[]
 for Account_Num in range(len(result)):
 
     Profile_Number=Frame(Profile,padx=10, pady=10, width=1023, height=200)
@@ -195,14 +197,25 @@ for Account_Num in range(len(result)):
     global Profile_Name
     Profile_Name=Label(Profile_Detail,text=result[Account_Num][1]+" "+result[Account_Num][2],font=("Arail",25,"bold"))
     Profile_Name.place(x=220,y=10)
+    labels.append(Profile_Name)
 
-    Profile_Edit=Button(Profile_Detail,text="Edit",font=("Arial",12),bg="green",width=4,height=2,command=lambda x= result[Account_Num][0]:editAccount(x))
+    Profile_Delete=Button(Profile_Detail,text="Delete",font=("Arial",12),bg="green",width=6,height=2,command=lambda x= result[Account_Num][0]:deleteAccount(x))
+    Profile_Delete.place(x=830,y=50)
+
+    Profile_Edit=Button(Profile_Detail,text="Edit",font=("Arial",12),bg="green",width=4,height=2,command=lambda x= result[Account_Num][0]:editAccount(x, labels[Account_Num]))
     Profile_Edit.place(x=900,y=50)
+
+
+def deleteAccount(id):
+    print("deleted user with id of",id)
+    employee.Employee.deleteEmployee(id)
 
 
 # Edit Account : GUI Copy Pasted from Registration
 
-def editAccount(id):
+def editAccount(id,label_reference):
+    global label_refer
+    label_refer=label_reference
     global EditAccount, res
     res=employee.Employee.findAccount(id)
 
@@ -307,8 +320,6 @@ def editAccount2(id):
             EditAccount.destroy()
             employee.Employee.editAccount(Account)
             messagebox.showinfo("Changes Saved","Account Update Succesful")
-            
-            
 
         else: messagebox.showinfo("No Changes Made","No Changes have been Made!")
 

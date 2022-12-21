@@ -29,6 +29,15 @@ class Employee:
         result =cursor.fetchall()
         return result
 
+    @staticmethod 
+    def deleteEmployee(id):
+        query_del="DELETE FROM medtechs WHERE id=%s"
+        conn=dbConnection.get_connection()
+        cursor=dbConnection.get_cursor(conn)
+        cursor.execute(query_del,(id,))
+        conn.commit()
+
+
     @staticmethod
     def findAccount(id):
         query_find="SELECT * FROM medtechs WHERE id=%s"
@@ -51,7 +60,7 @@ class Employee:
         conn=dbConnection.get_connection()
         cursor=dbConnection.get_cursor(conn)
         query="UPDATE medtechs SET FirstName=%s,LastName=%s,Role=%s,age=%s,address=%s,username=%s,password=%s WHERE id=%s"
-        
+
         values=(account[1],account[2],account[3],account[4],account[5],account[6],account[7],account[0])
         cursor.execute(query,values)
         conn.commit()
