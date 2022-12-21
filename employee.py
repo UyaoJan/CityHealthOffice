@@ -50,8 +50,9 @@ class Employee:
     def editAccount(account):
         conn=dbConnection.get_connection()
         cursor=dbConnection.get_cursor(conn)
-        query="UPDATE medtechs SET FirstName=%s,LastName=%s,Role=%s,age=%s,address=%s,username=%s,password=%s,pic_url=%s WHERE id=%s"
-        values=(account[1],account[2],account[3],account[4],account[5],account[6],account[7],account[8],account[0])
+        query="UPDATE medtechs SET FirstName=%s,LastName=%s,Role=%s,age=%s,address=%s,username=%s,password=%s WHERE id=%s"
+        
+        values=(account[1],account[2],account[3],account[4],account[5],account[6],account[7],account[0])
         cursor.execute(query,values)
         conn.commit()
 

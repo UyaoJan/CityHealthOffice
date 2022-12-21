@@ -76,7 +76,6 @@ def Regist():
         NewEmp.register()
 
     if PageOpen<2:
-        global Registration_Page
         Registration_Page=Toplevel()
         Registration_Page.title("Registration")
         Rig_width=400
@@ -193,8 +192,9 @@ for Account_Num in range(len(result)):
 
     # Access Image URL thru result[Account_Num][8] 
     Profile_Image=Label(Profile_Detail,text="IMAGE",bg="gray").place(x=10,y=10,relwidth=0.2,relheight=0.88)
-
-    Profile_Name=Label(Profile_Detail,text=result[Account_Num][1]+" "+result[Account_Num][2],font=("Arail",25,"bold")).place(x=220,y=10)
+    global Profile_Name
+    Profile_Name=Label(Profile_Detail,text=result[Account_Num][1]+" "+result[Account_Num][2],font=("Arail",25,"bold"))
+    Profile_Name.place(x=220,y=10)
 
     Profile_Edit=Button(Profile_Detail,text="Edit",font=("Arial",12),bg="green",width=4,height=2,command=lambda x= result[Account_Num][0]:editAccount(x))
     Profile_Edit.place(x=900,y=50)
@@ -203,53 +203,114 @@ for Account_Num in range(len(result)):
 # Edit Account : GUI Copy Pasted from Registration
 
 def editAccount(id):
-    Account=employee.Employee.findAccount(id)
+    global EditAccount, res
+    res=employee.Employee.findAccount(id)
 
-    Account_Edit=Frame(Registration_Page)
+    EditAccount=Toplevel()
+    EditAccount.title("Edit Account")
+    Rig_width=400
+    Rig_height=500
+    EditAccount.geometry(f'{Rig_width}x{Rig_height}+{500}+{80}')
+
+    Account_Edit=Frame(EditAccount)
     Account_Edit.pack(expand=1,fill=BOTH)
 
+    Registration_Title=Label(Account_Edit,text="Edit Account",font=("Arial",35,"bold")).place(x=15,y=10)
+
+    Image_Box=Frame(Account_Edit,width=124,height=120,bg="green",highlightbackground="black",highlightthickness=2)
+    Image_Box.place(x=25,y=90)
+
+    Image_upload=Label(Image_Box,width=30,height=25,borderwidth=2,padx=2,pady=2)
+    Image_upload.place()
+
+    Upload_button=Button(Image_Box,text="Profile Image",command=lambda:open_file(),width=16,height=7,borderwidth=2)
+    Upload_button.place(x=0,y=0)
+
+    def open_file():
+            global img, filepath
+            f_types = [('Jpg Files', '*.jpg')]
+            filepath = filedialog.askopenfilename(filetypes=f_types)
+            img=Image.open(filepath)
+            img_resized=img.resize((108,105)) # new width & height
+            img=ImageTk.PhotoImage(img_resized)
+            b2 =Button(Image_Box,image=img,borderwidth=5) # using Button 
+            b2.place(x=0,y=0)
+    
     global username2,password2,firstname2,lastname2,age2,address2,profession2
 
     username2=StringVar()
+    username2.set(res[6])
     password2=StringVar()
+    password2.set(res[7])
     firstname2=StringVar()
+    firstname2.set(res[1])
     lastname2=StringVar()
-    age2=StringVar()
+    lastname2.set(res[2])
+    age2=IntVar()
+    age2.set(str(res[4]))
     address2=StringVar()
+    address2.set(res[5])
     profession2=StringVar()
+    profession2.set(res[3])
 
     Label_Username=Label(Account_Edit,text="Username:",font=("Arial",10,"bold")).place(x=160,y=100)
-    Entry_Username=Entry(Account_Edit,text="Username:",textvariable=username,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=120)
+    Entry_Username=Entry(Account_Edit,textvariable=username2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=120)
 
     Label_Password=Label(Account_Edit,text="Password:",font=("Arial",10,"bold")).place(x=160,y=150)
-    Entry_Password=Entry(Account_Edit,text="Password:",textvariable=password,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=170)
+    Entry_Password=Entry(Account_Edit,textvariable=password2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=170)
 
     Label_FName=Label(Account_Edit,text="First Name:",font=("Arial",10,"bold")).place(x=15,y=220)
-    Entry_FName=Entry(Account_Edit,text="First Name:",textvariable=firstname,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=15,y=240)
+    Entry_FName=Entry(Account_Edit,textvariable=firstname2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=15,y=240)
 
     Label_LName=Label(Account_Edit,text="Last Name:",font=("Arial",10,"bold")).place(x=240,y=220)
-    Entry_LName=Entry(Account_Edit,text="Last Name:",textvariable=lastname,font=("Arial",10,"bold"),width=19,borderwidth=3).place(x=240,y=240)
+    Entry_LName=Entry(Account_Edit,textvariable=lastname2,font=("Arial",10,"bold"),width=19,borderwidth=3).place(x=240,y=240)
 
     Label_Age=Label(Account_Edit,text="Age:",font=("Arial",10,"bold")).place(x=15,y=270)
-    Entry_Age=Entry(Account_Edit,text="Age:",textvariable=age,font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=15,y=290)
+    Entry_Age=Entry(Account_Edit,textvariable=age2,font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=15,y=290)
 
     Label_Birthdate=Label(Account_Edit,text="Birthdate:",font="Arial 12").place(x=100,y=270)
     Entry_Birthdate=DateEntry(Account_Edit,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
     Entry_Birthdate.place(x=100,y=289)
 
-    Label_Address=Label(Account_Edit,text="Address:",textvariable=address,font=("Arial",10,"bold")).place(x=15,y=320)
-    Entry_Address=Entry(Account_Edit,text="Address:",font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=340)
+    Label_Address=Label(Account_Edit,text="Address:",font=("Arial",10,"bold")).place(x=15,y=320)
+    Entry_Address=Entry(Account_Edit,textvariable=address2,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=340)
 
     Label_Pro=Label(Account_Edit,text="Profession:",font=("Arial",10,"bold")).place(x=15,y=370)
-    Entry_Pro=Entry(Account_Edit,text="Profession:",textvariable=profession,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=390)
+    Entry_Pro=Entry(Account_Edit,textvariable=profession2,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=390)
 
+    Reg_Submit=Button(Account_Edit,text="Submit",command=lambda :editAccount2(id)).place(x=320,y=440)
 
-    Reg_Submit=Button(Account_Edit,text="Submit",command=editAccount2()).place(x=320,y=440)
+def editAccount2(id):
+    Account=(
+    id,
+    firstname2.get(),
+    lastname2.get(),
+    profession2.get(),
+    age2.get(),
+    address2.get(),
+    
+    username2.get(),
+    password2.get(),)
+    
+    ress=list(res)
+    del ress[-1]
+    ress=tuple(ress)
 
-    PageOpen +=1
+    if Account==ress: 
+        messagebox.showinfo("No Changes Made","No Changes have been Made!")
+    
+    else:
+        answer = messagebox.askyesno(title='confirmation',
+                    message='Save Changes?')
 
-def editAccount2(Account):
-    employee.Employee.editAccount(Account)
+        if answer:
+            EditAccount.destroy()
+            employee.Employee.editAccount(Account)
+            messagebox.showinfo("Changes Saved","Account Update Succesful")
+            
+            
+
+        else: messagebox.showinfo("No Changes Made","No Changes have been Made!")
 
 # =========================================================================================
 
