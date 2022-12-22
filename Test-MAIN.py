@@ -1,10 +1,11 @@
 from tkinter import *
 from PIL import ImageTk,Image
 from tkcalendar import Calendar,DateEntry
+import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 from PIL import Image, ImageTk
-
+from tkinter import messagebox
 
 Dashboard_GUI=Tk()
 Dashboard_GUI.title('CITY HEALTH')
@@ -86,7 +87,7 @@ def FrontDesk():
     #Body-------
     #DEF INPUT------
     def Gender_Click():
-        Genderlabel=Label(Frame_Input,Gender_Mune.get(),font="Arial 12")
+        F_Genderlabel=Label(Frame_Input,Gender_Mune.get(),font="Arial 12")
 
     #IMPUT-----------------
     Frame_Input=Frame(Frame_Body,width=680,height=700)
@@ -106,7 +107,7 @@ def FrontDesk():
     Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
     Birth_Entry.place(x=230,y=430)
 
-    Gender_Label=Label(Frame_Input,text="Gender:",font='Arial 12').place(x=350,y=430)
+    F_Gender_Label=Label(Frame_Input,text="Gender:",font='Arial 12').place(x=350,y=430)
     Option=["Male","Female","Other"]
     Gender_Mune=ttk.Combobox(Frame_Input,value=Option,font='Arial 12',state='readonly')
     Gender_Mune.current(0)
@@ -168,9 +169,9 @@ def Laboratory():
     AGE_Entry.place(x=450,y=70)
 
     def Gender_Click():
-        Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
+        L_Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
 
-    Gender_Label=Label(Frame_Body,text="Gender:",font='Arial 12').place(x=150,y=100)
+    L_Gender_Label=Label(Frame_Body,text="Gender:",font='Arial 12').place(x=150,y=100)
     Option=["Male","Female","Other"]
     Gender_Mune=ttk.Combobox(Frame_Body,value=Option,font='Arial 12',state='readonly')
     Gender_Mune.set("Select Gender")
@@ -191,15 +192,242 @@ def Laboratory():
     Test_Label=Label(Frame_Test,text="Laboratory Test",width=123,font="Arial 15",anchor=W,highlightbackground="black",highlightthickness=1)
     Test_Label.place(x=0,y=0)
 
-    def Option_TEST():
-        LabTestlabel=Label(Frame_Body,LabTest_Mune.get(),font="Arial 12 bold")
+    def Option_TEST(value):
+        CBC_Frame.pack_forget()
+        BT_Frame.pack_forget()
+        SE_Frame.pack_forget()
+        UT_Frame.pack_forget()
+        PT_Frame.pack_forget()
+
+
+        #THIS IS THE FRAME OF Complete Blood Count
+        if Lab_Option.get() == "Complete Blood Count":
+            CBC_Frame.pack(fill="both",expand=True)
+                        
+        #THIS IS THE FRAME OF Blood Type
+        elif Lab_Option.get() == "Blood Type":
+            BT_Frame.pack(fill="both",expand=True)
+            BT_TableBOX=Frame(BT_Frame,highlightbackground="black",highlightthickness=2)
+            BT_TableBOX.place(x=420,y=150,relwidth=0.39,relheight=0.32)
+
+            BT_Table=[  ["", "RESULT"],
+                        ["BLOOD TYPE", ""],
+                        ["HEPATITIS B SCREENING (HNsAg)", ""],
+                        ["ANTI-HAV SCREENING (HAV lgG/lgM)", ""],
+                        ["SYPHILIS SCREENING", ""],
+                        ["GENGUE NS1 ANTIGEN TEST", ""],
+                        ]
+            BT_Row=len(BT_Table)
+
+            for i in range(BT_Row):
+                Column_BT_1=Label(BT_TableBOX,text=f'{BT_Table[i][0]}',width=30,font=("Arail",12,"bold"),highlightbackground="black",highlightthickness=1,anchor=W)
+                Column_BT_1.grid(row=i,column=0)
+
+                Column_BT_RESULT=Label(BT_TableBOX,text=f'{BT_Table[0][1]}',width=21,font=("Arail",12,"bold"),highlightbackground="black",highlightthickness=1)
+                Column_BT_RESULT.grid(row=0,column=1)
+
+                Column_BT_2=Entry(BT_TableBOX,font=("Arail",12),width=23,highlightbackground="black",highlightthickness=2)
+                Column_BT_2.grid(row=i,column=1)
+                Column_BT_2.insert(END,BT_Table[i][1])
+            
+            BT_Print=Button(BT_Frame,text="PRINT",width=8,height=2,bg="green",)
+            BT_Print.place(x=1200,y=450)
+
+        #THIS IS THE FRAME OF Stool Exam
+        elif Lab_Option.get() == "Stool Exam":
+            SE_Frame.pack(fill="both",expand=True)
+            SE_Frame.pack(fill="both",expand=True)
+            SE_TableBOX=Frame(SE_Frame,highlightbackground="black",highlightthickness=2)
+            SE_TableBOX.place(x=420,y=140,relwidth=0.39,relheight=0.53)
+
+            SE_Table=[  ["COLOR:", ""],
+                        ["CONSISTENCY:", ""],
+                        ["MICROSCOPIC EXAMINATION", "RESULT"],
+                        ["WBC", ""],
+                        ["RBC", ""],
+                        ["BACTERIA", ""],
+                        ["FAT GLOBULES", ""],
+                        ["OVA OR PATASITE", ""],
+                        ["E. Histolytica CYST", ""],
+                        ["E coli CYST", ""],
+                        ]
+            SE_Row=len(SE_Table)
+
+            for i in range(SE_Row):
+                SE_Culomn_1=Label(SE_TableBOX,text=f'{SE_Table[i][0]}',width=30,font=("Arail",12,"bold"),highlightbackground="black",highlightthickness=1,anchor=W)
+                SE_Culomn_1.grid(row=i,column=0)
+
+                SE_Culomn_reslut=Label(SE_TableBOX,text=f'{SE_Table[2][1]}',width=21,font=("Arail",12,"bold"),highlightbackground="black",highlightthickness=1)
+                SE_Culomn_reslut.grid(row=2,column=1)
+
+                SE_Culomn_2=Entry(SE_TableBOX,font=("Arail",12),width=23,highlightbackground="black",highlightthickness=2)
+                SE_Culomn_2.grid(row=i,column=1)
+                SE_Culomn_2.insert(END,SE_Table[i][1])
+            
+            SE_Print=Button(SE_Frame,text="PRINT",width=8,height=2,bg="green",)
+            SE_Print.place(x=1200,y=450)
+            
+        #THIS IS THE FRAME OF Urinalysis (“Urine Test”)
+        elif Lab_Option.get() == "Urinalysis (“Urine Test”)":
+            UT_Frame.pack(fill="both",expand=True)
+            UT_Frame.pack(fill="both",expand=True)
+            UT_TableBOX=Frame(UT_Frame,highlightbackground="black",highlightthickness=2)
+            UT_TableBOX.place(x=420,y=50,relwidth=0.39,relheight=0.9)
+
+            UT_Table=[  ["COLOR:", "",""],
+                        ["CLARITY:", "",""],
+                        ["BLOOD", "RESULT",""],
+                        ["BILIRUBIN", "",""],
+                        ["LEUKOCYTE", "",""],
+                        ["KETONE", "",""],
+                        ["NITRITE", "",""],
+                        ["PROTEIN", "",""],
+                        ["GLUCOSE", "",""],
+                        ["PH", "",""],
+                        ["SPECIFIC GRAVITY", "",""],
+                        ["MICROSCOPIC EXAMINATION", "",""],
+                        ["WBC", "",""],
+                        ["RBC", "",""],
+                        ["EPITHELICAL CELLS", "",""],
+                        ["MUCOUS THREADS", "",""],
+                        ["BACTERIA", "",""],
+                        ["A. URATES/PHOSPHATE", "",""],
+                        ["CAST", "",""],
+                        ["CRYSTALS", "",""],
+                        ["OTHERS", "",""],
+                        ]
+            UT_Row=len(UT_Table)
+
+            for i in range(UT_Row):
+                UT_Culomn_1=Label(UT_TableBOX,text=f'{UT_Table[i][0]}',width=30,font=("Arail",8,"bold"),highlightbackground="black",highlightthickness=1,anchor=W)
+                UT_Culomn_1.grid(row=i,column=0)
+
+                UT_Culomn_2=Entry(UT_TableBOX,font=("Arail",8),width=23,highlightbackground="black",highlightthickness=2)
+                UT_Culomn_2.grid(row=i,column=1)
+                UT_Culomn_2.insert(END,UT_Table[i][1])
+
+                UT_Culomn_3=Entry(UT_TableBOX,font=("Arail",8),width=23,highlightbackground="black",highlightthickness=1)
+                UT_Culomn_3.grid(row=i,column=2)
+                UT_Culomn_3.insert(END,UT_Table[i][2])
+            
+            UT_Print=Button(UT_Frame,text="PRINT",width=8,height=2,bg="green",)
+            UT_Print.place(x=1200,y=450)
+
+
+        #THIS IS THE FRAME OF Pregnancy Test
+        elif Lab_Option.get() == "Pregnancy Test":
+            PT_Frame.pack(fill="both",expand=True)
+
+            PT_TableBOX=Frame(PT_Frame,highlightbackground="black",highlightthickness=2)
+            PT_TableBOX.place(x=420,y=180,relwidth=0.35,relheight=0.13)
+
+            PT_Table=[  ["TEST", "PREGNANCY"],
+                        ["RESULT", ""],
+                        ]
+
+            Column_TEST=Label(PT_TableBOX,text=f'{PT_Table[0][0]}',width=19,font=("Arail",15,"bold"),highlightbackground="black",highlightthickness=1)
+            Column_TEST.grid(row=0,column=0)
+
+            Column_Result=Label(PT_TableBOX,text=f'{PT_Table[1][0]}',width=19,font=("Arail",15,"bold"),highlightbackground="black",highlightthickness=1)
+            Column_Result.grid(row=1,column=0)
+
+            Column_Result=Label(PT_TableBOX,text=f'{PT_Table[0][1]}',width=19,font=("Arail",14,"bold"),highlightbackground="black",highlightthickness=1)
+            Column_Result.grid(row=0,column=1)
+
+            def PN_Click():
+                RESULT_PN=Label(PT_TableBOX,Gender_Mune.get(),font="Arial 12")
+            ResultPN=["POSITIVE","NEGATIVE"]
+            Column_Mune=ttk.Combobox(PT_TableBOX,value=ResultPN,state='readonly',width=19,font=("Arail",15,"bold"))
+            Column_Mune.set("Select RESULT")
+            Column_Mune.bind("<<ComboboxSelected>>",PN_Click)
+            Column_Mune.grid(row=1,column=1)
+
+            PT_Print=Button(PT_Frame,text="PRINT",width=8,height=2,bg="green",)
+            PT_Print.place(x=1200,y=450)
+
+        else:
+            messagebox.showinfo("Error","There Are something wrong in the System!")
 
     Test_Label=Label(Frame_Test,text="TEST:",font='Arial 12 bold').place(x=1075,y=3)
-    Option=["Complete Blood Count","Blood Type","Stool Exam"]
-    LabTest_Mune=ttk.Combobox(Frame_Test,value=Option,font='Arial 12',state='readonly')
-    LabTest_Mune.set("Select Gender")
+    
+    LabOptionBox=Frame(Frame_Test,bg="Gray",highlightbackground="black",highlightthickness=2)
+    LabOptionBox.place(x=0,y=30,relwidth=1.0,relheight=0.95)
+    Lab_Option=tk.StringVar(LabOptionBox)
+    Lab_Option.set("CBC_Frame")
+    LabTest_Mune=ttk.Combobox(Frame_Test,textvariable=Lab_Option,font='Arial 12',state='readonly',
+    value=["Complete Blood Count",
+            "Blood Type",
+            "Stool Exam",
+            "Urinalysis (“Urine Test”)",
+            # "Syphilis Rapid Test",
+            # "Hepatitis B (“Antigen Test”)",
+            # "Anti-HAV Test",
+            # "Drug Test",
+            "Pregnancy Test",
+            # "Fasting Blood Suger Test",
+            # "Blood Uric Acid Test",
+            # "Blood Cholesterol Test",
+            # "Blood Creatinine Test",
+            # "Acid Fast Staining",
+            ])
+
     LabTest_Mune.bind("<<ComboboxSelected>>",Option_TEST)
     LabTest_Mune.place(x=1130,y=3)
+
+    #Labtest Frame LIST
+    CBC_Frame=Frame(LabOptionBox)
+    CBC_Frame.pack(fill="both",expand=True)
+
+    CBC_TableBOX=Frame(CBC_Frame,highlightbackground="black",highlightthickness=2)
+    CBC_TableBOX.place(x=300,y=30,relwidth=0.50,relheight=0.9)
+
+    CBC_Table=[ ["", "Result", "Normal Values"],
+                ["WBC", " ", "5,0000-10,000/CUMM"],
+                ["RBC", " ", "F: 3.8-5.1 10^ uL; M:4.20-5.6 10^ uL"],
+                ["HEMOGLOBIN"," ","F: 11.70-14.5g/dL; M: 13.7-16.7g/dL"],
+                ["HEMATOCRIT"," ","F: 34.1-44.3 vol%; M; 41.5-49.7 vol%"],
+                ["MCV"," ","80-100 fl"],
+                ["MCH"," ","29 + 2 pg"],
+                ["MCHC"," ","33.4-35.5 g/dL"],
+                ["RDW"," ","12% to 15%"],
+                ["PLATELET"," ","150,000 - 450,000 uL"],
+                ["MPV"," ","8.9 - 11.8 fL"],
+                ["DEFFERENTIAL COUNT"," ",""],
+                ["NEUTROPHIL"," ","45% - 70%"],
+                ["LYMPHOCYTE"," ","18% - 45%"],
+                ["MONOCYTE"," ","4% - 8%"],
+                ["EOSINOPHIL"," ","2% - 3%"],
+                ["BOSAPHIL"," ","0% - 2%"],  
+                ]
+
+    Row=len(CBC_Table)
+
+    for i in range (Row):
+        Column1_LABEL=Label(CBC_TableBOX,text=f'{CBC_Table[i][0]}',width=19,font=("Arail",12,"bold"),highlightbackground="black",highlightthickness=1)
+        Column1_LABEL.grid(row=i,column=0)
+
+        Column1R_LABEL=Label(CBC_TableBOX,text=f'{CBC_Table[0][1]}',width=18,font=("Arail",12,"bold"),highlightbackground="black",highlightthickness=1)
+        Column1R_LABEL.grid(row=0,column=1)
+
+        Column2_Entry=Entry(CBC_TableBOX,font=("Arail",12),width=20,highlightbackground="black",highlightthickness=2)
+        Column2_Entry.grid(row=i,column=1)
+        Column2_Entry.insert(END,CBC_Table[i][1])
+
+        Column2D_LABEL=Label(CBC_TableBOX,text=f'{CBC_Table[11][1]}',width=18,font=("Arail",12,"bold"),highlightbackground="black",highlightthickness=1)
+        Column2D_LABEL.grid(row=11,column=1)
+
+        Column3_LABEL=Label(CBC_TableBOX,text=f'{CBC_Table[i][2]}',width=31,wraplength=400,justify=tk.LEFT,font=("Arail",12),highlightbackground="black",highlightthickness=1)
+        Column3_LABEL.grid(row=i,column=2)
+    
+    CBC_Print=Button(CBC_Frame,text="PRINT",width=8,height=2,bg="green",)
+    CBC_Print.place(x=1200,y=450)
+
+    BT_Frame=Frame(LabOptionBox)
+    SE_Frame=Frame(LabOptionBox)
+    UT_Frame=Frame(LabOptionBox)
+    PT_Frame=Frame(LabOptionBox)
+    
+
 
 #Laboratory-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -252,9 +480,9 @@ def X_Ray():
     AGE_Entry.place(x=160,y=190)
 
     def Gender_Click():
-        Genderlabel=Label(Detail_Body,Gender_Mune.get(),font="Arial 12 bold")
+        X_Genderlabel=Label(Detail_Body,Gender_Mune.get(),font="Arial 12 bold")
 
-    Gender_Label=Label(Detail_Body,text="Gender:",font='Arial 12 ').place(x=100,y=220)
+    X_Gender_Label=Label(Detail_Body,text="Gender:",font='Arial 12 ').place(x=100,y=220)
     Option=["Male","Female","Other"]
     Gender_Mune=ttk.Combobox(Detail_Body,value=Option,font='Arial 12',width=37,state='readonly')
     Gender_Mune.set("Select Gender")
@@ -286,17 +514,66 @@ def X_Ray():
     IMPRESSIONS_scroll.config(command=IMPRESSIONS_BOX.yview)
     IMPRESSIONS_BOX.pack()
 
-    def FIND_Click():
-        Findlabel=Label(Detail_Body,FINDING_Mune.get(),font="Arial 12 bold")
-        
+    def FIND_Result():
+        print("this")
 
     Option=["Normal","Chest PA"]
     FINDING_Mune=ttk.Combobox(Detail_Body,value=Option,font='Arial 12',width=20)
     FINDING_Mune.set("Select FINDING")
-    FINDING_Mune.bind("<<ComboboxSelected>>",FIND_Click)
+    FINDING_Mune.bind("<<ComboboxSelected>>",FIND_Result)
     FINDING_Mune.place(x=449,y=310)
+    
+    
+    global PageOpen
+    PageOpen = 1
+    def Find_Add():
+        global PageOpen
+        def on_close():
+            global PageOpen
+            if tk.messagebox.askokcancel('Close', 'Are you sure you want to close the Add Finding all the Input will not be Save?'):
+                PageOpen=1
+                Find_Page.destroy()
+        
+        if PageOpen<2:
+            Find_Page=Toplevel()
+            Find_Page.title("Add FINDING")
+            Rig_width=600
+            Rig_height=550
+            Find_Page.geometry(f'{Rig_width}x{Rig_height}+{430}+{90}')
+            Find_Page.protocol("WM_DELETE_WINDOW", on_close)
+            Find_Page.resizable(False,False)
 
-    Find_ADD=Button(Detail_Body,text="+",font='Arial 10 bold',width=2,height=1)
+            Add_Find_Body=Frame(Find_Page)
+            Add_Find_Body.pack(expand=1,fill=BOTH)
+
+            Finding_Title=Label(Add_Find_Body,text="Add Finding",font=("Arail",35,"bold"))
+            Finding_Title.place(x=10,y=10)
+
+            Find_Addoption_title=Label(Add_Find_Body,text="Title: ",font=("Arail",15,"bold")).place(x=5,y=100)
+            Find_Addoption_Entry=Entry(Add_Find_Body,width=50,border=5)
+            Find_Addoption_Entry.place(x=56,y=103)
+
+            Finding_TextTitle=Label(Add_Find_Body,text="Finding",font=("Arail",20,"bold"))
+            Finding_TextTitle.place(x=5,y=138)
+            Add_Find_Box=Frame(Add_Find_Body,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
+            Add_Find_Box.place(x=0,y=170)
+            Add_Find_scroll=Scrollbar(Add_Find_Box,orient='vertical')
+            Add_Find_scroll.pack(side=RIGHT,fill='y')
+            Add_Find_Text = Text(Add_Find_Box, height = 21, width = 70,borderwidth=5,font=("Arial 11 "),yscrollcommand=Add_Find_scroll.set)
+            Add_Find_scroll.config(command=Add_Find_Text.yview)
+            Add_Find_Text.pack()
+
+            ADD_Find_Button=Button(Add_Find_Body,text="Add",width=5,height=1,bg="green",font=("Arial 11 "))
+            ADD_Find_Button.place(x=450,y=134)
+
+            Close_Find_Button=Button(Add_Find_Body,text="Close",width=5,height=1,bg="green",font=("Arial 11 "),command=on_close)
+            Close_Find_Button.place(x=520,y=134)
+
+            PageOpen+= 1
+        else:
+            messagebox.showinfo("Error","The Window Registration is already Open!")
+
+    Find_ADD=Button(Detail_Body,text="+",font='Arial 10 bold',width=2,height=1,command=Find_Add)
     Find_ADD.place(x=420,y=309)
 
     Img_Body=Frame(Page_XRAY,width=300)
@@ -386,9 +663,6 @@ def Summary():
     Summary_Table.heading("MEDTECH",text="MEDTECH")
     Summary_Table.heading("FILE",text="FILE")
     Summary_Table.pack(expand=1,fill=BOTH)
-
-
-
 
 #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #Header-------
