@@ -1,6 +1,11 @@
 from tkinter import *
 from tkinter import messagebox
 import Test_MAIN, employee
+# import Test_Admin
+
+global admin_uname,admin_pass
+admin_uname="admin"
+admin_pass="admin123"
 
 class Loginpage():
     def __init__(self):
@@ -9,13 +14,16 @@ class Loginpage():
     def loginLogic(self):
         uname=username.get()
         passwd=password.get()
-        log=employee.Employee.login(uname,passwd)
-        if log:
-            username.set('')
-            password.set('')
-            Test_MAIN.main()
+        if uname==admin_uname and passwd==admin_pass:
+            print("log in as admin")
         else:
-            messagebox.showerror("Credentials Not Found","Username and Password do not Match")
+            log=employee.Employee.login(uname,passwd)
+            if log:
+                username.set('')
+                password.set('')
+                Test_MAIN.main()
+            else:
+                messagebox.showerror("Credentials Not Found","Username and Password do not Match")
         # Test_MAIN.main()
 
     def LoginStart(self):
