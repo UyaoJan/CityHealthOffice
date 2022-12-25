@@ -6,9 +6,8 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 
 
-global Dashboard_GUI,Page_Dashboard
-
 def main():   
+    global Dashboard_GUI,Page_Dashboard
     Dashboard_GUI=Tk()
     Dashboard_GUI.title('CITY HEALTH')
     width= Dashboard_GUI.winfo_screenwidth()

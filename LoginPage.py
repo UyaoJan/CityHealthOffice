@@ -1,13 +1,22 @@
 from tkinter import *
-import Test_MAIN
+from tkinter import messagebox
+import Test_MAIN, employee
 
 class Loginpage():
     def __init__(self):
         self.LoginGUI=Tk()
 
     def loginLogic(self):
-        print(username.get(), password.get())
-        Test_MAIN.main()
+        uname=username.get()
+        passwd=password.get()
+        log=employee.Employee.login(uname,passwd)
+        if log:
+            username.set('')
+            password.set('')
+            Test_MAIN.main()
+        else:
+            messagebox.showerror("Credentials Not Found","Username and Password do not Match")
+        # Test_MAIN.main()
 
     def LoginStart(self):
 
