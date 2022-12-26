@@ -59,5 +59,3 @@ class Loginpage():
     
     def start(self):
         self.LoginStart()
-        
-
