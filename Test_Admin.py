@@ -6,7 +6,6 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 from tkcalendar import Calendar,DateEntry
 
-
 import employee
 
 AdminGUI=Tk()
