@@ -181,6 +181,67 @@ Profile_BOX.create_window((0,0),window=Profile,anchor=NW)
 
 result=employee.Employee.getAllEmployees()
 
+def ViewProfile():
+        global PageOpen
+        def View_on_close():
+            global PageOpen
+            if tk.messagebox.askokcancel('Close', 'Are you sure you want to close the View Page all the data will not be Save?'):
+                PageOpen=1
+                View_Page.destroy()
+
+                
+        if PageOpen<2:
+            View_Page=Toplevel()
+            View_Page.title("Edit Profile")
+            PAGE_width=700
+            PAGE_height=350
+            View_Page.geometry(f'{PAGE_width}x{PAGE_height}+{400}+{200}')
+            View_Page.resizable(False,False)
+            View_Page.protocol("WM_DELETE_WINDOW", View_on_close)
+
+            View_Body=Frame(View_Page)
+            View_Body.pack(expand=1,fill=BOTH)
+
+            View_img=Label(View_Body,text="Image",font=("Arial",15),bg="gray").place(x=470,y=10,relwidth=0.3,relheight=0.5)
+
+            Label_View_Username=Label(View_Body,text="Username:",font=("Arial",10,"bold")).place(x=10,y=80)
+            Entry_View_Username=Entry(View_Body,text="Username:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=10,y=100)
+
+            Label_View_Password=Label(View_Body,text="Password:",font=("Arial",10,"bold")).place(x=240,y=80)
+            Entry_View_Password=Entry(View_Body,text="Password:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=240,y=100)
+
+            Label_View_FName=Label(View_Body,text="First Name:",font=("Arial",10,"bold")).place(x=10,y=130)
+            Entry_View_FName=Entry(View_Body,text="First Name:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=10,y=150)
+
+            Label_View_LName=Label(View_Body,text="Last Name:",font=("Arial",10,"bold")).place(x=240,y=130)
+            Entry_View_LName=Entry(View_Body,text="Last Name:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=240,y=150)
+
+            Label_View_Age=Label(View_Body,text="Age:",font=("Arial",10,"bold")).place(x=10,y=180)
+            Entry_View_Age=Entry(View_Body,text="Age:",font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=10,y=200)
+
+            Label_Birthdate=Label(View_Body,text="BirthDate:",font="Arial 12").place(x=100,y=180)
+            Entry_Birthdate=DateEntry(View_Body,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
+            Entry_Birthdate.place(x=100,y=200)
+
+            Label_View_Address=Label(View_Body,text="Address:",font=("Arial",10,"bold")).place(x=10,y=230)
+            Entry_View_Address=Entry(View_Body,text="Address:",font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=10,y=250)
+
+            Label_View_Pro=Label(View_Body,text="Profission:",font=("Arial",10,"bold")).place(x=10,y=280)
+            Entry_View_Pro=Entry(View_Body,text="Profission:",font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=10,y=300)
+
+            View_EDIT=Button(View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5)
+            View_EDIT.place(x=510,y=200)
+
+            View_DELETE=Button(View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5)
+            View_DELETE.place(x=510,y=240)
+
+            View_Cancel=Button(View_Body,text="Cancel",width=15,height=1,font=("Arail",10),borderwidth=5,command=View_on_close)
+            View_Cancel.place(x=510,y=290)
+
+            PageOpen +=1
+        else:
+            messagebox.showinfo("Error","The Window EDIT is already Open!")
+
 global labels
 labels=[]
 for Account_Num in range(len(result)):
@@ -198,11 +259,14 @@ for Account_Num in range(len(result)):
     Profile_Name.place(x=220,y=10)
     labels.append(Profile_Name)
 
-    Profile_Delete=Button(Profile_Detail,text="Delete",font=("Arial",12),bg="green",width=6,height=2,command=lambda x= result[Account_Num][0]:deleteAccount(x))
-    Profile_Delete.place(x=830,y=50)
+    Profile_Edit=Button(Profile_Detail,text="View",width=10,height=2,font=("Arail",10),borderwidth=5,command=ViewProfile)
+    Profile_Edit.place(x=850,y=50)
 
-    Profile_Edit=Button(Profile_Detail,text="Edit",font=("Arial",12),bg="green",width=4,height=2,command=lambda x= result[Account_Num][0]:editAccount(x, labels[Account_Num]))
-    Profile_Edit.place(x=900,y=50)
+    # Profile_Delete=Button(Profile_Detail,text="Delete",font=("Arial",12),bg="green",width=6,height=2,command=lambda x= result[Account_Num][0]:deleteAccount(x))
+    # Profile_Delete.place(x=830,y=50)
+
+    # Profile_Edit=Button(Profile_Detail,text="Edit",font=("Arial",12),bg="green",width=4,height=2,command=lambda x= result[Account_Num][0]:editAccount(x, labels[Account_Num]))
+    # Profile_Edit.place(x=900,y=50)
 
 
 def deleteAccount(id):
@@ -324,4 +388,5 @@ def editAccount2(id):
 
 # =========================================================================================
 
+    
 AdminGUI.mainloop()

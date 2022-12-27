@@ -21,7 +21,8 @@ class Loginpage():
             if log:
                 username.set('')
                 password.set('')
-                Test_MAIN.main()
+                start=Test_MAIN.Main()
+                start.start()
             else:
                 messagebox.showerror("Credentials Not Found","Username and Password do not Match")
         # Test_MAIN.main()
@@ -59,5 +60,3 @@ class Loginpage():
     
     def start(self):
         self.LoginStart()
-        
-
