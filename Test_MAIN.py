@@ -4,6 +4,7 @@ from tkcalendar import Calendar,DateEntry
 from tkinter import ttk
 from tkinter import filedialog
 from PIL import Image, ImageTk
+from tkinter import messagebox
 
 class Main:
     def __init__(self):
@@ -11,10 +12,17 @@ class Main:
         self.Page_Summary = None
         self.Page_FrontDesk = None
         self.Page_XRAY = None
+        global PageOpen
+        PageOpen = 1
+        self.Value_Record = ["Laboratory","X_RAY"]
+        
 
     def FrontDesk(self):
+        def Home():
+            Page_FrontDesk.destroy()
+            self.Page_Dashboard.pack()
         self.Page_Dashboard.forget()
-        Page_FrontDesk=Frame(self.Dashboard_GUI,bg="green")
+        Page_FrontDesk=Frame(self.Dashboard_GUI)
         Page_FrontDesk.pack(expand=1, fill=BOTH)
         Frame_Header=Frame(Page_FrontDesk,width=1360,height=50,highlightbackground="black",highlightthickness=1)
         Frame_Header.pack()
@@ -31,7 +39,7 @@ class Main:
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="HOME",command=self.Home)
+        Toggle_Button.menu.add_command(label="HOME",command=Home)
         Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
         Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
 
@@ -119,12 +127,67 @@ class Main:
 
 
 #FrontDesk-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    def Record_on_close(self):
+        global PageOpen
+        if messagebox.askokcancel('Close', 'Are you sure you want to close the View Page all the data will not be Save?'):
+            PageOpen=1
+            self.RecordPage.destroy()
+    
+    def Record(self,value):
+        global PageOpen
+        if PageOpen < 2:
+            self.RecordPage=Toplevel()
+            self.RecordPage.title("Record")
+            self.RecordPage
+            Record_width=450
+            Record_height=600
+            self.RecordPage.geometry(f'{Record_width}x{Record_height}+{480}+{100}')
+            self.RecordPage.protocol("WM_DELETE_WINDOW", self.Record_on_close)
 
+            self.ReccordBody= Frame(self.RecordPage)
+            self.ReccordBody.pack(expand=1,fill=BOTH)
+
+            RecordFrame=Frame(self.ReccordBody,)
+            RecordFrame.place(x=0,y=130,relwidth=1.0,relheight=0.78)
+            RecordBOX= Canvas(RecordFrame,highlightbackground="black",highlightthickness=1)
+            RecordBOX.pack(side=LEFT,fill=BOTH,expand=1)
+
+            Recordscroll=ttk.Scrollbar(RecordFrame,orient=VERTICAL,command=RecordBOX.yview)
+            Recordscroll.pack(side=RIGHT,fill=Y)
+
+            RecordBOX.configure(yscrollcommand=Recordscroll.set)
+            RecordBOX.bind('<Configure>',lambda e: RecordBOX.configure(scrollregion= RecordBOX.bbox("all")))
+
+            Record_List=Frame(RecordBOX,highlightbackground="black",highlightthickness=2)
+            RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
+            #print(self.Value_Record)
+            if value == "Laboratory":
+                #print(value)
+                for i in range(10):
+                    Record_Number=Frame(Record_List,width=427,height=100)
+                    Record_Number.grid(row=i,column=0)
+
+                    Record_Page=Frame(Record_Number,width=250,height=50,bg="blue",highlightbackground="black",highlightthickness=1)
+                    Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+            
+            elif value == "X_RAY":
+                #print(value)
+                for i in range(10):
+                    X_RAY_Record_Number=Frame(Record_List,width=427,height=100)
+                    X_RAY_Record_Number.grid(row=i,column=0)
+
+                    X_RAY_Record_Page=Frame(X_RAY_Record_Number,width=250,height=50,bg="yellow",highlightbackground="black",highlightthickness=1)
+                    X_RAY_Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+            
+            PageOpen += 1
+
+        else:
+            messagebox.showinfo("Error","The Window is already Open!")
 #Laboratory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Laboratory(self):
-        # def Home():
-        #     Page_Laboratory.destroy()
-        #     self.Page_Dashboard.pack()
+        def Home():
+            Page_Laboratory.destroy()
+            self.Page_Dashboard.pack()
         self.Page_Dashboard.forget()
         Page_Laboratory=Frame(self.Dashboard_GUI,bg="green")
         Page_Laboratory.pack(expand=1, fill=BOTH)
@@ -144,7 +207,7 @@ class Main:
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="HOME",command=self.Home)
+        Toggle_Button.menu.add_command(label="HOME",command=Home)
         Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
         Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
         #Header-------
@@ -175,9 +238,9 @@ class Main:
         Date_Label=Label(Frame_Body,text="Date:",font="Arial 12").place(x=20,y=100)
         Date_Entry=DateEntry(Frame_Body,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
         Date_Entry.place(x=20,y=120)
-
-        Record_Button=Button(Frame_Body,text="Record",width=10,bg="green")
-        Record_Button.place(x=1250,y=50)
+        
+        Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.Record(self.Value_Record[0]))
+        Record_Button.place(x=1150,y=50)
 
         #Frame for the Testing 
         Frame_Test=Frame(Page_Laboratory,highlightbackground="black",highlightthickness=1,bg="blue")
@@ -266,16 +329,15 @@ class Main:
         #List Frame of the Test
         Serology_Page = Frame(Contener)
         Serology_Page.pack(expand=1,fill=BOTH)
-
         Miscelaneous_Page = Frame(Contener)
 
 #Laboratory-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #X_Ray Laboratory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def X_Ray(self):
-        # def Home():
-        #     Page_XRAY.destroy()
-        #     self.Page_Dashboard.pack()
+        def Home():
+            Page_XRAY.destroy()
+            self.Page_Dashboard.pack()
         self.Page_Dashboard.forget()
         Page_XRAY=Frame(self.Dashboard_GUI,bg="green")
         Page_XRAY.pack(expand=1, fill=BOTH)
@@ -296,7 +358,7 @@ class Main:
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="HOME",command=self.Home)
+        Toggle_Button.menu.add_command(label="HOME",command=Home)
         Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
         Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
         #Header-------
@@ -389,13 +451,16 @@ class Main:
             b2 =Button(Image_Box,image=img,borderwidth=5) # using Button 
             b2.place(x=0,y=0)
         
-        Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11').place(x=410,y=630)
+        Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',command=lambda:self.Record(self.Value_Record[1])).place(x=410,y=630)
         Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Arial 11').place(x=520,y=630)
 
 #X_Ray Laboratory  END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #Summary>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Summary(self):
+        def Home():
+            self.Page_Dashboard.destroy()
+            self.Page_Dashboard.pack()
         self.Page_Dashboard.forget()
         self.Page_Summary=Frame(self.Dashboard_GUI,bg="green")
         self.Page_Summary.pack(expand=1, fill=BOTH)
@@ -416,7 +481,7 @@ class Main:
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="HOME",command=self.Home)
+        Toggle_Button.menu.add_command(label="HOME",command=Home)
         Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
         Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
         #Header-------
@@ -477,7 +542,6 @@ class Main:
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="HOME",command=lambda:print("I hate this"))
         Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
         Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
         #Header END------------
@@ -510,16 +574,8 @@ class Main:
 
         self.Dashboard_GUI.mainloop()
     
-        
-    def Home(self):
-            self.Page_Summary.destroy()
-            self.Page_FrontDesk.destroy()
-            self.Page_XRAY.destroy()
-            self.Page_Dashboard.pack()
-
-    
     def start(self):
         self.Main_Dashboard()
 
-# app=Main()
-# app.start()
+app=Main()
+app.start()
