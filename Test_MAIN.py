@@ -144,10 +144,16 @@ class Main:
             self.RecordPage.geometry(f'{Record_width}x{Record_height}+{480}+{100}')
             self.RecordPage.protocol("WM_DELETE_WINDOW", self.Record_on_close)
 
-            self.ReccordBody= Frame(self.RecordPage)
-            self.ReccordBody.pack(expand=1,fill=BOTH)
+            self.RecordBody= Frame(self.RecordPage)
+            self.RecordBody.pack(expand=1,fill=BOTH)
 
-            RecordFrame=Frame(self.ReccordBody,)
+            Record_search_LB=Label(self.RecordBody,text="SEARCH: ",font='Arial 12 bold').place(x=10,y=100)
+            Record_search_EN=Entry(self.RecordBody,font='Arial 12',borderwidth=5)
+            Record_search_EN.place(x=90,y=98,relwidth=0.6)
+            Record_search_BT=Button(self.RecordBody,text="Search",font='Arial 10',width=6,height=0,borderwidth=5)
+            Record_search_BT.place(x=365,y=94)
+
+            RecordFrame=Frame(self.RecordBody,)
             RecordFrame.place(x=0,y=130,relwidth=1.0,relheight=0.78)
             RecordBOX= Canvas(RecordFrame,highlightbackground="black",highlightthickness=1)
             RecordBOX.pack(side=LEFT,fill=BOTH,expand=1)
@@ -178,6 +184,72 @@ class Main:
 
                     X_RAY_Record_Page=Frame(X_RAY_Record_Number,width=250,height=50,bg="yellow",highlightbackground="black",highlightthickness=1)
                     X_RAY_Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+            
+            PageOpen += 1
+
+        else:
+            messagebox.showinfo("Error","The Window is already Open!")
+
+
+
+    def Client_on_close(self):
+        global PageOpen
+        if messagebox.askokcancel('Close', 'Are you sure you want to close the View Page all the data will not be Save?'):
+            PageOpen=1
+            self.Client_Page.destroy()
+    
+    def ClientList(self,value):
+        global PageOpen
+        if PageOpen < 2:
+            self.Client_Page=Toplevel()
+            self.Client_Page.title("Record")
+            self.Client_Page
+            Record_width=450
+            Record_height=600
+            self.Client_Page.geometry(f'{Record_width}x{Record_height}+{480}+{100}')
+            self.Client_Page.protocol("WM_DELETE_WINDOW", self.Client_on_close)
+
+            self.CListBody= Frame(self.Client_Page)
+            self.CListBody.pack(expand=1,fill=BOTH)
+
+            Client_search_LB=Label(self.CListBody,text="SEARCH: ",font='Arial 12 bold').place(x=10,y=100)
+            Client_search_EN=Entry(self.CListBody,font='Arial 12',borderwidth=5)
+            Client_search_EN.place(x=90,y=98,relwidth=0.6)
+            Client_search_BT=Button(self.CListBody,text="Search",font='Arial 10',width=6,height=0,borderwidth=5)
+            Client_search_BT.place(x=365,y=94)
+
+            ClistFrame=Frame(self.CListBody,)
+            ClistFrame.place(x=0,y=130,relwidth=1.0,relheight=0.78)
+            CListBOX= Canvas(ClistFrame,highlightbackground="black",highlightthickness=1)
+            CListBOX.pack(side=LEFT,fill=BOTH,expand=1)
+
+            Clistscroll=ttk.Scrollbar(ClistFrame,orient=VERTICAL,command=CListBOX.yview)
+            Clistscroll.pack(side=RIGHT,fill=Y)
+
+            CListBOX.configure(yscrollcommand=Clistscroll.set)
+            CListBOX.bind('<Configure>',lambda e: CListBOX.configure(scrollregion= CListBOX.bbox("all")))
+
+            Client_List=Frame(CListBOX,highlightbackground="black",highlightthickness=2)
+            CListBOX.create_window((0,0),window=Client_List,anchor=NW)
+            #print(self.Value_Record)
+            if value == "Laboratory":
+                #print(value)
+                for i in range(10):
+                    ClientL_Number=Frame(Client_List,width=427,height=100)
+                    ClientL_Number.grid(row=i,column=0)
+
+                    Client_Page=Frame(ClientL_Number,width=250,height=50,bg="gray",highlightbackground="black",highlightthickness=1)
+                    Client_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+
+            
+            elif value == "X_RAY":
+                #print(value)
+                for i in range(10):
+                    X_RAY_Client_Number=Frame(Client_List,width=427,height=100)
+                    X_RAY_Client_Number.grid(row=i,column=0)
+
+                    X_RAY_Client_Page=Frame(X_RAY_Client_Number,width=250,height=50,bg="red",highlightbackground="black",highlightthickness=1)
+                    X_RAY_Client_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
             
             PageOpen += 1
 
@@ -238,9 +310,12 @@ class Main:
         Date_Label=Label(Frame_Body,text="Date:",font="Arial 12").place(x=20,y=100)
         Date_Entry=DateEntry(Frame_Body,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
         Date_Entry.place(x=20,y=120)
-        
+
+        CList_Button=Button(Frame_Body,text="Client List",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.ClientList(self.Value_Record[0]))
+        CList_Button.place(x=1200,y=60)
+
         Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.Record(self.Value_Record[0]))
-        Record_Button.place(x=1150,y=50)
+        Record_Button.place(x=1200,y=100)
 
         #Frame for the Testing 
         Frame_Test=Frame(Page_Laboratory,highlightbackground="black",highlightthickness=1,bg="blue")
@@ -451,6 +526,7 @@ class Main:
             b2 =Button(Image_Box,image=img,borderwidth=5) # using Button 
             b2.place(x=0,y=0)
         
+        CList_Xray=Button(Img_Body,text="Client List",width=10,bg="green",font='Arial 11',command=lambda:self.ClientList(self.Value_Record[1])).place(x=300,y=630)
         Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',command=lambda:self.Record(self.Value_Record[1])).place(x=410,y=630)
         Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Arial 11').place(x=520,y=630)
 
