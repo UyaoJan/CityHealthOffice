@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-import Test_MAIN, employee
+import Test_MAIN, employee, Test_Admin
 # import Test_Admin
 
 global admin_uname,admin_pass
@@ -15,7 +15,9 @@ class Loginpage():
         uname=username.get()
         passwd=password.get()
         if uname==admin_uname and passwd==admin_pass:
-            print("log in as admin")
+            admin=Test_Admin.Admin()
+            admin.start()
+            # print("log in as admin")
         else:
             log=employee.Employee.login(uname,passwd)
             if log:
