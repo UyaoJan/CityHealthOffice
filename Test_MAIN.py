@@ -14,9 +14,18 @@ class Main:
         self.Page_XRAY = None
         global PageOpen
         PageOpen = 1
-        self.Value_Record = ["Laboratory","X_RAY"]
-        
-
+        self.Value_Laboratory = ["Laboratory","X_RAY"]
+    
+        #Checkbox Def
+    def showCheckbox(self):
+        for i in range(len(self.services)):
+            Selected=""
+            if int(self.services[i].get()) >= 1:
+                Selected += str(i)
+                this=self.Value[i]
+                print(Selected)
+                print(this)
+                
     def FrontDesk(self):
         def Home():
             Page_FrontDesk.destroy()
@@ -40,7 +49,6 @@ class Main:
         Toggle_Button["menu"]=Toggle_Button.menu
 
         Toggle_Button.menu.add_command(label="HOME",command=Home)
-        Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
         Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
 
         #Header-------
@@ -56,35 +64,47 @@ class Main:
         Box_Title.place(x=54,y=300)
         Box=Frame(Frame_LIST,width=560,height=300,highlightbackground="black",highlightthickness=1)
         Box.place(x=50,y=320)
-        #Checkbox Def
-        def showCheckbox():
-            for i in range(len(services)):
-                Selected=""
-                if services[i].get()>=1:
-                    Selected += str(i)
-                    print(Selected)
         #checkbox
-        services=[]
-        for i in range(15):
+        
+        self.Value=[
+                    "Complete Blood Count",
+                    " Blood Type",
+                    "Stool Exam",
+                    "Urinalysis (“Urine Test”)",
+                    "Syphilis Rapid Test",
+                    "Hepatitis B (“Antigen Test”)",
+                    "Anti-HAV Test",
+                    "Drug Test",
+                    "Pregnancy Test",
+                    "Fasting Blood Suger Test",
+                    "Blood Uric Acid Test",
+                    "Blood Cholesterol Test",
+                    "Blood Creatinine Test",
+                    "Acid Fast Staining",
+                    "X-Ray Test",
+                    ]
+
+        self.services=[]
+        for i in range (15):
             Test=StringVar()
             Test.set(0)
-            services.append(Test)
+            self.services.append(Test)
         
-        Checkbutton(Box,text="Complete Blood Count",variable=services[0],font='Arial 12 ').place(x=30,y=50)
-        Checkbutton(Box,text="Blood Type",variable=services[1],font='Arial 12 ').place(x=30,y=75)
-        Checkbutton(Box,text="Stool Exam",variable=services[2],font='Arial 12 ').place(x=30,y=100)
-        Checkbutton(Box,text="Urinalysis (“Urine Test”)",variable=services[3],font='Arial 12 ').place(x=30,y=125)
-        Checkbutton(Box,text="Syphilis Rapid Test",variable=services[4],font='Arial 12 ').place(x=30,y=150)
-        Checkbutton(Box,text="Hepatitis B (“Antigen Test”)",variable=services[5],font='Arial 12 ').place(x=30,y=175)
-        Checkbutton(Box,text="Anti-HAV Test",variable=services[6],font='Arial 12 ').place(x=30,y=200)
-        Checkbutton(Box,text="Drug Test",variable=services[7],font='Arial 12 ').place(x=30,y=222)
-        Checkbutton(Box,text="Pregnancy Test",variable=services[8],font='Arial 12 ').place(x=30,y=245)
-        Checkbutton(Box,text="Fasting Blood Suger Test",variable=services[9],font='Arial 12 ').place(x=280,y=50)
-        Checkbutton(Box,text="Blood Uric Acid Test",variable=services[10],font='Arial 12 ').place(x=280,y=75)
-        Checkbutton(Box,text="Blood Cholesterol Test",variable=services[11],font='Arial 12 ').place(x=280,y=100)
-        Checkbutton(Box,text="Blood Creatinine Test",variable=services[12],font='Arial 12 ').place(x=280,y=125)
-        Checkbutton(Box,text="Acid Fast Staining",variable=services[13],font='Arial 12 ').place(x=280,y=150)
-        Checkbutton(Box,text="X-Ray Test",variable=services[14],font='Arial 12 ').place(x=280,y=175)
+        Checkbutton(Box,text="Complete Blood Count",variable=self.services[0],font='Arial 12 ').place(x=30,y=50)
+        Checkbutton(Box,text="Blood Type",variable=self.services[1],font='Arial 12 ').place(x=30,y=75)
+        Checkbutton(Box,text="Stool Exam",variable=self.services[2],font='Arial 12 ').place(x=30,y=100)
+        Checkbutton(Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Arial 12 ').place(x=30,y=125)
+        Checkbutton(Box,text="Syphilis Rapid Test",variable=self.services[4],font='Arial 12 ').place(x=30,y=150)
+        Checkbutton(Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Arial 12 ').place(x=30,y=175)
+        Checkbutton(Box,text="Anti-HAV Test",variable=self.services[6],font='Arial 12 ').place(x=30,y=200)
+        Checkbutton(Box,text="Drug Test",variable=self.services[7],font='Arial 12 ').place(x=30,y=222)
+        Checkbutton(Box,text="Pregnancy Test",variable=self.services[8],font='Arial 12 ').place(x=30,y=245)
+        Checkbutton(Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Arial 12 ').place(x=280,y=50)
+        Checkbutton(Box,text="Blood Uric Acid Test",variable=self.services[10],font='Arial 12 ').place(x=280,y=75)
+        Checkbutton(Box,text="Blood Cholesterol Test",variable=self.services[11],font='Arial 12 ').place(x=280,y=100)
+        Checkbutton(Box,text="Blood Creatinine Test",variable=self.services[12],font='Arial 12 ').place(x=280,y=125)
+        Checkbutton(Box,text="Acid Fast Staining",variable=self.services[13],font='Arial 12 ').place(x=280,y=150)
+        Checkbutton(Box,text="X-Ray Test",variable=self.services[14],font='Arial 12 ').place(x=280,y=175)
 
         #Body-------
         #DEF INPUT------
@@ -123,7 +143,8 @@ class Main:
         Date_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W,state='readonly')
         Date_Entry.place(x=525,y=460)
 
-        Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Arial 11').place(x=540,y=530)
+        Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Arial 11',command=self.showCheckbox)
+        Submit_Input.place(x=540,y=530)
 
 
 #FrontDesk-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -143,6 +164,7 @@ class Main:
             Record_height=600
             self.RecordPage.geometry(f'{Record_width}x{Record_height}+{480}+{100}')
             self.RecordPage.protocol("WM_DELETE_WINDOW", self.Record_on_close)
+            self.RecordPage.resizable(False,False)
 
             self.RecordBody= Frame(self.RecordPage)
             self.RecordBody.pack(expand=1,fill=BOTH)
@@ -153,7 +175,7 @@ class Main:
             Record_search_BT=Button(self.RecordBody,text="Search",font='Arial 10',width=6,height=0,borderwidth=5)
             Record_search_BT.place(x=365,y=94)
 
-            RecordFrame=Frame(self.RecordBody,)
+            RecordFrame=Frame(self.RecordBody,highlightbackground="black",highlightthickness=1)
             RecordFrame.place(x=0,y=130,relwidth=1.0,relheight=0.78)
             RecordBOX= Canvas(RecordFrame,highlightbackground="black",highlightthickness=1)
             RecordBOX.pack(side=LEFT,fill=BOTH,expand=1)
@@ -166,30 +188,50 @@ class Main:
 
             Record_List=Frame(RecordBOX,highlightbackground="black",highlightthickness=2)
             RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
-            #print(self.Value_Record)
+            #print(self.Value_Laboratory)
             if value == "Laboratory":
                 #print(value)
                 for i in range(10):
-                    Record_Number=Frame(Record_List,width=427,height=100)
+                    Record_Number=Frame(Record_List,width=427,height=80)
                     Record_Number.grid(row=i,column=0)
 
-                    Record_Page=Frame(Record_Number,width=250,height=50,bg="blue",highlightbackground="black",highlightthickness=1)
+                    Record_Page=Frame(Record_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
                     Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+
+                    Number_BOX=Frame(Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
+                    Number_BOX.place(x=10,y=10)
+                    Client_Number=Label(Number_BOX,text="100",font=("Arial",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
+
+                    Client_Name=Label(Record_Page,text="NAME: DARKHOURSE OF THE NIGHT",font=("Arial",12,"bold")).place(x=85,y=10)
+                    Client_Test=Label(Record_Page,text="TEST: love my life",font=("Arial",8,"bold")).place(x=85,y=30)
+
+                    Take_Button=Button(Record_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
+                    Take_Button.place(x=360,y=37)
+
             
             elif value == "X_RAY":
                 #print(value)
                 for i in range(10):
-                    X_RAY_Record_Number=Frame(Record_List,width=427,height=100)
+                    X_RAY_Record_Number=Frame(Record_List,width=427,height=80)
                     X_RAY_Record_Number.grid(row=i,column=0)
 
-                    X_RAY_Record_Page=Frame(X_RAY_Record_Number,width=250,height=50,bg="yellow",highlightbackground="black",highlightthickness=1)
+                    X_RAY_Record_Page=Frame(X_RAY_Record_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
                     X_RAY_Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+
+                    XRAY_Number_BOX=Frame(X_RAY_Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
+                    XRAY_Number_BOX.place(x=10,y=10)
+                    XRAY_Client_Number=Label(XRAY_Number_BOX,text="100",font=("Arial",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
+
+                    XRAY_Client_Name=Label(X_RAY_Record_Page,text="NAME: DARKHOURSE OF THE NIGHT",font=("Arial",12,"bold")).place(x=85,y=10)
+                    XRAY_Client_Test=Label(X_RAY_Record_Page,text="TEST:X_RAY TEST",font=("Arial",8,"bold")).place(x=85,y=30)
+
+                    XRAY_Take_Button=Button(X_RAY_Record_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
+                    XRAY_Take_Button.place(x=360,y=37)
             
             PageOpen += 1
 
         else:
             messagebox.showinfo("Error","The Window is already Open!")
-
 
 
     def Client_on_close(self):
@@ -202,7 +244,7 @@ class Main:
         global PageOpen
         if PageOpen < 2:
             self.Client_Page=Toplevel()
-            self.Client_Page.title("Record")
+            self.Client_Page.title("Client List")
             self.Client_Page
             Record_width=450
             Record_height=600
@@ -218,7 +260,7 @@ class Main:
             Client_search_BT=Button(self.CListBody,text="Search",font='Arial 10',width=6,height=0,borderwidth=5)
             Client_search_BT.place(x=365,y=94)
 
-            ClistFrame=Frame(self.CListBody,)
+            ClistFrame=Frame(self.CListBody,highlightbackground="black",highlightthickness=1)
             ClistFrame.place(x=0,y=130,relwidth=1.0,relheight=0.78)
             CListBOX= Canvas(ClistFrame,highlightbackground="black",highlightthickness=1)
             CListBOX.pack(side=LEFT,fill=BOTH,expand=1)
@@ -231,26 +273,45 @@ class Main:
 
             Client_List=Frame(CListBOX,highlightbackground="black",highlightthickness=2)
             CListBOX.create_window((0,0),window=Client_List,anchor=NW)
-            #print(self.Value_Record)
+            #print(self.Value_Laboratory)
             if value == "Laboratory":
                 #print(value)
                 for i in range(10):
-                    ClientL_Number=Frame(Client_List,width=427,height=100)
+                    ClientL_Number=Frame(Client_List,width=427,height=80)
                     ClientL_Number.grid(row=i,column=0)
 
                     Client_Page=Frame(ClientL_Number,width=250,height=50,bg="gray",highlightbackground="black",highlightthickness=1)
                     Client_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
 
+                    CL_Number_BOX=Frame(Client_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
+                    CL_Number_BOX.place(x=10,y=10)
+                    Client_Number=Label(CL_Number_BOX,text="100",font=("Arial",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
+
+                    Client_Name=Label(Client_Page,text="NAME: DARKHOURSE OF THE NIGHT",font=("Arial",12,"bold")).place(x=85,y=10)
+                    Client_Test=Label(Client_Page,text="TEST: love my life",font=("Arial",8,"bold")).place(x=85,y=30)
+
+                    Take_Button=Button(Client_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
+                    Take_Button.place(x=360,y=37)
             
             elif value == "X_RAY":
                 #print(value)
                 for i in range(10):
-                    X_RAY_Client_Number=Frame(Client_List,width=427,height=100)
+                    X_RAY_Client_Number=Frame(Client_List,width=427,height=80)
                     X_RAY_Client_Number.grid(row=i,column=0)
 
-                    X_RAY_Client_Page=Frame(X_RAY_Client_Number,width=250,height=50,bg="red",highlightbackground="black",highlightthickness=1)
+                    X_RAY_Client_Page=Frame(X_RAY_Client_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
                     X_RAY_Client_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
-            
+
+                    CLX_Number_BOX=Frame(X_RAY_Client_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
+                    CLX_Number_BOX.place(x=10,y=10)
+                    Client_Number=Label(CLX_Number_BOX,text="100",font=("Arial",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
+
+                    X_Client_Name=Label(X_RAY_Client_Page,text="NAME: DARKHOURSE OF THE NIGHT",font=("Arial",12,"bold")).place(x=85,y=10)
+                    X_Client_Test=Label(X_RAY_Client_Page,text="TEST: love my life",font=("Arial",8,"bold")).place(x=85,y=30)
+
+                    Take_Button=Button(X_RAY_Client_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
+                    Take_Button.place(x=360,y=37)
+
             PageOpen += 1
 
         else:
@@ -280,7 +341,6 @@ class Main:
         Toggle_Button["menu"]=Toggle_Button.menu
 
         Toggle_Button.menu.add_command(label="HOME",command=Home)
-        Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
         Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
         #Header-------
         #BODY >> Laboratory
@@ -311,10 +371,10 @@ class Main:
         Date_Entry=DateEntry(Frame_Body,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
         Date_Entry.place(x=20,y=120)
 
-        CList_Button=Button(Frame_Body,text="Client List",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.ClientList(self.Value_Record[0]))
+        CList_Button=Button(Frame_Body,text="Client List",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.ClientList(self.Value_Laboratory[0]))
         CList_Button.place(x=1200,y=60)
 
-        Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.Record(self.Value_Record[0]))
+        Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
         Record_Button.place(x=1200,y=100)
 
         #Frame for the Testing 
@@ -407,6 +467,50 @@ class Main:
         Miscelaneous_Page = Frame(Contener)
 
 #Laboratory-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    def Close_Plus_Finding(self):
+        global PageOpen
+        if messagebox.askokcancel('Close', 'Are you sure you want to close the Window all the data will not be Save?'):
+            PageOpen=1
+            self.Plus_Finding_Page.destroy()
+
+    def Plus_Finding(self):
+        global PageOpen
+        if PageOpen < 2:
+            self.Plus_Finding_Page=Toplevel()
+            self.Plus_Finding_Page.title("Add Finding For X-Ray")
+            Plus_Finding_width=600
+            Plus_Finding_height=600
+            self.Plus_Finding_Page.geometry(f'{Plus_Finding_width}x{Plus_Finding_height}+{400}+{80}')
+            self.Plus_Finding_Page.protocol("WM_DELETE_WINDOW",self.Close_Plus_Finding)
+            self.Plus_Finding_Page.resizable(False,False)
+
+            Plus_Body=Frame(self.Plus_Finding_Page)
+            Plus_Body.pack(expand=1,fill=BOTH)
+            Plus_Title=Label(Plus_Body,text="ADD Finding",font=("Arial",35,"bold")).place(x=5,y=10)
+
+            Plus_Name=Label(Plus_Body,text="NAME:",font=("Arial",12,"bold")).place(x=5,y=140)
+            Plus_Name_Entry=Entry(Plus_Body,font=("Arail",12),borderwidth=5)
+            Plus_Name_Entry.place(x=65,y=137,relwidth=0.7)
+
+            Label_Plus_Body=Label(Plus_Body,text="FINDING BODY:",font=("Arial 15 bold"))
+            Label_Plus_Body.place(x=5,y=170)
+            Plus_Body_Text=Frame(Plus_Body,width=550,height=600,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
+            Plus_Body_Text.place(x=0,y=200)
+            Plus__scroll=Scrollbar(Plus_Body_Text,orient='vertical')
+            Plus__scroll.pack(side=RIGHT,fill='y')
+            Plus__BOX = Text(Plus_Body_Text,width = 70,height = 19,borderwidth=5,font=("Arial 11 "),yscrollcommand=Plus__scroll.set)
+            Plus__scroll.config(command=Plus__BOX.yview)
+            Plus__BOX.pack()
+
+            Plus_ADD_button=Button(Plus_Body,text="ADD",font=("Arail 10"),width=5,borderwidth=5)
+            Plus_ADD_button.place(x=450,y=560)
+           
+            Plus_Cancel_button=Button(Plus_Body,text="Cancel",font=("Arail 10"),width=5,borderwidth=5)
+            Plus_Cancel_button.place(x=520,y=560)
+
+            PageOpen += 1
+        else:
+            messagebox.showinfo("Error","The Window is already Open!")
 
 #X_Ray Laboratory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def X_Ray(self):
@@ -434,7 +538,6 @@ class Main:
         Toggle_Button["menu"]=Toggle_Button.menu
 
         Toggle_Button.menu.add_command(label="HOME",command=Home)
-        Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
         Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
         #Header-------
         #BODY >> Laboratory
@@ -492,8 +595,7 @@ class Main:
         IMPRESSIONS_BOX.pack()
 
         def FIND_Click():
-            Findlabel=Label(Detail_Body,FINDING_Mune.get(),font="Arial 12 bold")
-            
+            print("Find_Click")
 
         Option=["Normal","Chest PA"]
         FINDING_Mune=ttk.Combobox(Detail_Body,value=Option,font='Arial 12',width=20)
@@ -501,7 +603,7 @@ class Main:
         FINDING_Mune.bind("<<ComboboxSelected>>",FIND_Click)
         FINDING_Mune.place(x=449,y=310)
 
-        Find_ADD=Button(Detail_Body,text="+",font='Arial 10 bold',width=2,height=1)
+        Find_ADD=Button(Detail_Body,text="+",font='Arial 10 bold',width=2,height=1,command=self.Plus_Finding)
         Find_ADD.place(x=420,y=309)
 
         Img_Body=Frame(Page_XRAY,width=300)
@@ -523,11 +625,11 @@ class Main:
             img=Image.open(filepath)
             img_resized=img.resize((285,375)) # new width & height
             img=ImageTk.PhotoImage(img_resized)
-            b2 =Button(Image_Box,image=img,borderwidth=5) # using Button 
+            b2 =Button(Image_Box,image=img,borderwidth=5,command=open_file) # using Button 
             b2.place(x=0,y=0)
         
-        CList_Xray=Button(Img_Body,text="Client List",width=10,bg="green",font='Arial 11',command=lambda:self.ClientList(self.Value_Record[1])).place(x=300,y=630)
-        Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',command=lambda:self.Record(self.Value_Record[1])).place(x=410,y=630)
+        CList_Xray=Button(Img_Body,text="Client List",width=10,bg="green",font='Arial 11',command=lambda:self.ClientList(self.Value_Laboratory[1])).place(x=300,y=630)
+        Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
         Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Arial 11').place(x=520,y=630)
 
 #X_Ray Laboratory  END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -535,13 +637,11 @@ class Main:
 #Summary>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Summary(self):
         def Home():
-            self.Page_Dashboard.destroy()
+            self.Page_Summary.destroy()
             self.Page_Dashboard.pack()
         self.Page_Dashboard.forget()
         self.Page_Summary=Frame(self.Dashboard_GUI,bg="green")
         self.Page_Summary.pack(expand=1, fill=BOTH)
-        # Page_scroll=Scrollbar(self.Page_Summary,orient='vertical')
-        # Page_scroll.pack(side=RIGHT,fill='y')
         Frame_Header=Frame(self.Page_Summary,width=1360,height=50,highlightbackground="black",highlightthickness=1)
         Frame_Header.pack()
         IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
@@ -558,7 +658,6 @@ class Main:
         Toggle_Button["menu"]=Toggle_Button.menu
 
         Toggle_Button.menu.add_command(label="HOME",command=Home)
-        Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
         Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
         #Header-------
         #BODY >> Summary
@@ -618,7 +717,6 @@ class Main:
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="Setting",command=lambda:print("Luck of knowlegde"))
         Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
         #Header END------------
 
