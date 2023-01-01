@@ -750,6 +750,3 @@ class Main:
     
     def start(self):
         self.Main_Dashboard()
-
-app=Main()
-app.start()

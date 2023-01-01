@@ -6,7 +6,6 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 from tkcalendar import Calendar,DateEntry
 
-
 import employee
 
 class Admin:
@@ -128,132 +127,18 @@ class Admin:
         else:
             messagebox.showinfo("Error","The Window Registration is already Open!")
 
-
-#     def deleteAccount(id):
-#         print("deleted user with id of",id)
-#         employee.Employee.deleteEmployee(id)
-
-
-# # Edit Account : GUI Copy Pasted from Registration
-
-#     def editAccount(id,label_reference):
-#         global label_refer
-#         label_refer=label_reference
-#         global EditAccount, res
-#         res=employee.Employee.findAccount(id)
-
-#         EditAccount=Toplevel()
-#         EditAccount.title("Edit Account")
-#         Rig_width=400
-#         Rig_height=500
-#         EditAccount.geometry(f'{Rig_width}x{Rig_height}+{500}+{80}')
-
-#         Account_Edit=Frame(EditAccount)
-#         Account_Edit.pack(expand=1,fill=BOTH)
-
-#         Registration_Title=Label(Account_Edit,text="Edit Account",font=("Arial",35,"bold")).place(x=15,y=10)
-
-#         Image_Box=Frame(Account_Edit,width=124,height=120,bg="green",highlightbackground="black",highlightthickness=2)
-#         Image_Box.place(x=25,y=90)
-
-#         Image_upload=Label(Image_Box,width=30,height=25,borderwidth=2,padx=2,pady=2)
-#         Image_upload.place()
-
-#         Upload_button=Button(Image_Box,text="Profile Image",command=lambda:open_file(),width=16,height=7,borderwidth=2)
-#         Upload_button.place(x=0,y=0)
-
-#         def open_file():
-#                 global img, filepath
-#                 f_types = [('Jpg Files', '*.jpg')]
-#                 filepath = filedialog.askopenfilename(filetypes=f_types)
-#                 img=Image.open(filepath)
-#                 img_resized=img.resize((108,105)) # new width & height
-#                 img=ImageTk.PhotoImage(img_resized)
-#                 b2 =Button(Image_Box,image=img,borderwidth=5,command=open_file) # using Button 
-#                 b2.place(x=0,y=0)
-        
-#         global username2,password2,firstname2,lastname2,age2,address2,profession2
-
-#         username2=StringVar()
-#         username2.set(res[6])
-#         password2=StringVar()
-#         password2.set(res[7])
-#         firstname2=StringVar()
-#         firstname2.set(res[1])
-#         lastname2=StringVar()
-#         lastname2.set(res[2])
-#         age2=IntVar()
-#         age2.set(str(res[4]))
-#         address2=StringVar()
-#         address2.set(res[5])
-#         profession2=StringVar()
-#         profession2.set(res[3])
-
-#         Label_Username=Label(Account_Edit,text="Username:",font=("Arial",10,"bold")).place(x=160,y=100)
-#         Entry_Username=Entry(Account_Edit,textvariable=username2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=120)
-
-#         Label_Password=Label(Account_Edit,text="Password:",font=("Arial",10,"bold")).place(x=160,y=150)
-#         Entry_Password=Entry(Account_Edit,textvariable=password2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=170)
-
-#         Label_FName=Label(Account_Edit,text="First Name:",font=("Arial",10,"bold")).place(x=15,y=220)
-#         Entry_FName=Entry(Account_Edit,textvariable=firstname2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=15,y=240)
-
-#         Label_LName=Label(Account_Edit,text="Last Name:",font=("Arial",10,"bold")).place(x=240,y=220)
-#         Entry_LName=Entry(Account_Edit,textvariable=lastname2,font=("Arial",10,"bold"),width=19,borderwidth=3).place(x=240,y=240)
-
-#         Label_Age=Label(Account_Edit,text="Age:",font=("Arial",10,"bold")).place(x=15,y=270)
-#         Entry_Age=Entry(Account_Edit,textvariable=age2,font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=15,y=290)
-
-#         Label_Birthdate=Label(Account_Edit,text="Birthdate:",font="Arial 12").place(x=100,y=270)
-#         Entry_Birthdate=DateEntry(Account_Edit,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
-#         Entry_Birthdate.place(x=100,y=289)
-
-#         Label_Address=Label(Account_Edit,text="Address:",font=("Arial",10,"bold")).place(x=15,y=320)
-#         Entry_Address=Entry(Account_Edit,textvariable=address2,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=340)
-
-#         Label_Pro=Label(Account_Edit,text="Profession:",font=("Arial",10,"bold")).place(x=15,y=370)
-#         Entry_Pro=Entry(Account_Edit,textvariable=profession2,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=390)
-
-#         # Reg_Submit=Button(Account_Edit,text="Submit",command=lambda :editAccount2(id)).place(x=320,y=440)
-
-#     def editAccount2(id):
-#         Account=(
-#         id,
-#         firstname2.get(),
-#         lastname2.get(),
-#         profession2.get(),
-#         age2.get(),
-#         address2.get(),
-        
-#         username2.get(),
-#         password2.get(),)
-        
-#         ress=list(res)
-#         del ress[-1]
-#         ress=tuple(ress)
-
-#         if Account==ress: 
-#             messagebox.showinfo("No Changes Made","No Changes have been Made!")
-        
-#         else:
-#             answer = messagebox.askyesno(title='confirmation',
-#                         message='Save Changes?')
-
-#             if answer:
-#                 EditAccount.destroy()
-#                 employee.Employee.editAccount(Account)
-#                 messagebox.showinfo("Changes Saved","Account Update Succesful")
-
-#             else: messagebox.showinfo("No Changes Made","No Changes have been Made!")
-    
     def View_on_close(self):
         global PageOpen
         if tk.messagebox.askokcancel('Close', 'Are you sure you want to close the View Page all the data will not be Save?'):
             PageOpen=1
             self.View_Page.destroy()
 
-    def ViewProfile(self):
+    def ViewProfile(self,id,label_reference):        
+            global label_refer
+            label_refer=label_reference
             global PageOpen    
+            global EditAccount, res
+            res=employee.Employee.findAccount(id)
             if PageOpen<2:
                 self.View_Page=Toplevel()
                 self.View_Page.title("Edit Profile")
@@ -266,37 +151,94 @@ class Admin:
                 self.View_Body=Frame(self.View_Page)
                 self.View_Body.pack(expand=1,fill=BOTH)
 
+                global username2,password2,firstname2,lastname2,age2,address2,profession2
+
+                username2=StringVar()
+                username2.set(res[6])
+                password2=StringVar()
+                password2.set(res[7])
+                firstname2=StringVar()
+                firstname2.set(res[1])
+                lastname2=StringVar()
+                lastname2.set(res[2])
+                age2=IntVar()
+                age2.set(str(res[4]))
+                address2=StringVar()
+                address2.set(res[5])
+                profession2=StringVar()
+                profession2.set(res[3])
+
+                
+                def deleteAccount(id):
+                    answer=messagebox.askyesno("Confirm Delete","Delete User?")
+                    if answer:
+                        messagebox.showinfo("User Deleted","User Deleted Successfully")
+                        employee.Employee.deleteEmployee(id)
+                                
+                def editAccount2(id):
+                    Account=(
+                    id,
+                    firstname2.get(),
+                    lastname2.get(),
+                    profession2.get(),
+                    age2.get(),
+                    address2.get(),
+                    
+                    username2.get(),
+                    password2.get(),)
+                    
+                    ress=list(res)
+                    del ress[-1]
+                    ress=tuple(ress)
+
+                    if Account==ress: 
+                        messagebox.showinfo("No Changes Made","No Changes have been Made!")
+                    
+                    else:
+                        answer = messagebox.askyesno(title='confirmation',
+                                    message='Save Changes?')
+
+                        if answer:
+                            self.View_Page.destroy()
+                            employee.Employee.editAccount(Account)
+                            messagebox.showinfo("Changes Saved","Account Update Succesful")
+
+                        else: messagebox.showinfo("No Changes Made","No Changes have been Made!")
+
+                        
+
+
                 View_img=Label(self.View_Body,text="Image",font=("Arial",15),bg="gray").place(x=470,y=10,relwidth=0.3,relheight=0.5)
 
                 Label_View_Username=Label(self.View_Body,text="Username:",font=("Arial",10,"bold")).place(x=10,y=80)
-                self.Entry_View_Username=Entry(self.View_Body,text="Username:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=10,y=100)
+                self.Entry_View_Username=Entry(self.View_Body,text="Username:",textvariable=username2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=10,y=100)
 
                 Label_View_Password=Label(self.View_Body,text="Password:",font=("Arial",10,"bold")).place(x=240,y=80)
-                self.Entry_View_Password=Entry(self.View_Body,text="Password:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=240,y=100)
+                self.Entry_View_Password=Entry(self.View_Body,text="Password:",textvariable=password2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=240,y=100)
 
                 Label_View_FName=Label(self.View_Body,text="First Name:",font=("Arial",10,"bold")).place(x=10,y=130)
-                self.Entry_View_FName=Entry(self.View_Body,text="First Name:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=10,y=150)
+                self.Entry_View_FName=Entry(self.View_Body,text="First Name:",textvariable=firstname2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=10,y=150)
 
                 Label_View_LName=Label(self.View_Body,text="Last Name:",font=("Arial",10,"bold")).place(x=240,y=130)
-                self.Entry_View_LName=Entry(self.View_Body,text="Last Name:",font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=240,y=150)
+                self.Entry_View_LName=Entry(self.View_Body,text="Last Name:",textvariable=lastname2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=240,y=150)
 
                 Label_View_Age=Label(self.View_Body,text="Age:",font=("Arial",10,"bold")).place(x=10,y=180)
-                self.Entry_View_Age=Entry(self.View_Body,text="Age:",font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=10,y=200)
+                self.Entry_View_Age=Entry(self.View_Body,text="Age:",textvariable=age2,font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=10,y=200)
 
                 Label_Birthdate=Label(self.View_Body,text="BirthDate:",font="Arial 12").place(x=100,y=180)
                 self.Entry_Birthdate=DateEntry(self.View_Body,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
                 self.Entry_Birthdate.place(x=100,y=200)
 
                 Label_View_Address=Label(self.View_Body,text="Address:",font=("Arial",10,"bold")).place(x=10,y=230)
-                self.Entry_View_Address=Entry(self.View_Body,text="Address:",font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=10,y=250)
+                self.Entry_View_Address=Entry(self.View_Body,text="Address:",textvariable=address2,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=10,y=250)
 
-                Label_View_Pro=Label(self.View_Body,text="Profission:",font=("Arial",10,"bold")).place(x=10,y=280)
-                self.Entry_View_Pro=Entry(self.View_Body,text="Profission:",font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=10,y=300)
+                Label_View_Pro=Label(self.View_Body,text="Profession:",font=("Arial",10,"bold")).place(x=10,y=280)
+                self.Entry_View_Pro=Entry(self.View_Body,text="Profession:",textvariable=profession2,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=10,y=300)
 
-                View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5)
+                View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id))
                 View_EDIT.place(x=510,y=200)
 
-                View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5)
+                View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
                 View_DELETE.place(x=510,y=240)
 
                 View_Cancel=Button(self.View_Body,text="Cancel",width=15,height=1,font=("Arail",10),borderwidth=5,command=self.View_on_close)
@@ -372,19 +314,10 @@ class Admin:
             Profile_Name.place(x=220,y=10)
             labels.append(Profile_Name)
 
-            Profile_Edit=Button(Profile_Detail,text="View",width=10,height=2,font=("Arail",10),borderwidth=5,command=self.ViewProfile)
+            Profile_Edit=Button(Profile_Detail,text="View",width=10,height=2,font=("Arail",10),borderwidth=5,command=lambda x= result[Account_Num][0]:self.ViewProfile(x, labels[Account_Num]))
             Profile_Edit.place(x=850,y=50)
-
-            # Profile_Delete=Button(Profile_Detail,text="Delete",font=("Arial",12),bg="green",width=6,height=2,command=lambda x= result[Account_Num][0]:deleteAccount(x))
-            # Profile_Delete.place(x=830,y=50)
-
-            # Profile_Edit=Button(Profile_Detail,text="Edit",font=("Arial",12),bg="green",width=4,height=2,command=lambda x= result[Account_Num][0]:editAccount(x, labels[Account_Num]))
-            # Profile_Edit.place(x=900,y=50)
 
         self.AdminGUI.mainloop()
 
     def start(self):
         self.AdminGUI_Main()
-
-app = Admin()
-app.start()
