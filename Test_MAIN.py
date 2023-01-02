@@ -5,6 +5,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from PIL import Image, ImageTk
 from tkinter import messagebox
+from datetime import date
 
 class Main:
     def __init__(self):
@@ -18,6 +19,19 @@ class Main:
     
         #Checkbox Def
     def showCheckbox(self):
+        name=Name_Entry.get()
+        age=AGE_Entry.get()
+        bdate=Birth_Entry.get_date()
+        gender=Gender_Mune.get()
+        address=Address_Entry.get()
+        today=date.today()
+        print(name)
+        print(age)
+        print(bdate)
+        print(gender)
+        print(address)
+        print(today)
+
         for i in range(len(self.services)):
             Selected=""
             if int(self.services[i].get()) >= 1:
@@ -25,6 +39,7 @@ class Main:
                 this=self.Value[i]
                 print(Selected)
                 print(this)
+                # print(self.services[i].get())
                 
     def FrontDesk(self):
         def Home():
@@ -58,7 +73,7 @@ class Main:
 
         Frame_LIST=Frame(Frame_Body,width=680,height=700)
         Frame_LIST.pack(side=LEFT)
-        FrontDesk_Title=Label(Frame_Body,text="FrontDesk!",font='Arial 75')
+        FrontDesk_Title=Label(Frame_Body,text="New Client",font='Arial 75')
         FrontDesk_Title.place(x=20,y=20)
         Box_Title=Label(Frame_Body,text="Laboratory Test List",font='Arial 25')
         Box_Title.place(x=54,y=300)
@@ -68,11 +83,11 @@ class Main:
         
         self.Value=[
                     "Complete Blood Count",
-                    " Blood Type",
+                    "Blood Type",
                     "Stool Exam",
-                    "Urinalysis (“Urine Test”)",
+                    "Urinalysis (Urine Test)",
                     "Syphilis Rapid Test",
-                    "Hepatitis B (“Antigen Test”)",
+                    "Hepatitis B (Antigen Test)",
                     "Anti-HAV Test",
                     "Drug Test",
                     "Pregnancy Test",
@@ -117,18 +132,22 @@ class Main:
 
         Img=Label(Frame_Input,width=50,height=20,bg="green").place(x=170,y=40)
 
+        global Name_Entry
         Name_Label=Label(Frame_Input,text="Name: ",font='Arial 12').place(x=46,y=400)
         Name_Entry=Entry(Frame_Input,width=59,borderwidth=3,font='Arial 12')
         Name_Entry.place(x=100,y=400)
 
+        global AGE_Entry
         AGE_Label=Label(Frame_Input,text="Age: ",font='Arial 12').place(x=46,y=430)
         AGE_Entry=Entry(Frame_Input,width=5,font='Arial 12',borderwidth=3)
         AGE_Entry.place(x=100,y=430)
 
-        Birth_Label=Label(Frame_Input,text="BirthDay:",font="Arial 12").place(x=160,y=430)
+        global Birth_Entry
+        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Arial 12").place(x=160,y=430)
         Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
         Birth_Entry.place(x=230,y=430)
 
+        global Gender_Mune
         Gender_Label=Label(Frame_Input,text="Gender:",font='Arial 12').place(x=350,y=430)
         Option=["Male","Female","Other"]
         Gender_Mune=ttk.Combobox(Frame_Input,value=Option,font='Arial 12',state='readonly')
@@ -136,9 +155,13 @@ class Main:
         Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
         Gender_Mune.place(x=412,y=432)
 
+        global Address_Entry,addrs
+        addrs=StringVar()
         Address_Label=Label(Frame_Input,text="Address: ",font='Arial 12').place(x=46,y=460)
-        Address_Entry=Entry(Frame_Input,width=38,borderwidth=3,font='Arial 12').place(x=120,y=460)
+        Address_Entry=Entry(Frame_Input,textvariable=addrs,width=38,borderwidth=3,font='Arial 12')
+        Address_Entry.place(x=120,y=460)
 
+        global Date_Entry
         Date_Label=Label(Frame_Input,text="Date:",font="Arial 12").place(x=480,y=460)
         Date_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W,state='readonly')
         Date_Entry.place(x=525,y=460)
@@ -751,5 +774,6 @@ class Main:
     def start(self):
         self.Main_Dashboard()
 
-app=Main()
-app.start()
+
+# app=Main()
+# app.start()

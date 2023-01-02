@@ -78,3 +78,6 @@ class Employee:
             else:
                 continue
         return ID
+
+    def addNewClient(self):
+        pass
