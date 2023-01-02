@@ -57,34 +57,54 @@ class Main:
         Box=Frame(Frame_LIST,width=560,height=300,highlightbackground="black",highlightthickness=1)
         Box.place(x=50,y=320)
         #Checkbox Def
-        def showCheckbox():
-            for i in range(len(services)):
-                Selected=""
-                if services[i].get()>=1:
-                    Selected += str(i)
-                    print(Selected)
+        # def showCheckbox():
+        #     for i in range(len(services)):
+        #         Selected=""
+        #         if services[i].get()>=1:
+        #             Selected += str(i)
+        #             print(Selected)
         #checkbox
-        services=[]
-        for i in range(15):
-            Test=StringVar()
-            Test.set(0)
-            services.append(Test)
-        
-        Checkbutton(Box,text="Complete Blood Count",variable=services[0],font='Arial 12 ').place(x=30,y=50)
-        Checkbutton(Box,text="Blood Type",variable=services[1],font='Arial 12 ').place(x=30,y=75)
-        Checkbutton(Box,text="Stool Exam",variable=services[2],font='Arial 12 ').place(x=30,y=100)
-        Checkbutton(Box,text="Urinalysis (“Urine Test”)",variable=services[3],font='Arial 12 ').place(x=30,y=125)
-        Checkbutton(Box,text="Syphilis Rapid Test",variable=services[4],font='Arial 12 ').place(x=30,y=150)
-        Checkbutton(Box,text="Hepatitis B (“Antigen Test”)",variable=services[5],font='Arial 12 ').place(x=30,y=175)
-        Checkbutton(Box,text="Anti-HAV Test",variable=services[6],font='Arial 12 ').place(x=30,y=200)
-        Checkbutton(Box,text="Drug Test",variable=services[7],font='Arial 12 ').place(x=30,y=222)
-        Checkbutton(Box,text="Pregnancy Test",variable=services[8],font='Arial 12 ').place(x=30,y=245)
-        Checkbutton(Box,text="Fasting Blood Suger Test",variable=services[9],font='Arial 12 ').place(x=280,y=50)
-        Checkbutton(Box,text="Blood Uric Acid Test",variable=services[10],font='Arial 12 ').place(x=280,y=75)
-        Checkbutton(Box,text="Blood Cholesterol Test",variable=services[11],font='Arial 12 ').place(x=280,y=100)
-        Checkbutton(Box,text="Blood Creatinine Test",variable=services[12],font='Arial 12 ').place(x=280,y=125)
-        Checkbutton(Box,text="Acid Fast Staining",variable=services[13],font='Arial 12 ').place(x=280,y=150)
-        Checkbutton(Box,text="X-Ray Test",variable=services[14],font='Arial 12 ').place(x=280,y=175)
+        # services=[]
+        # for i in range(15):
+        #     Test=StringVar()
+        #     Test.set(0)
+        #     services.append(Test)
+
+        var1=IntVar()
+        var2=IntVar()
+        var3=IntVar()
+        var4=IntVar()
+        var5=IntVar()
+        var6=IntVar()
+        var7=IntVar()
+        var8=IntVar()
+        var9=IntVar()
+        var10=IntVar()
+        var11=IntVar()
+        var12=IntVar()
+        var13=IntVar()
+        var14=IntVar()
+        var15=IntVar()
+
+        def show(i):
+            print(i.get())
+
+        c=Checkbutton(Box,text="Complete Blood Count",variable=var1,font='Arial 12 ',onvalue=1,offvalue=0,command=lambda i=var1:show(i))
+        c.place(x=30,y=50)
+        Checkbutton(Box,text="Blood Type",variable=var2,font='Arial 12 ').place(x=30,y=75)
+        Checkbutton(Box,text="Stool Exam",variable=var3,font='Arial 12 ').place(x=30,y=100)
+        Checkbutton(Box,text="Urinalysis (“Urine Test”)",variable=var4,font='Arial 12 ').place(x=30,y=125)
+        Checkbutton(Box,text="Syphilis Rapid Test",variable=var5,font='Arial 12 ').place(x=30,y=150)
+        Checkbutton(Box,text="Hepatitis B (“Antigen Test”)",variable=var6,font='Arial 12 ').place(x=30,y=175)
+        Checkbutton(Box,text="Anti-HAV Test",variable=var7,font='Arial 12 ').place(x=30,y=200)
+        Checkbutton(Box,text="Drug Test",variable=var8,font='Arial 12 ').place(x=30,y=222)
+        Checkbutton(Box,text="Pregnancy Test",variable=var9,font='Arial 12 ').place(x=30,y=245)
+        Checkbutton(Box,text="Fasting Blood Suger Test",variable=var10,font='Arial 12 ').place(x=280,y=50)
+        Checkbutton(Box,text="Blood Uric Acid Test",variable=var11,font='Arial 12 ').place(x=280,y=75)
+        Checkbutton(Box,text="Blood Cholesterol Test",variable=var12,font='Arial 12 ').place(x=280,y=100)
+        Checkbutton(Box,text="Blood Creatinine Test",variable=var13,font='Arial 12 ').place(x=280,y=125)
+        Checkbutton(Box,text="Acid Fast Staining",variable=var14,font='Arial 12 ').place(x=280,y=150)
+        Checkbutton(Box,text="X-Ray Test",variable=var15,font='Arial 12 ').place(x=280,y=175)
 
         #Body-------
         #DEF INPUT------
@@ -123,7 +143,7 @@ class Main:
         Date_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W,state='readonly')
         Date_Entry.place(x=525,y=460)
 
-        Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Arial 11').place(x=540,y=530)
+        Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Arial 11',command=show).place(x=540,y=530)
 
 
 #FrontDesk-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
