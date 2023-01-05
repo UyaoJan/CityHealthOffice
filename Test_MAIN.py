@@ -6,9 +6,12 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 from tkinter import messagebox
 from datetime import date
+import employee
+
 
 class Main:
-    def __init__(self):
+    def __init__(self,init):
+        self.user=init
         self.Dashboard_GUI = None
         self.Page_Summary = None
         self.Page_FrontDesk = None
@@ -19,28 +22,28 @@ class Main:
     
         #Checkbox Def
     def showCheckbox(self):
+        chosen_serve=[]
         name=Name_Entry.get()
         age=AGE_Entry.get()
         bdate=Birth_Entry.get_date()
         gender=Gender_Mune.get()
         address=Address_Entry.get()
         today=date.today()
-        print(name)
-        print(age)
-        print(bdate)
-        print(gender)
-        print(address)
-        print(today)
-
+        client_id=employee.Employee.generateID()
+        
         for i in range(len(self.services)):
             Selected=""
-            if int(self.services[i].get()) >= 1:
+            if int(self.services[i].get()) == 1:
                 Selected += str(i)
                 this=self.Value[i]
-                print(Selected)
-                print(this)
                 # print(self.services[i].get())
-                
+                # print(this)
+                chosen_serve.append(this)
+                # print(self.services[i].get())
+        client=(client_id,name,age,gender,bdate,address)
+        user=self.user
+        user.addNewClient(user, client,chosen_serve,today)
+
     def FrontDesk(self):
         def Home():
             Page_FrontDesk.destroy()
@@ -101,25 +104,28 @@ class Main:
 
         self.services=[]
         for i in range (15):
-            Test=StringVar()
+            Test=IntVar()
             Test.set(0)
             self.services.append(Test)
+
+        def check(i):
+            i.set(1)
         
-        Checkbutton(Box,text="Complete Blood Count",variable=self.services[0],font='Arial 12 ').place(x=30,y=50)
-        Checkbutton(Box,text="Blood Type",variable=self.services[1],font='Arial 12 ').place(x=30,y=75)
-        Checkbutton(Box,text="Stool Exam",variable=self.services[2],font='Arial 12 ').place(x=30,y=100)
-        Checkbutton(Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Arial 12 ').place(x=30,y=125)
-        Checkbutton(Box,text="Syphilis Rapid Test",variable=self.services[4],font='Arial 12 ').place(x=30,y=150)
-        Checkbutton(Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Arial 12 ').place(x=30,y=175)
-        Checkbutton(Box,text="Anti-HAV Test",variable=self.services[6],font='Arial 12 ').place(x=30,y=200)
-        Checkbutton(Box,text="Drug Test",variable=self.services[7],font='Arial 12 ').place(x=30,y=222)
-        Checkbutton(Box,text="Pregnancy Test",variable=self.services[8],font='Arial 12 ').place(x=30,y=245)
-        Checkbutton(Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Arial 12 ').place(x=280,y=50)
-        Checkbutton(Box,text="Blood Uric Acid Test",variable=self.services[10],font='Arial 12 ').place(x=280,y=75)
-        Checkbutton(Box,text="Blood Cholesterol Test",variable=self.services[11],font='Arial 12 ').place(x=280,y=100)
-        Checkbutton(Box,text="Blood Creatinine Test",variable=self.services[12],font='Arial 12 ').place(x=280,y=125)
-        Checkbutton(Box,text="Acid Fast Staining",variable=self.services[13],font='Arial 12 ').place(x=280,y=150)
-        Checkbutton(Box,text="X-Ray Test",variable=self.services[14],font='Arial 12 ').place(x=280,y=175)
+        Checkbutton(Box,text="Complete Blood Count",variable=self.services[0],font='Arial 12 ',command=lambda i=self.services[0]:check(i)).place(x=30,y=50)
+        Checkbutton(Box,text="Blood Type",variable=self.services[1],font='Arial 12 ',command=lambda i=self.services[1]:check(i)).place(x=30,y=75)
+        Checkbutton(Box,text="Stool Exam",variable=self.services[2],font='Arial 12 ',command=lambda i=self.services[2]:check(i)).place(x=30,y=100)
+        Checkbutton(Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Arial 12 ',command=lambda i=self.services[3]:check(i)).place(x=30,y=125)
+        Checkbutton(Box,text="Syphilis Rapid Test",variable=self.services[4],font='Arial 12 ',command=lambda i=self.services[4]:check(i)).place(x=30,y=150)
+        Checkbutton(Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Arial 12 ',command=lambda i=self.services[5]:check(i)).place(x=30,y=175)
+        Checkbutton(Box,text="Anti-HAV Test",variable=self.services[6],font='Arial 12 ',command=lambda i=self.services[6]:check(i)).place(x=30,y=200)
+        Checkbutton(Box,text="Drug Test",variable=self.services[7],font='Arial 12 ',command=lambda i=self.services[7]:check(i)).place(x=30,y=222)
+        Checkbutton(Box,text="Pregnancy Test",variable=self.services[8],font='Arial 12 ',command=lambda i=self.services[8]:check(i)).place(x=30,y=245)
+        Checkbutton(Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Arial 12 ',command=lambda i=self.services[9]:check(i)).place(x=280,y=50)
+        Checkbutton(Box,text="Blood Uric Acid Test",variable=self.services[10],font='Arial 12 ',command=lambda i=self.services[10]:check(i)).place(x=280,y=75)
+        Checkbutton(Box,text="Blood Cholesterol Test",variable=self.services[11],font='Arial 12 ',command=lambda i=self.services[11]:check(i)).place(x=280,y=100)
+        Checkbutton(Box,text="Blood Creatinine Test",variable=self.services[12],font='Arial 12 ',command=lambda i=self.services[12]:check(i)).place(x=280,y=125)
+        Checkbutton(Box,text="Acid Fast Staining",variable=self.services[13],font='Arial 12 ',command=lambda i=self.services[13]:check(i)).place(x=280,y=150)
+        Checkbutton(Box,text="X-Ray Test",variable=self.services[14],font='Arial 12 ',command=lambda i=self.services[14]:check(i)).place(x=280,y=175)
 
         #Body-------
         #DEF INPUT------

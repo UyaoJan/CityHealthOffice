@@ -20,14 +20,9 @@ class Loginpage():
             # print("log in as admin")
         else:
             log=employee.Employee.login(uname,passwd)
-            if log:
-                username.set('')
-                password.set('')
-                start=Test_MAIN.Main()
-                start.start()
-            else:
-                messagebox.showerror("Credentials Not Found","Username and Password do not Match")
-        # Test_MAIN.main()
+            start=Test_MAIN.Main(log)
+            start.start()
+
 
     def LoginStart(self):
 
