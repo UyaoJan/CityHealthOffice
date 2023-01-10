@@ -21,6 +21,7 @@ class Loginpage():
             log=employee.Employee.login(uname,passwd)
             if log!=0:
                 start=Test_MAIN.Main(log)
+                self.LoginGUI.destroy()
                 start.start()
             else: messagebox.showerror("Credentials Not Found","Username and Password do not Match")
 

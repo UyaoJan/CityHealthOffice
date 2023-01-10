@@ -23,6 +23,12 @@ class Employee:
         self.dept=dept
         self.url=url
 
+    def return_role(self):
+        return self.role
+
+    def return_dept(self):
+        return self.dept
+
     def register(self):
         query="INSERT INTO medtechs VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         values=(self.id,self.fname,self.lname,self.role,self.dept,self.age,self.address,self.username,self.password,self.url)
@@ -64,7 +70,7 @@ class Employee:
         cursor.execute(query_find,(uname,passwd))
         acc = cursor.fetchone()
         if acc:
-            return Employee(acc[0],uname,passwd,acc[1],acc[2],acc[4],acc[5],acc[3],None)
+            return Employee(acc[0],uname,passwd,acc[1],acc[2],acc[5],acc[6],acc[3],acc[4],None)
         
         else: 
             return 0
@@ -99,26 +105,16 @@ class Employee:
 
     @staticmethod
     def addNewClient(user,client,tests,date):
-        # print("Filing User",user.fname)
-        # print("Client Info ",client)
-        # print("Requested Tests ", tests)
-        # print("Requested at ", date)
-        
         client_insert="INSERT INTO clients VALUES(%s, %s, %s, %s, %s, %s)"
         user.Cursor.execute(client_insert, client)
-
         test_insert="INSERT INTO tests (ClientID, MedTechID,status,date,ServiceID) VALUES(%s, %s, %s, %s, %s)"
         get_serviceID_query="SELECT ServiceID FROM services WHERE ServiceName LIKE %s LIMIT 1"
-        # user.Cursor.execute(get_serviceID_query,(tests,))
         for test in tests:
             user.Cursor.execute(get_serviceID_query,(test,))
             ServiceID=user.Cursor.fetchone()
             user.Cursor.execute(test_insert,(client[0],user.id, "Pending", date, ServiceID[0]))
 
         user.Db.commit()
-
-    def check_role(self):
-        return self.role
 
     def addXrayImpression(self,title,body):
         add_impression_query="insert into xray_details (findings_title,findings_body) values(%s, %s)"
