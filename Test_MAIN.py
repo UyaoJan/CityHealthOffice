@@ -531,10 +531,13 @@ class Main:
             Plus__scroll.config(command=Plus__BOX.yview)
             Plus__BOX.pack()
 
-            Plus_ADD_button=Button(Plus_Body,text="ADD",font=("Arail 10"),width=5,borderwidth=5)
+            def addImpression():
+                self.user.addXrayImpression(Plus_Name_Entry.get(),Plus__BOX.get("1.0", "end-1c"))
+
+            Plus_ADD_button=Button(Plus_Body,text="ADD",font=("Arail 10"),width=5,borderwidth=5,command=addImpression)
             Plus_ADD_button.place(x=450,y=560)
            
-            Plus_Cancel_button=Button(Plus_Body,text="Cancel",font=("Arail 10"),width=5,borderwidth=5)
+            Plus_Cancel_button=Button(Plus_Body,text="Cancel",font=("Arail 10"),width=5,borderwidth=5,command=lambda:self.Plus_Finding_Page.destroy())
             Plus_Cancel_button.place(x=520,y=560)
 
             PageOpen += 1
@@ -543,6 +546,8 @@ class Main:
 
 #X_Ray Laboratory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def X_Ray(self):
+        # if self.user.check_role():
+        #     print()
         def Home():
             Page_XRAY.destroy()
             self.Page_Dashboard.pack()
@@ -623,7 +628,7 @@ class Main:
         IMPRESSIONS_scroll.config(command=IMPRESSIONS_BOX.yview)
         IMPRESSIONS_BOX.pack()
 
-        def FIND_Click():
+        def FIND_Click(event):
             print("Find_Click")
 
         Option=["Normal","Chest PA"]

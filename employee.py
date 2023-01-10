@@ -1,10 +1,14 @@
 from tkinter import messagebox
 import dbConnection,random
 class Employee:
-    def __init__(self,id,username,password,fname,lname,age,address,role,url):
+    def __init__(self,id,username,password,fname,lname,age,address,role,dept,url):
         self.Db=dbConnection.get_connection()
         self.Cursor=dbConnection.get_cursor(self.Db)
 
+        if id==None: 
+            self.id=self.generateID()
+        else: 
+            self.id=id
         if id==None: 
             self.id=self.generateID()
         else: 
@@ -16,11 +20,12 @@ class Employee:
         self.age=age
         self.address=address
         self.role=role
+        self.dept=dept
         self.url=url
 
     def register(self):
-        query="INSERT INTO medtechs VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        values=(self.id,self.fname,self.lname,self.role,self.age,self.address,self.username,self.password,self.url)
+        query="INSERT INTO medtechs VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        values=(self.id,self.fname,self.lname,self.role,self.dept,self.age,self.address,self.username,self.password,self.url)
         self.Cursor.execute(query,values)
         self.Db.commit()
 
@@ -62,15 +67,15 @@ class Employee:
             return Employee(acc[0],uname,passwd,acc[1],acc[2],acc[4],acc[5],acc[3],None)
         
         else: 
-            messagebox.showerror("Credentials Not Found","Username and Password do not Match")
+            return 0
 
     @staticmethod 
     def editAccount(account):
         conn=dbConnection.get_connection()
         cursor=dbConnection.get_cursor(conn)
-        query="UPDATE medtechs SET FirstName=%s,LastName=%s,Role=%s,age=%s,address=%s,username=%s,password=%s WHERE id=%s"
+        query="UPDATE medtechs SET FirstName=%s,LastName=%s,Role=%s,department=%s,age=%s,address=%s,username=%s,password=%s WHERE id=%s"
 
-        values=(account[1],account[2],account[3],account[4],account[5],account[6],account[7],account[0])
+        values=(account[1],account[2],account[3],account[4],account[5],account[6],account[7],account[8],account[0])
         cursor.execute(query,values)
         conn.commit()
 
@@ -94,10 +99,10 @@ class Employee:
 
     @staticmethod
     def addNewClient(user,client,tests,date):
-        print("Filing User",user.fname)
-        print("Client Info ",client)
-        print("Requested Tests ", tests)
-        print("Requested at ", date)
+        # print("Filing User",user.fname)
+        # print("Client Info ",client)
+        # print("Requested Tests ", tests)
+        # print("Requested at ", date)
         
         client_insert="INSERT INTO clients VALUES(%s, %s, %s, %s, %s, %s)"
         user.Cursor.execute(client_insert, client)
@@ -111,3 +116,12 @@ class Employee:
             user.Cursor.execute(test_insert,(client[0],user.id, "Pending", date, ServiceID[0]))
 
         user.Db.commit()
+
+    def check_role(self):
+        return self.role
+
+    def addXrayImpression(self,title,body):
+        add_impression_query="insert into xray_details (findings_title,findings_body) values(%s, %s)"
+        cursor=self.Cursor
+        cursor.execute(add_impression_query, (title,body))
+        self.Db.commit()

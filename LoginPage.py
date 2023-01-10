@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
 import Test_MAIN, employee, Test_Admin
-# import Test_Admin
 
+# Admin Username and Password
 global admin_uname,admin_pass
 admin_uname="admin"
 admin_pass="admin123"
@@ -17,12 +17,12 @@ class Loginpage():
         if uname==admin_uname and passwd==admin_pass:
             admin=Test_Admin.Admin()
             admin.start()
-            # print("log in as admin")
         else:
             log=employee.Employee.login(uname,passwd)
-            start=Test_MAIN.Main(log)
-            start.start()
-
+            if log!=0:
+                start=Test_MAIN.Main(log)
+                start.start()
+            else: messagebox.showerror("Credentials Not Found","Username and Password do not Match")
 
     def LoginStart(self):
 
