@@ -44,9 +44,19 @@ class Admin:
             how_muchyour_age=Entry_Age.get()
             addrss=Entry_Address.get()
             role=Entry_Pro.get()
+        def submit():
+            uname=Entry_Username.get()
+            passwd=Entry_Password.get()
+            fname=Entry_FName.get()
+            lname=Entry_LName.get()
+            how_muchyour_age=Entry_Age.get()
+            addrss=Entry_Address.get()
+            role=Entry_Pro.get()
 
             NewEmp=employee.Employee(None,uname,passwd,fname,lname,how_muchyour_age,addrss,role,Entry_Dept.get(),filepath)
             NewEmp.register()
+
+            messagebox.showinfo("Account Added Successfully","Added Succesfully")
 
             messagebox.showinfo("Account Added Successfully","Added Succesfully")
 
@@ -169,17 +179,17 @@ class Admin:
                 global username2,password2,firstname2,lastname2,age2,address2,profession2
 
                 username2=StringVar()
-                username2.set(res[7])
+                username2.set(res[6])
                 password2=StringVar()
-                password2.set(res[8])
+                password2.set(res[7])
                 firstname2=StringVar()
                 firstname2.set(res[1])
                 lastname2=StringVar()
                 lastname2.set(res[2])
                 age2=IntVar()
-                age2.set(str(res[5]))
+                age2.set(str(res[4]))
                 address2=StringVar()
-                address2.set(res[6])
+                address2.set(res[5])
                 profession2=StringVar()
                 profession2.set(res[3])
 
@@ -196,7 +206,6 @@ class Admin:
                     firstname2.get(),
                     lastname2.get(),
                     profession2.get(),
-                    Entry_Pro.get(),
                     age2.get(),
                     address2.get(),
                     
@@ -220,6 +229,7 @@ class Admin:
                             messagebox.showinfo("Changes Saved","Account Update Succesful")
 
                         else: messagebox.showinfo("No Changes Made","No Changes have been Made!")
+                
 
                 View_img=Label(self.View_Body,text="Image",font=("Arial",15),bg="gray").place(x=470,y=10,relwidth=0.3,relheight=0.5)
 
@@ -255,6 +265,7 @@ class Admin:
                 View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id))
                 View_EDIT.place(x=510,y=200)
 
+                View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
                 View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
                 View_DELETE.place(x=510,y=240)
 

@@ -1,9 +1,14 @@
+from tkinter import messagebox
 import dbConnection,random
 class Employee:
     def __init__(self,id,username,password,fname,lname,age,address,role,dept,url):
         self.Db=dbConnection.get_connection()
         self.Cursor=dbConnection.get_cursor(self.Db)
 
+        if id==None: 
+            self.id=self.generateID()
+        else: 
+            self.id=id
         if id==None: 
             self.id=self.generateID()
         else: 
