@@ -10,6 +10,9 @@ import employee, LoginPage
 
 from pathlib import Path
 from docxtpl import DocxTemplate
+from docxtpl import InlineImage
+from docx.shared import Inches
+
 import win32api
 
 
@@ -688,7 +691,7 @@ class Main:
             Upload_button.place(x=0,y=0)
 
             def open_file():
-                global img
+                global img, filepath
                 f_types = [('Jpg Files', '*.jpg')]
                 filepath = filedialog.askopenfilename(filetypes=f_types)
                 img=Image.open(filepath)
@@ -708,6 +711,8 @@ class Main:
                     else:
                         document=Path(__file__).parent / "XRAY_TEMPLATE.docx"
                         doc=DocxTemplate(document)
+
+                        image=InlineImage(doc,filepath,width=Inches(3), height=Inches(2.94))
                         context={
                             "NAME":name.get(),
                             "DOB":Birth_Entry.get_date(),
@@ -716,10 +721,12 @@ class Main:
                             "DATE":self.test_date,
                             "ID":client_id,
                             "FINDINGS":Finding_BOX.get("1.0","end-1c"),
-                            "IMPRESSION":IMPRESSIONS_BOX.get("1.0","end-1c")
+                            "IMPRESSION":IMPRESSIONS_BOX.get("1.0","end-1c"),
+                            "IMAGE":image
                         }
                         doc.render(context)
                         doc.save(Path(__file__).parent/"newDoc.docx")
+
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
             
             CList_Xray=Button(Img_Body,text="Client List",width=10,bg="green",font='Arial 11',command=lambda:self.ClientList(self.Value_Laboratory[1])).place(x=300,y=630)
