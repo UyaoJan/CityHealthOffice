@@ -32,27 +32,39 @@ class Admin:
                 profession.set("")
 
                 self.Registration_Page.destroy()
-    
-    def submit(self):
-        uname=username.get()
-        passwd=password.get()
-        fname=firstname.get()
-        lname=lastname.get()
-        how_muchyour_age=age.get()
-        addrss=address.get()
-        role=profession.get()
-
-        NewEmp=employee.Employee(uname,passwd,fname,lname,how_muchyour_age,addrss,role,filepath)
-        NewEmp.register()
 
     def Regist(self):
         global PageOpen
+
+        def submit():
+            uname=Entry_Username.get()
+            passwd=Entry_Password.get()
+            fname=Entry_FName.get()
+            lname=Entry_LName.get()
+            how_muchyour_age=Entry_Age.get()
+            addrss=Entry_Address.get()
+            role=Entry_Pro.get()
+        def submit():
+            uname=Entry_Username.get()
+            passwd=Entry_Password.get()
+            fname=Entry_FName.get()
+            lname=Entry_LName.get()
+            how_muchyour_age=Entry_Age.get()
+            addrss=Entry_Address.get()
+            role=Entry_Pro.get()
+
+            NewEmp=employee.Employee(None,uname,passwd,fname,lname,how_muchyour_age,addrss,role,Entry_Dept.get(),filepath)
+            NewEmp.register()
+
+            messagebox.showinfo("Account Added Successfully","Added Succesfully")
+
+            messagebox.showinfo("Account Added Successfully","Added Succesfully")
 
         if PageOpen<2:
             self.Registration_Page=Toplevel()
             self.Registration_Page.title("Registration")
             Rig_width=400
-            Rig_height=480
+            Rig_height=520
             self.Registration_Page.geometry(f'{Rig_width}x{Rig_height}+{480}+{100}')
             self.Registration_Page.resizable(False,False)
 
@@ -92,38 +104,49 @@ class Admin:
             address=StringVar()
             profession=StringVar()
 
+
+            global Entry_Username, Entry_Password, Entry_FName, Entry_LName, Entry_Age, Entry_Birthdate, Entry_Address, Entry_Pro
             Label_Username=Label(Regist_Body,text="Username:",font=("Arial",10,"bold")).place(x=160,y=100)
-            Entry_Username=Entry(Regist_Body,text="Username:",textvariable=username,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=120)
+            Entry_Username=Entry(Regist_Body,text="Username:",textvariable=username,font=("Arial",10,"bold"),width=30,borderwidth=3)
+            Entry_Username.place(x=160,y=120)
 
             Label_Password=Label(Regist_Body,text="Password:",font=("Arial",10,"bold")).place(x=160,y=150)
-            Entry_Password=Entry(Regist_Body,text="Password:",textvariable=password,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=160,y=170)
+            Entry_Password=Entry(Regist_Body,text="Password:",textvariable=password,font=("Arial",10,"bold"),width=30,borderwidth=3)
+            Entry_Password.place(x=160,y=170)
 
             Label_FName=Label(Regist_Body,text="First Name:",font=("Arial",10,"bold")).place(x=15,y=220)
-            Entry_FName=Entry(Regist_Body,text="First Name:",textvariable=firstname,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=15,y=240)
+            Entry_FName=Entry(Regist_Body,text="First Name:",textvariable=firstname,font=("Arial",10,"bold"),width=30,borderwidth=3)
+            Entry_FName.place(x=15,y=240)
 
             Label_LName=Label(Regist_Body,text="Last Name:",font=("Arial",10,"bold")).place(x=240,y=220)
-            Entry_LName=Entry(Regist_Body,text="Last Name:",textvariable=lastname,font=("Arial",10,"bold"),width=19,borderwidth=3).place(x=240,y=240)
+            Entry_LName=Entry(Regist_Body,text="Last Name:",textvariable=lastname,font=("Arial",10,"bold"),width=19,borderwidth=3)
+            Entry_LName.place(x=240,y=240)
 
             Label_Age=Label(Regist_Body,text="Age:",font=("Arial",10,"bold")).place(x=15,y=270)
-            Entry_Age=Entry(Regist_Body,text="Age:",textvariable=age,font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=15,y=290)
+            Entry_Age=Entry(Regist_Body,text="Age:",textvariable=age,font=("Arial",10,"bold"),width=10,borderwidth=3)
+            Entry_Age.place(x=15,y=290)
 
             Label_Birthdate=Label(Regist_Body,text="Birthdate:",font="Arial 12").place(x=100,y=270)
             Entry_Birthdate=DateEntry(Regist_Body,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
             Entry_Birthdate.place(x=100,y=289)
 
-
-            Label_Address=Label(Regist_Body,text="Address:",font=("Arial",10,"bold"))
-            Label_Address.place(x=15,y=320)
-            Entry_Address=Entry(Regist_Body,text="Address:",textvariable=address,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=340)
+            Label_Address=Label(Regist_Body,text="Address:",font=("Arial",10,"bold")).place(x=15,y=320)
+            Entry_Address=Entry(Regist_Body,text="Address:",textvariable=address,font=("Arial",10,"bold"),width=50,borderwidth=3)
+            Entry_Address.place(x=15,y=340)
 
             Label_Pro=Label(Regist_Body,text="Profession:",font=("Arial",10,"bold")).place(x=15,y=370)
-            Entry_Pro=Entry(Regist_Body,text="Profession:",textvariable=profession,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=390)
+            Entry_Pro=Entry(Regist_Body,text="Profession:",textvariable=profession,font=("Arial",10,"bold"),width=50,borderwidth=3)
+            Entry_Pro.place(x=15,y=390)
 
-            Reg_Submit=Button(Regist_Body,text="Submit",width=5,height=1,font=("Arail",8,"bold"),borderwidth=3,command=self.submit)
-            Reg_Submit.place(x=270,y=425)
+            Label(Regist_Body,text="Department",font=("Arial",10,"bold")).place(x=15,y=425)
+            Entry_Dept=ttk.Combobox(Regist_Body,value=['Laboratory Department', 'Imaging Center'],font='Arial 12',width=37,state='readonly')
+            Entry_Dept.place(x=15,y=440)
+
+            Reg_Submit=Button(Regist_Body,text="Submit",width=5,height=1,font=("Arail",8,"bold"),borderwidth=3,command=submit)
+            Reg_Submit.place(x=270,y=500)
             
             Reg_Cancel=Button(Regist_Body,text="Cancel",width=5,height=1,font=("Arail",8,"bold"),borderwidth=3,command=self.Rig_close)
-            Reg_Cancel.place(x=320,y=425)
+            Reg_Cancel.place(x=320,y=500)
 
             PageOpen +=1
         else:
@@ -145,7 +168,7 @@ class Admin:
                 self.View_Page=Toplevel()
                 self.View_Page.title("Edit Profile")
                 PAGE_width=700
-                PAGE_height=350
+                PAGE_height=450
                 self.View_Page.geometry(f'{PAGE_width}x{PAGE_height}+{400}+{200}')
                 self.View_Page.resizable(False,False)
                 self.View_Page.protocol("WM_DELETE_WINDOW", self.View_on_close)
@@ -206,9 +229,7 @@ class Admin:
                             messagebox.showinfo("Changes Saved","Account Update Succesful")
 
                         else: messagebox.showinfo("No Changes Made","No Changes have been Made!")
-
-                        
-
+                
 
                 View_img=Label(self.View_Body,text="Image",font=("Arial",15),bg="gray").place(x=470,y=10,relwidth=0.3,relheight=0.5)
 
@@ -237,9 +258,14 @@ class Admin:
                 Label_View_Pro=Label(self.View_Body,text="Profession:",font=("Arial",10,"bold")).place(x=10,y=280)
                 self.Entry_View_Pro=Entry(self.View_Body,text="Profession:",textvariable=profession2,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=10,y=300)
 
+                Entry_Pro=ttk.Combobox(self.View_Body,value=['Laboratory Department', 'Imaging Center'],font='Arial 12',width=37,state='readonly')
+                Entry_Pro.current(Entry_Pro['values'].index(res[4]))
+                Entry_Pro.place(x=15,y=425)
+                
                 View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id))
                 View_EDIT.place(x=510,y=200)
 
+                View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
                 View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
                 View_DELETE.place(x=510,y=240)
 

@@ -6,9 +6,16 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 from tkinter import messagebox
 from datetime import date
+import employee, LoginPage
+
+from pathlib import Path
+from docxtpl import DocxTemplate
+import win32api
+
 
 class Main:
-    def __init__(self):
+    def __init__(self,init):
+        self.user=init
         self.Dashboard_GUI = None
         self.Page_Summary = None
         self.Page_FrontDesk = None
@@ -16,52 +23,40 @@ class Main:
         global PageOpen
         PageOpen = 1
         self.Value_Laboratory = ["Laboratory","X_RAY"]
-        
-        self.Value_Font=[
-                    "Complete Blood Count",
-                    "Blood Type",
-                    "Stool Exam",
-                    "Urinalysis (Urine Test)",
-                    "Syphilis Rapid Test",
-                    "Hepatitis B (Antigen Test)",
-                    "Anti-HAV Test",
-                    "Drug Test",
-                    "Pregnancy Test",
-                    "Fasting Blood Suger Test",
-                    "Blood Uric Acid Test",
-                    "Blood Cholesterol Test",
-                    "Blood Creatinine Test",
-                    "Acid Fast Staining",
-                    "X-Ray Test",
-                    ]
+
+
+        self.test_date=date.today()
     
         #Checkbox Def
 
     def showCheckbox(self):
-        for i in range(len(self.services)):
-            Selected=""
-            print(self.services[i].get())
-            if int(self.services[i].get()) >= 1:
-                Selected += str(i)
-                this=self.Value_Font[i]
-                print(Selected)
-                print(this)
-
-
+        chosen_serve=[]
         name=Name_Entry.get()
         age=AGE_Entry.get()
         bdate=Birth_Entry.get_date()
         gender=Gender_Mune.get()
         address=Address_Entry.get()
         today=date.today()
+        client_id=employee.Employee.generateID()
+        
+        for i in range(len(self.services)):
+            Selected=""
+            if int(self.services[i].get()) == 1:
+                Selected += str(i)
+                this=self.Value[i]
+                # print(self.services[i].get())
+                # print(this)
+                chosen_serve.append(this)
+                # print(self.services[i].get())
+        client=(client_id,name,age,gender,bdate,address)
+        user=self.user
+        user.addNewClient(user, client,chosen_serve,today)
 
-        print(name)
-        print(age)
-        print(bdate)
-        print(gender)
-        print(address)
-        print(today)
-                
+    def logout(self):
+        self.Dashboard_GUI.destroy()
+        interface=LoginPage.Loginpage()
+        interface.start()
+
     def FrontDesk(self):
         def Home():
             Page_FrontDesk.destroy()
@@ -85,7 +80,7 @@ class Main:
         Toggle_Button["menu"]=Toggle_Button.menu
 
         Toggle_Button.menu.add_command(label="HOME",command=Home)
-        Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
+        Toggle_Button.menu.add_command(label="Logout",command=lambda:self.logout())
 
         #Header-------
         #Body-------
@@ -103,27 +98,30 @@ class Main:
         #checkbox
         
         self.services=[]
-        for i in range(15):
-            Test=IntVar()   
+        for i in range (15):
+            Test=IntVar()
             Test.set(0)
-            self.services.append(Test) 
-            
-        C=Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Arial 12 ').place(x=30,y=50)
-        C=Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Arial 12 ').place(x=30,y=75)
-        C=Checkbutton(self.Box,text="Stool Exam",variable=self.services[2],font='Arial 12 ').place(x=30,y=100)
-        C=Checkbutton(self.Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Arial 12 ').place(x=30,y=125)
-        C=Checkbutton(self.Box,text="Syphilis Rapid Test",variable=self.services[4],font='Arial 12 ').place(x=30,y=150)
-        C=Checkbutton(self.Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Arial 12 ').place(x=30,y=175)
-        C=Checkbutton(self.Box,text="Anti-HAV Test",variable=self.services[6],font='Arial 12 ').place(x=30,y=200)
-        C=Checkbutton(self.Box,text="Drug Test",variable=self.services[7],font='Arial 12 ').place(x=30,y=222)
-        C=Checkbutton(self.Box,text="Pregnancy Test",variable=self.services[8],font='Arial 12 ').place(x=30,y=245)
-        C=Checkbutton(self.Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Arial 12 ').place(x=280,y=50)
-        C=Checkbutton(self.Box,text="Blood Uric Acid Test",variable=self.services[10],font='Arial 12 ').place(x=280,y=75)
-        C=Checkbutton(self.Box,text="Blood Cholesterol Test",variable=self.services[11],font='Arial 12 ').place(x=280,y=100)
-        C=Checkbutton(self.Box,text="Blood Creatinine Test",variable=self.services[12],font='Arial 12 ').place(x=280,y=125)
-        C=Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Arial 12 ').place(x=280,y=150)
-        C=Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Arial 12 ').place(x=280,y=175)
-  
+            self.services.append(Test)
+
+        def check(i):
+            i.set(1)
+        
+        Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Arial 12 ',command=lambda i=self.services[0]:check(i)).place(x=30,y=50)
+        Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Arial 12 ',command=lambda i=self.services[1]:check(i)).place(x=30,y=75)
+        Checkbutton(self.Box,text="Stool Exam",variable=self.services[2],font='Arial 12 ',command=lambda i=self.services[2]:check(i)).place(x=30,y=100)
+        Checkbutton(self.Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Arial 12 ',command=lambda i=self.services[3]:check(i)).place(x=30,y=125)
+        Checkbutton(self.Box,text="Syphilis Rapid Test",variable=self.services[4],font='Arial 12 ',command=lambda i=self.services[4]:check(i)).place(x=30,y=150)
+        Checkbutton(self.Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Arial 12 ',command=lambda i=self.services[5]:check(i)).place(x=30,y=175)
+        Checkbutton(self.Box,text="Anti-HAV Test",variable=self.services[6],font='Arial 12 ',command=lambda i=self.services[6]:check(i)).place(x=30,y=200)
+        Checkbutton(self.Box,text="Drug Test",variable=self.services[7],font='Arial 12 ',command=lambda i=self.services[7]:check(i)).place(x=30,y=222)
+        Checkbutton(self.Box,text="Pregnancy Test",variable=self.services[8],font='Arial 12 ',command=lambda i=self.services[8]:check(i)).place(x=30,y=245)
+        Checkbutton(self.Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Arial 12 ',command=lambda i=self.services[9]:check(i)).place(x=280,y=50)
+        Checkbutton(self.Box,text="Blood Uric Acid Test",variable=self.services[10],font='Arial 12 ',command=lambda i=self.services[10]:check(i)).place(x=280,y=75)
+        Checkbutton(self.Box,text="Blood Cholesterol Test",variable=self.services[11],font='Arial 12 ',command=lambda i=self.services[11]:check(i)).place(x=280,y=100)
+        Checkbutton(self.Box,text="Blood Creatinine Test",variable=self.services[12],font='Arial 12 ',command=lambda i=self.services[12]:check(i)).place(x=280,y=125)
+        Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Arial 12 ',command=lambda i=self.services[13]:check(i)).place(x=280,y=150)
+        Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Arial 12 ',command=lambda i=self.services[14]:check(i)).place(x=280,y=175)
+
         #Body-------
 
 
@@ -213,8 +211,9 @@ class Main:
             RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
             #print(self.Value_Laboratory)
             if value == "Laboratory":
+                records=self.user.getClients_lab()
                 #print(value)
-                for i in range(10):
+                for i in range(len(records)):
                     Record_Number=Frame(Record_List,width=427,height=80)
                     Record_Number.grid(row=i,column=0)
 
@@ -223,18 +222,26 @@ class Main:
 
                     Number_BOX=Frame(Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
                     Number_BOX.place(x=10,y=10)
-                    Client_Number=Label(Number_BOX,text="100",font=("Arial",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
+                    Client_Number=Label(Number_BOX,text=records[i][0],font=("Arial",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
 
-                    Client_Name=Label(Record_Page,text="NAME: DARKHOURSE OF THE NIGHT",font=("Arial",12,"bold")).place(x=85,y=10)
-                    Client_Test=Label(Record_Page,text="TEST: love my life",font=("Arial",8,"bold")).place(x=85,y=30)
+                    Client_Name=Label(Record_Page,text="NAME: "+records[i][1],font=("Arial",12,"bold")).place(x=85,y=10)
+                    Client_Test=Label(Record_Page,text="TEST: "+records[i][6],font=("Arial",8,"bold")).place(x=85,y=30)
 
                     Take_Button=Button(Record_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
                     Take_Button.place(x=360,y=37)
-
             
             elif value == "X_RAY":
-                #print(value)
-                for i in range(10):
+                records=self.user.getClients_Xray()
+                def take(e):
+                    result=self.user.getClient(e)
+                    self.client_name=result[1]
+                    self.client_age=result[2]
+                    self.client_gender=result[3]
+                    self.client_bdate=result[4]
+                    self.client_address=result[5]
+
+
+                for i in range(len(records)):
                     X_RAY_Record_Number=Frame(Record_List,width=427,height=80)
                     X_RAY_Record_Number.grid(row=i,column=0)
 
@@ -243,12 +250,12 @@ class Main:
 
                     XRAY_Number_BOX=Frame(X_RAY_Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
                     XRAY_Number_BOX.place(x=10,y=10)
-                    XRAY_Client_Number=Label(XRAY_Number_BOX,text="100",font=("Arial",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
+                    XRAY_Client_Number=Label(XRAY_Number_BOX,text=records[i][0],font=("Arial",25,"bold")).place(x=3,y=0)
 
-                    XRAY_Client_Name=Label(X_RAY_Record_Page,text="NAME: DARKHOURSE OF THE NIGHT",font=("Arial",12,"bold")).place(x=85,y=10)
-                    XRAY_Client_Test=Label(X_RAY_Record_Page,text="TEST:X_RAY TEST",font=("Arial",8,"bold")).place(x=85,y=30)
+                    XRAY_Client_Name=Label(X_RAY_Record_Page,text="NAME: "+records[i][1],font=("Arial",12,"bold")).place(x=85,y=10)
+                    XRAY_Client_Test=Label(X_RAY_Record_Page,text="TEST: XRAY TEST",font=("Arial",8,"bold")).place(x=85,y=30)
 
-                    XRAY_Take_Button=Button(X_RAY_Record_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
+                    XRAY_Take_Button=Button(X_RAY_Record_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5,command=lambda e= records[i][0]:take(e))
                     XRAY_Take_Button.place(x=360,y=37)
             
             PageOpen += 1
@@ -298,8 +305,9 @@ class Main:
             CListBOX.create_window((0,0),window=Client_List,anchor=NW)
             #print(self.Value_Laboratory)
             if value == "Laboratory":
+                result=self.user.getClients_lab()
                 #print(value)
-                for i in range(10):
+                for i in range(len(result)):
                     ClientL_Number=Frame(Client_List,width=427,height=80)
                     ClientL_Number.grid(row=i,column=0)
 
@@ -308,17 +316,17 @@ class Main:
 
                     CL_Number_BOX=Frame(Client_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
                     CL_Number_BOX.place(x=10,y=10)
-                    Client_Number=Label(CL_Number_BOX,text="100",font=("Arial",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
-
-                    Client_Name=Label(Client_Page,text="NAME: DARKHOURSE OF THE NIGHT",font=("Arial",12,"bold")).place(x=85,y=10)
-                    Client_Test=Label(Client_Page,text="TEST: love my life",font=("Arial",8,"bold")).place(x=85,y=30)
+                    Client_Number=Label(CL_Number_BOX,text=result[i][0],font=("Arial",25,"bold")).place(x=3,y=0)
+                    Client_Name=Label(Client_Page,text="NAME: "+result[i][1],font=("Arial",12,"bold")).place(x=85,y=10)
+                    Client_Test=Label(Client_Page,text="TEST: "+result[i][6],font=("Arial",8,"bold")).place(x=85,y=30)
 
                     Take_Button=Button(Client_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
                     Take_Button.place(x=360,y=37)
             
             elif value == "X_RAY":
+                result=self.user.getClients_Xray()
                 #print(value)
-                for i in range(10):
+                for i in range(len(result)):
                     X_RAY_Client_Number=Frame(Client_List,width=427,height=80)
                     X_RAY_Client_Number.grid(row=i,column=0)
 
@@ -327,10 +335,10 @@ class Main:
 
                     CLX_Number_BOX=Frame(X_RAY_Client_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
                     CLX_Number_BOX.place(x=10,y=10)
-                    Client_Number=Label(CLX_Number_BOX,text="100",font=("Arial",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
+                    Client_Number=Label(CLX_Number_BOX,text=result[i][0],font=("Arial",25,"bold")).place(x=3,y=0)
 
-                    X_Client_Name=Label(X_RAY_Client_Page,text="NAME: DARKHOURSE OF THE NIGHT",font=("Arial",12,"bold")).place(x=85,y=10)
-                    X_Client_Test=Label(X_RAY_Client_Page,text="TEST: love my life",font=("Arial",8,"bold")).place(x=85,y=30)
+                    X_Client_Name=Label(X_RAY_Client_Page,text="NAME: "+result[i][1],font=("Arial",12,"bold")).place(x=85,y=10)
+                    X_Client_Test=Label(X_RAY_Client_Page,text="TEST: "+result[i][6],font=("Arial",8,"bold")).place(x=85,y=30)
 
                     Take_Button=Button(X_RAY_Client_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
                     Take_Button.place(x=360,y=37)
@@ -341,153 +349,157 @@ class Main:
             messagebox.showinfo("Error","The Window is already Open!")
 #Laboratory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Laboratory(self):
-        def Home():
-            Page_Laboratory.destroy()
-            self.Page_Dashboard.pack()
-        self.Page_Dashboard.forget()
-        Page_Laboratory=Frame(self.Dashboard_GUI,bg="green")
-        Page_Laboratory.pack(expand=1, fill=BOTH)
-        Frame_Header=Frame(Page_Laboratory,width=1360,height=50,highlightbackground="black",highlightthickness=1)
-        Frame_Header.pack()
+        if self.user.return_dept()!='Laboratory Department':
+            messagebox.showerror("Access Denied","Only Employees from Laboratory Department or Users with Administrative Access can Access this Page")
+        else: 
+            def Home():
+                Page_Laboratory.destroy()
+                self.Page_Dashboard.pack()
 
-        IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_HEADER.place(x=10,y=8)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
+            self.Page_Dashboard.forget()
+            Page_Laboratory=Frame(self.Dashboard_GUI,bg="green")
+            Page_Laboratory.pack(expand=1, fill=BOTH)
+            Frame_Header=Frame(Page_Laboratory,width=1360,height=50,highlightbackground="black",highlightthickness=1)
+            Frame_Header.pack()
 
-        HEADER_USERNAME=Label(Frame_Header,text="UserName:",font='Arial 12 ').place(x=1100,y=10)
-        IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_USERNAME.place(x=1200,y=8)
+            IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+            IMG_HEADER.place(x=10,y=8)
+            HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
 
-        Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
-        Toggle_Button.place(x=1290,y=10)
-        Toggle_Button.menu=Menu(Toggle_Button)
-        Toggle_Button["menu"]=Toggle_Button.menu
+            HEADER_USERNAME=Label(Frame_Header,text="UserName:",font='Arial 12 ').place(x=1100,y=10)
+            IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+            IMG_USERNAME.place(x=1200,y=8)
 
-        Toggle_Button.menu.add_command(label="HOME",command=Home)
-        Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
-        #Header-------
-        #BODY >> Laboratory
-        Frame_Body=Frame(Page_Laboratory,width=1360,height=150,highlightbackground="black",highlightthickness=1)
-        Frame_Body.pack()
+            Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
+            Toggle_Button.place(x=1290,y=10)
+            Toggle_Button.menu=Menu(Toggle_Button)
+            Toggle_Button["menu"]=Toggle_Button.menu
 
-        Labo_Title=Label(Frame_Body,text="Laboratory Test!",font='Arial 20')
-        Labo_Title.place(x=10,y=5)
-        Name_Label=Label(Frame_Body,text="Name: ",font='Arial 12').place(x=19,y=50)
-        Name_Entry=Entry(Frame_Body,width=59,borderwidth=3,font='Arial 9')
-        Name_Entry.place(x=20,y=70)
+            Toggle_Button.menu.add_command(label="HOME",command=Home)
+            Toggle_Button.menu.add_command(label="Logout",command=lambda:self.logout())
+            #Header-------
+            #BODY >> Laboratory
+            Frame_Body=Frame(Page_Laboratory,width=1360,height=150,highlightbackground="black",highlightthickness=1)
+            Frame_Body.pack()
 
-        AGE_Label=Label(Frame_Body,text="Age: ",font='Arial 12').place(x=450,y=50)
-        AGE_Entry=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3)
-        AGE_Entry.place(x=450,y=70)
+            Labo_Title=Label(Frame_Body,text="Laboratory Test!",font='Arial 20')
+            Labo_Title.place(x=10,y=5)
+            Name_Label=Label(Frame_Body,text="Name: ",font='Arial 12').place(x=19,y=50)
+            Name_Entry=Entry(Frame_Body,width=59,borderwidth=3,font='Arial 9')
+            Name_Entry.place(x=20,y=70)
 
-        # def Gender_Click(value):
-        #     Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
+            AGE_Label=Label(Frame_Body,text="Age: ",font='Arial 12').place(x=450,y=50)
+            AGE_Entry=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3)
+            AGE_Entry.place(x=450,y=70)
 
-        Gender_Label=Label(Frame_Body,text="Gender:",font='Arial 12').place(x=150,y=100)
-        Option=["Male","Female","Other"]
-        Gender_Mune=ttk.Combobox(Frame_Body,value=Option,font='Arial 12',state='readonly')
-        Gender_Mune.set("Select Gender")
-        # Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
-        Gender_Mune.place(x=150,y=120)
+            def Gender_Click():
+                Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
 
-        Date_Label=Label(Frame_Body,text="Date:",font="Arial 12").place(x=20,y=100)
-        Date_Entry=DateEntry(Frame_Body,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
-        Date_Entry.place(x=20,y=120)
+            Gender_Label=Label(Frame_Body,text="Gender:",font='Arial 12').place(x=150,y=100)
+            Option=["Male","Female","Other"]
+            Gender_Mune=ttk.Combobox(Frame_Body,value=Option,font='Arial 12',state='readonly')
+            Gender_Mune.set("Select Gender")
+            Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
+            Gender_Mune.place(x=150,y=120)
 
-        CList_Button=Button(Frame_Body,text="Client List",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.ClientList(self.Value_Laboratory[0]))
-        CList_Button.place(x=1200,y=60)
+            Date_Label=Label(Frame_Body,text="Date:",font="Arial 12").place(x=20,y=100)
+            Date_Entry=DateEntry(Frame_Body,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
+            Date_Entry.place(x=20,y=120)
 
-        Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
-        Record_Button.place(x=1200,y=100)
+            CList_Button=Button(Frame_Body,text="Client List",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.ClientList(self.Value_Laboratory[0]))
+            CList_Button.place(x=1200,y=60)
 
-        #Frame for the Testing 
-        Frame_Test=Frame(Page_Laboratory,highlightbackground="black",highlightthickness=1,bg="blue")
-        Frame_Test.pack(expand=1,fill=BOTH)
+            Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
+            Record_Button.place(x=1200,y=100)
 
-        Test_Label=Label(Frame_Test,text="Laboratory Test",width=123,font="Arial 15",anchor=W,highlightbackground="black",highlightthickness=1)
-        Test_Label.place(x=0,y=0)
+            #Frame for the Testing 
+            Frame_Test=Frame(Page_Laboratory,highlightbackground="black",highlightthickness=1,bg="blue")
+            Frame_Test.pack(expand=1,fill=BOTH)
 
-        Test=[#"Complete Blood Count",
-                # "Blood Type",
-                # "Stool Exam",
-                "Serology",
-                "Miscelaneous",
-                ]
+            Test_Label=Label(Frame_Test,text="Laboratory Test",width=123,font="Arial 15",anchor=W,highlightbackground="black",highlightthickness=1)
+            Test_Label.place(x=0,y=0)
 
-        def Option_TEST(event):
-            if LabTest_Mune.get() == "Serology":
-                Miscelaneous_Page.pack_forget()
-                Serology_Page.pack(expand=1,fill=BOTH)
+            Test=[#"Complete Blood Count",
+                    # "Blood Type",
+                    # "Stool Exam",
+                    "Serology",
+                    "Miscelaneous",
+                    ]
 
-                Serology_Title = Label(Serology_Page,text="MISCELLANEOUS",font=("Arial",20,"bold"))
-                Serology_Title.place(x=570,y=30)
+            def Option_TEST(event):
+                if LabTest_Mune.get() == "Serology":
+                    Miscelaneous_Page.pack_forget()
+                    Serology_Page.pack(expand=1,fill=BOTH)
 
-                #RIGHT
-                ST_Box=Frame(Serology_Page,bg='white')
-                ST_Box.place(x=380,y=150)
-                ST_BOX1_R= Label(ST_Box,text="",font=("Arial",15,"bold"),width=35,anchor=W)
-                ST_BOX1_R.grid(row=0,column=0)
-                ST_BOX2_R= Label(ST_Box,text="BLOOD TYPE",font=("Arial",15,"bold"),width=35,anchor=W)
-                ST_BOX2_R.grid(row=1,column=0)
-                ST_BOX3_R= Label(ST_Box,text="HEPATITIS B SCREENING (HBsAg)",font=("Arial",15,"bold"),width=35,anchor=W)
-                ST_BOX3_R.grid(row=2,column=0)
-                ST_BOX4_R= Label(ST_Box,text="ANTI-HAV SCREENING (HAV lgG/igM)",font=("Arial",15,"bold"),width=35,anchor=W)
-                ST_BOX4_R.grid(row=3,column=0)
-                ST_BOX5_R= Label(ST_Box,text="SYPHILIS SCREENING",font=("Arial",15,"bold"),width=35,anchor=W)
-                ST_BOX5_R.grid(row=4,column=0)
-                ST_BOX6_R= Label(ST_Box,text="DENGUE NS1 ANTIGEN TEST",font=("Arial",15,"bold"),width=35,anchor=W)
-                ST_BOX6_R.grid(row=5,column=0)
-                
-                #LEFT
-                ST_BOX7_L= Label(ST_Box,text="RESULT",font=("Arial",15,"bold"))
-                ST_BOX7_L.grid(row=0,column=1)
-                ST_BOX8_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
-                ST_BOX8_L.grid(row=1,column=1)
-                ST_BOX9_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
-                ST_BOX9_L.grid(row=2,column=1)
-                ST_BOX10_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
-                ST_BOX10_L.grid(row=3,column=1)
-                ST_BOX11_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
-                ST_BOX11_L.grid(row=4,column=1)
-                ST_BOX12_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
-                ST_BOX12_L.grid(row=5,column=1)
+                    Serology_Title = Label(Serology_Page,text="MISCELLANEOUS",font=("Arial",20,"bold"))
+                    Serology_Title.place(x=570,y=30)
 
-
-            elif LabTest_Mune.get() == "Miscelaneous":
-                Serology_Page.pack_forget()
-                Miscelaneous_Page.pack(expand=1,fill=BOTH)
-
-                Miscelaneous_Title = Label(Miscelaneous_Page,text="MISCELLANEOUS",font=("Arial",20,"bold"))
-                Miscelaneous_Title.place(x=570,y=30)
-
-                PT_Box=Frame(Miscelaneous_Page,bg='white')
-                PT_Box.place(x=430,y=200)
-                PT_BOX1= Label(PT_Box,text="TEST",width=20,anchor=W,font=("Arial",15,"bold"))
-                PT_BOX1.grid(row=0,column=0)
-                PT_BOX2= Label(PT_Box,text="PREGNANCY TEST",width=20,anchor=W,font=("Arial",15,"bold"))
-                PT_BOX2.grid(row=0,column=1)
-                PT_BOX3= Label(PT_Box,text="RESULT",width=20,anchor=W,font=("Arial",15,"bold"))
-                PT_BOX3.grid(row=1,column=0)
-
-                PT_Result=["POSITIVE","NEGATIVE"]
-                PT_BOX4=ttk.Combobox(PT_Box,value=PT_Result,font=("Arial",15),state='readonly')
-                PT_BOX4.set("Select Result")
-                PT_BOX4.grid(row=1,column=1)
+                    #RIGHT
+                    ST_Box=Frame(Serology_Page,bg='white')
+                    ST_Box.place(x=380,y=150)
+                    ST_BOX1_R= Label(ST_Box,text="",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX1_R.grid(row=0,column=0)
+                    ST_BOX2_R= Label(ST_Box,text="BLOOD TYPE",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX2_R.grid(row=1,column=0)
+                    ST_BOX3_R= Label(ST_Box,text="HEPATITIS B SCREENING (HBsAg)",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX3_R.grid(row=2,column=0)
+                    ST_BOX4_R= Label(ST_Box,text="ANTI-HAV SCREENING (HAV lgG/igM)",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX4_R.grid(row=3,column=0)
+                    ST_BOX5_R= Label(ST_Box,text="SYPHILIS SCREENING",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX5_R.grid(row=4,column=0)
+                    ST_BOX6_R= Label(ST_Box,text="DENGUE NS1 ANTIGEN TEST",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX6_R.grid(row=5,column=0)
+                    
+                    #LEFT
+                    ST_BOX7_L= Label(ST_Box,text="RESULT",font=("Arial",15,"bold"))
+                    ST_BOX7_L.grid(row=0,column=1)
+                    ST_BOX8_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
+                    ST_BOX8_L.grid(row=1,column=1)
+                    ST_BOX9_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
+                    ST_BOX9_L.grid(row=2,column=1)
+                    ST_BOX10_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
+                    ST_BOX10_L.grid(row=3,column=1)
+                    ST_BOX11_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
+                    ST_BOX11_L.grid(row=4,column=1)
+                    ST_BOX12_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
+                    ST_BOX12_L.grid(row=5,column=1)
 
 
-        Test_Label=Label(Frame_Test,text="TEST:",font='Arial 12 bold').place(x=1075,y=3)
-        LabTest_Mune=ttk.Combobox(Frame_Test,value=Test,font='Arial 12',state='readonly')
-        LabTest_Mune.set("Serology")
-        LabTest_Mune.bind("<<ComboboxSelected>>",Option_TEST)
-        LabTest_Mune.place(x=1130,y=3)
+                elif LabTest_Mune.get() == "Miscelaneous":
+                    Serology_Page.pack_forget()
+                    Miscelaneous_Page.pack(expand=1,fill=BOTH)
 
-        Contener = Frame(Frame_Test,highlightbackground="white",highlightthickness=5)
-        Contener.place(x=0,y=31,relwidth=1.0,relheight=0.95)
+                    Miscelaneous_Title = Label(Miscelaneous_Page,text="MISCELLANEOUS",font=("Arial",20,"bold"))
+                    Miscelaneous_Title.place(x=570,y=30)
 
-        #List Frame of the Test
-        Serology_Page = Frame(Contener)
-        Serology_Page.pack(expand=1,fill=BOTH)
-        Miscelaneous_Page = Frame(Contener)
+                    PT_Box=Frame(Miscelaneous_Page,bg='white')
+                    PT_Box.place(x=430,y=200)
+                    PT_BOX1= Label(PT_Box,text="TEST",width=20,anchor=W,font=("Arial",15,"bold"))
+                    PT_BOX1.grid(row=0,column=0)
+                    PT_BOX2= Label(PT_Box,text="PREGNANCY TEST",width=20,anchor=W,font=("Arial",15,"bold"))
+                    PT_BOX2.grid(row=0,column=1)
+                    PT_BOX3= Label(PT_Box,text="RESULT",width=20,anchor=W,font=("Arial",15,"bold"))
+                    PT_BOX3.grid(row=1,column=0)
+
+                    PT_Result=["POSITIVE","NEGATIVE"]
+                    PT_BOX4=ttk.Combobox(PT_Box,value=PT_Result,font=("Arial",15),state='readonly')
+                    PT_BOX4.set("Select Result")
+                    PT_BOX4.grid(row=1,column=1)
+
+
+            Test_Label=Label(Frame_Test,text="TEST:",font='Arial 12 bold').place(x=1075,y=3)
+            LabTest_Mune=ttk.Combobox(Frame_Test,value=Test,font='Arial 12',state='readonly')
+            LabTest_Mune.set("Serology")
+            LabTest_Mune.bind("<<ComboboxSelected>>",Option_TEST)
+            LabTest_Mune.place(x=1130,y=3)
+
+            Contener = Frame(Frame_Test,highlightbackground="white",highlightthickness=5)
+            Contener.place(x=0,y=31,relwidth=1.0,relheight=0.95)
+
+            #List Frame of the Test
+            Serology_Page = Frame(Contener)
+            Serology_Page.pack(expand=1,fill=BOTH)
+            Miscelaneous_Page = Frame(Contener)
 
 #Laboratory-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Close_Plus_Finding(self):
@@ -525,10 +537,13 @@ class Main:
             Plus__scroll.config(command=Plus__BOX.yview)
             Plus__BOX.pack()
 
-            Plus_ADD_button=Button(Plus_Body,text="ADD",font=("Arail 10"),width=5,borderwidth=5)
+            def addFinding():
+                self.user.addXrayFinding(Plus_Name_Entry.get(),Plus__BOX.get("1.0", "end-1c"))
+
+            Plus_ADD_button=Button(Plus_Body,text="ADD",font=("Arail 10"),width=5,borderwidth=5,command=addFinding)
             Plus_ADD_button.place(x=450,y=560)
            
-            Plus_Cancel_button=Button(Plus_Body,text="Cancel",font=("Arail 10"),width=5,borderwidth=5,command=self.Close_Plus_Finding)
+            Plus_Cancel_button=Button(Plus_Body,text="Cancel",font=("Arail 10"),width=5,borderwidth=5,command=lambda:self.Plus_Finding_Page.destroy())
             Plus_Cancel_button.place(x=520,y=560)
 
             PageOpen += 1
@@ -537,123 +552,179 @@ class Main:
 
 #X_Ray Laboratory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def X_Ray(self):
-        def Home():
-            Page_XRAY.destroy()
-            self.Page_Dashboard.pack()
-        self.Page_Dashboard.forget()
-        Page_XRAY=Frame(self.Dashboard_GUI,bg="green")
-        Page_XRAY.pack(expand=1, fill=BOTH)
-        # Page_scroll=Scrollbar(Page_XRAY,orient='vertical')
-        # Page_scroll.pack(side=RIGHT,fill='y')
-        Frame_Header=Frame(Page_XRAY,width=1360,height=50,highlightbackground="black",highlightthickness=1)
-        Frame_Header.pack()
-        IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_HEADER.place(x=10,y=8)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
+        if self.user.return_dept()!='Imaging Center':
+            messagebox.showerror("Access Denied","Only Employees from Imaging Center or Users with Administrative Access can Access this Page")
+        else: 
+            global title, body
+            def Home():
+                Page_XRAY.destroy()
+                self.Page_Dashboard.pack()
 
-        HEADER_USERNAME=Label(Frame_Header,text="UserName:",font='Arial 12 ').place(x=1100,y=10)
-        IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_USERNAME.place(x=1200,y=8)
+            self.Page_Dashboard.forget()
+            Page_XRAY=Frame(self.Dashboard_GUI,bg="green")
+            Page_XRAY.pack(expand=1, fill=BOTH)
+            # Page_scroll=Scrollbar(Page_XRAY,orient='vertical')
+            # Page_scroll.pack(side=RIGHT,fill='y')
+            Frame_Header=Frame(Page_XRAY,width=1360,height=50,highlightbackground="black",highlightthickness=1)
+            Frame_Header.pack()
+            IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+            IMG_HEADER.place(x=10,y=8)
+            HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
 
-        Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
-        Toggle_Button.place(x=1290,y=10)
-        Toggle_Button.menu=Menu(Toggle_Button)
-        Toggle_Button["menu"]=Toggle_Button.menu
+            HEADER_USERNAME=Label(Frame_Header,text="Username:",font='Arial 12 ').place(x=1100,y=10)
+            IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+            IMG_USERNAME.place(x=1200,y=8)
 
-        Toggle_Button.menu.add_command(label="HOME",command=Home)
-        Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
-        #Header-------
-        #BODY >> Laboratory
-        Detail_Body=Frame(Page_XRAY,width=300)
-        Detail_Body.pack(expand=1,fill=BOTH,side=LEFT)
+            Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
+            Toggle_Button.place(x=1290,y=10)
+            Toggle_Button.menu=Menu(Toggle_Button)
+            Toggle_Button["menu"]=Toggle_Button.menu
 
-        XRAY_Title=Label(Detail_Body,text="X-Ray Laboratory Test!",font='Arial 40 bold')
-        XRAY_Title.place(x=10,y=15) 
+            Toggle_Button.menu.add_command(label="HOME",command=Home)
+            Toggle_Button.menu.add_command(label="Logout",command=lambda:self.logout())
+            #Header-------
+            #BODY >> Laboratory
+            Detail_Body=Frame(Page_XRAY,width=300)
+            Detail_Body.pack(expand=1,fill=BOTH,side=LEFT)
+            
+            XRAY_Title=Label(Detail_Body,text="X-Ray Laboratory Test",font='Arial 40 bold')
+            XRAY_Title.place(x=10,y=15) 
 
-        Name_Label=Label(Detail_Body,text="Name: ",font='Arial 12').place(x=100,y=130)
-        Name_Entry=Entry(Detail_Body,width=50,borderwidth=3,font='Arial 9')
-        Name_Entry.place(x=160,y=130)
+            def setValue(event):
+                global client_id
+                res=self.user.getClient_name(Name_Entry.get())
+                Name_Entry.set(res[1])
+                Birth_Entry.set_date(res[4])
+                age.set(res[2])
+                Gender_Mune.set(res[3])
+                client_id=res[0]
 
-        Birth_Label=Label(Detail_Body,text="BirthDay:",font="Arial 12").place(x=100,y=160)
-        Birth_Entry=DateEntry(Detail_Body,width=36,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
-        Birth_Entry.place(x=170,y=160)
 
-        AGE_Label=Label(Detail_Body,text="Age: ",font='Arial 12').place(x=100,y=190)
-        AGE_Entry=Entry(Detail_Body,width=50,font='Arial 9',borderwidth=3)
-        AGE_Entry.place(x=160,y=190)
+            name=StringVar()
+            Label(Detail_Body,text="Name: ",font='Arial 12').place(x=100,y=130)
+            # Name_Entry=Entry(Detail_Body,width=50,textvariable=name,borderwidth=3,font='Arial 9')
+            Name_Entry=ttk.Combobox(Detail_Body,textvariable=name,font='Arial 9',width=48,state='readonly')
+            result=self.user.getClients_Xray()
+            n=1
+            Name_Entry['values']=[x[n] for x in result]
+            Name_Entry.place(x=160,y=130)
+            Name_Entry.bind('<<ComboboxSelected>>', setValue)
 
-        def Gender_Click():
-            Genderlabel=Label(Detail_Body,Gender_Mune.get(),font="Arial 12 bold")
+            Birth_Label=Label(Detail_Body,text="Birthdate:",font="Arial 12").place(x=100,y=160)
+            Birth_Entry=DateEntry(Detail_Body,width=36,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
+            Birth_Entry.place(x=170,y=160)
 
-        Gender_Label=Label(Detail_Body,text="Gender:",font='Arial 12 ').place(x=100,y=220)
-        Option=["Male","Female","Other"]
-        Gender_Mune=ttk.Combobox(Detail_Body,value=Option,font='Arial 12',width=37,state='readonly')
-        Gender_Mune.set("Select Gender")
-        Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
-        Gender_Mune.place(x=160,y=220)
+            age=StringVar()
+            AGE_Label=Label(Detail_Body,text="Age: ",font='Arial 12').place(x=100,y=190)
+            AGE_Entry=Entry(Detail_Body,width=50,textvariable=age,font='Arial 9',borderwidth=3)
+            AGE_Entry.place(x=160,y=190)
 
-        Date_Label=Label(Detail_Body,text="Date:",font="Arial 12").place(x=100,y=250)
-        Date_Entry=DateEntry(Detail_Body,width=37,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
-        Date_Entry.place(x=160,y=250)
+            def Gender_Click():
+                Genderlabel=Label(Detail_Body,Gender_Mune.get(),font="Arial 12 bold")
 
-        Label_Finding=Label(Detail_Body,text="Finding:",font=("Arial 20 bold"))
-        Label_Finding.place(x=60,y=305)
+            Gender_Label=Label(Detail_Body,text="Gender:",font='Arial 12 ').place(x=100,y=220)
+            Option=["Male","Female","Other"]
+            Gender_Mune=ttk.Combobox(Detail_Body,value=Option,font='Arial 12',width=37,state='readonly')
+            Gender_Mune.set("Select Gender")
+            Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
+            Gender_Mune.place(x=160,y=220)
 
-        FindBody=Frame(Detail_Body,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
-        FindBody.place(x=60,y=340)
-        Find_scroll=Scrollbar(FindBody,orient='vertical')
-        Find_scroll.pack(side=RIGHT,fill='y')
-        Finding_BOX = Text(FindBody, height = 9, width = 70,borderwidth=5,font=("Arial 11 "),yscrollcommand=Find_scroll.set)
-        Find_scroll.config(command=Finding_BOX.yview)
-        Finding_BOX.pack()
+            # Date_Label=Label(Detail_Body,text="Date:",font="Arial 12").place(x=100,y=250)
+            # Date_Entry=DateEntry(Detail_Body,width=37,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
+            # Date_Entry.place(x=160,y=250)
 
-        Label_IMPRESSIONSBody=Label(Detail_Body,text="Impression:",font=("Arial 20 bold"))
-        Label_IMPRESSIONSBody.place(x=60,y=530)
-        IMPRESSIONSBody=Frame(Detail_Body,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
-        IMPRESSIONSBody.place(x=60,y=570)
-        IMPRESSIONS_scroll=Scrollbar(IMPRESSIONSBody,orient='vertical')
-        IMPRESSIONS_scroll.pack(side=RIGHT,fill='y')
-        IMPRESSIONS_BOX = Text(IMPRESSIONSBody, height = 5, width = 70,borderwidth=5,font=("Arial 11 "),yscrollcommand=IMPRESSIONS_scroll.set)
-        IMPRESSIONS_scroll.config(command=IMPRESSIONS_BOX.yview)
-        IMPRESSIONS_BOX.pack()
+            Label_Finding=Label(Detail_Body,text="Finding:",font=("Arial 20 bold"))
+            Label_Finding.place(x=60,y=305)
 
-        def FIND_Click():
-            print("Find_Click")
+            FindBody=Frame(Detail_Body,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
+            FindBody.place(x=60,y=340)
+            Find_scroll=Scrollbar(FindBody,orient='vertical')
+            Find_scroll.pack(side=RIGHT,fill='y')
+            Finding_BOX = Text(FindBody, height = 9, width = 70,borderwidth=5,font=("Arial 11 "),yscrollcommand=Find_scroll.set)
+            Find_scroll.config(command=Finding_BOX.yview)
+            Finding_BOX.pack()
 
-        Option=["Normal","Chest PA"]
-        FINDING_Mune=ttk.Combobox(Detail_Body,value=Option,font='Arial 12',width=20)
-        FINDING_Mune.set("Select FINDING")
-        FINDING_Mune.bind("<<ComboboxSelected>>",FIND_Click)
-        FINDING_Mune.place(x=449,y=310)
+            Label_IMPRESSIONSBody=Label(Detail_Body,text="Impression:",font=("Arial 20 bold"))
+            Label_IMPRESSIONSBody.place(x=60,y=530)
+            IMPRESSIONSBody=Frame(Detail_Body,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
+            IMPRESSIONSBody.place(x=60,y=570)
+            IMPRESSIONS_scroll=Scrollbar(IMPRESSIONSBody,orient='vertical')
+            IMPRESSIONS_scroll.pack(side=RIGHT,fill='y')
+            IMPRESSIONS_BOX = Text(IMPRESSIONSBody, height = 5, width = 70,borderwidth=5,font=("Arial 11 "),yscrollcommand=IMPRESSIONS_scroll.set)
+            IMPRESSIONS_scroll.config(command=IMPRESSIONS_BOX.yview)
+            IMPRESSIONS_BOX.pack()
 
-        Find_ADD=Button(Detail_Body,text="+",font='Arial 10 bold',width=2,height=1,command=self.Plus_Finding)
-        Find_ADD.place(x=420,y=309)
+            def FIND_Click(event):
+                chosen_finding_title=FINDING_Mune.get()
+                findings=self.user.getXrayFindingDetails(chosen_finding_title)
+                title=findings[0]
+                body=findings[1]
+                # print(title,body)
+                Finding_BOX.insert("1.0",body)
 
-        Img_Body=Frame(Page_XRAY,width=300)
-        Img_Body.pack(expand=1,fill=BOTH,side=RIGHT)
+            opts=self.user.getAllXrayFinding()
+            n=2
+            if opts is not None:
+                Option=[x[n] for x in opts]
+            # Option=["Normal","Chest PA"]
+            FINDING_Mune=ttk.Combobox(Detail_Body,value=Option,font='Arial 12',width=20)
+            FINDING_Mune.set("Select FINDING")
+            FINDING_Mune.bind("<<ComboboxSelected>>",FIND_Click)
+            FINDING_Mune.place(x=449,y=310)
 
-        Image_Box=Frame(Img_Body,width=300,height=390,bg="green",highlightbackground="black",highlightthickness=2)
-        Image_Box.place(x=210,y=20)
+            Find_ADD=Button(Detail_Body,text="+",font='Arial 10 bold',width=2,height=1,command=self.Plus_Finding)
+            Find_ADD.place(x=420,y=309)
 
-        Image_upload=Label(Image_Box,width=40,height=25,borderwidth=2,padx=2,pady=2)
-        Image_upload.place()
+            Img_Body=Frame(Page_XRAY,width=300)
+            Img_Body.pack(expand=1,fill=BOTH,side=RIGHT)
 
-        Upload_button=Button(Image_Box,text="Upload the X-Ray",command=lambda:open_file(),width=41,height=25,borderwidth=2)
-        Upload_button.place(x=0,y=0)
+            Image_Box=Frame(Img_Body,width=300,height=390,bg="green",highlightbackground="black",highlightthickness=2)
+            Image_Box.place(x=210,y=20)
 
-        def open_file():
-            global img
-            f_types = [('Jpg Files', '*.jpg')]
-            filepath = filedialog.askopenfilename(filetypes=f_types)
-            img=Image.open(filepath)
-            img_resized=img.resize((285,375)) # new width & height
-            img=ImageTk.PhotoImage(img_resized)
-            b2 =Button(Image_Box,image=img,borderwidth=5,command=open_file) # using Button 
-            b2.place(x=0,y=0)
-        
-        CList_Xray=Button(Img_Body,text="Client List",width=10,bg="green",font='Arial 11',command=lambda:self.ClientList(self.Value_Laboratory[1])).place(x=300,y=630)
-        Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
-        Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Arial 11').place(x=520,y=630)
+            Image_upload=Label(Image_Box,width=40,height=25,borderwidth=2,padx=2,pady=2)
+            Image_upload.place()
+
+            Upload_button=Button(Image_Box,text="Upload the X-Ray",command=lambda:open_file(),width=41,height=25,borderwidth=2)
+            Upload_button.place(x=0,y=0)
+
+            def open_file():
+                global img
+                f_types = [('Jpg Files', '*.jpg')]
+                filepath = filedialog.askopenfilename(filetypes=f_types)
+                img=Image.open(filepath)
+                img_resized=img.resize((285,375)) # new width & height
+                img=ImageTk.PhotoImage(img_resized)
+                b2 =Button(Image_Box,image=img,borderwidth=5,command=open_file) # using Button 
+                b2.place(x=0,y=0)
+            
+            def submit():
+                if name.get() =="":
+                    messagebox.showerror("Error","Select a Client First")
+                else:
+                    if Finding_BOX.get("1.0","end-1c")=="" and IMPRESSIONS_BOX.get("1.0","end-1c")=="":
+                        messagebox.showerror("Error","Empty Finding and Impression Box")
+                    elif Finding_BOX.get("1.0","end-1c")=="": messagebox.showerror("Error","Empty Finding Box")
+                    elif IMPRESSIONS_BOX.get("1.0","end-1c")=="": messagebox.showerror("Error","Empty Impression Box")
+                    else:
+                        document=Path(__file__).parent / "XRAY_TEMPLATE.docx"
+                        doc=DocxTemplate(document)
+                        context={
+                            "NAME":name.get(),
+                            "DOB":Birth_Entry.get_date(),
+                            "AGE":age.get(),
+                            "GENDER":Gender_Mune.get(),
+                            "DATE":self.test_date,
+                            "ID":client_id,
+                            "FINDINGS":Finding_BOX.get("1.0","end-1c"),
+                            "IMPRESSION":IMPRESSIONS_BOX.get("1.0","end-1c")
+                        }
+                        doc.render(context)
+                        doc.save(Path(__file__).parent/"newDoc.docx")
+                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+            
+            CList_Xray=Button(Img_Body,text="Client List",width=10,bg="green",font='Arial 11',command=lambda:self.ClientList(self.Value_Laboratory[1])).place(x=300,y=630)
+            Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
+            Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Arial 11',command=lambda: submit()).place(x=520,y=630)
 
 #X_Ray Laboratory  END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -681,7 +752,7 @@ class Main:
         Toggle_Button["menu"]=Toggle_Button.menu
 
         Toggle_Button.menu.add_command(label="HOME",command=Home)
-        Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
+        Toggle_Button.menu.add_command(label="Logout",command=lambda:self.logout())
         #Header-------
         #BODY >> Summary
 
@@ -740,7 +811,7 @@ class Main:
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="Logout",command=lambda:print("Needed to learn more"))
+        Toggle_Button.menu.add_command(label="Logout",command=lambda:self.logout())
         #Header END------------
 
         #Message
@@ -773,7 +844,3 @@ class Main:
     
     def start(self):
         self.Main_Dashboard()
-
-
-app=Main()
-app.start()
