@@ -44,6 +44,41 @@ class Employee:
         result =cursor.fetchall()
         return result
 
+    def getClient_name(self,name):
+        query="SELECT * FROM clients WHERE Name=%s LIMIT 1"
+        cursor=self.Cursor
+        cursor.execute(query,(name,))
+        result=cursor.fetchone()
+        return result
+
+    def getClient(self,id):
+        query="SELECT * FROM clients WHERE ClientID=%s LIMIT 1"
+        cursor=self.Cursor
+        cursor.execute(query,(id,))
+        result=cursor.fetchone()
+        return result
+
+    def getClients_all(self):
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID;"
+        cursor=self.Cursor
+        cursor.execute(query)
+        result=cursor.fetchall()
+        return result
+
+    def getClients_lab(self):
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.ServiceID!=15;"
+        cursor=self.Cursor
+        cursor.execute(query)
+        result=cursor.fetchall()
+        return result
+
+    def getClients_Xray(self):
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.ServiceID=15;"
+        cursor=self.Cursor
+        cursor.execute(query)
+        result=cursor.fetchall()
+        return result
+
     @staticmethod 
     def deleteEmployee(id):
         query_del="DELETE FROM medtechs WHERE id=%s"
@@ -116,8 +151,22 @@ class Employee:
 
         user.Db.commit()
 
-    def addXrayImpression(self,title,body):
+    def addXrayFinding(self,title,body):
         add_impression_query="insert into xray_details (findings_title,findings_body) values(%s, %s)"
         cursor=self.Cursor
         cursor.execute(add_impression_query, (title,body))
         self.Db.commit()
+
+    def getAllXrayFinding(self):
+        query="SELECT * FROM xray_details"
+        cursor=self.Cursor
+        cursor.execute(query)
+        result=cursor.fetchall()
+        return result
+
+    def getXrayFindingDetails(self,title):
+        query="SELECT findings_title, findings_body FROM xray_details WHERE findings_title LIKE %s LIMIT 1"
+        cursor=self.Cursor
+        cursor.execute(query,(title,))
+        result=cursor.fetchone()
+        return result
