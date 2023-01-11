@@ -16,30 +16,51 @@ class Main:
         global PageOpen
         PageOpen = 1
         self.Value_Laboratory = ["Laboratory","X_RAY"]
+        
+        self.Value_Font=[
+                    "Complete Blood Count",
+                    "Blood Type",
+                    "Stool Exam",
+                    "Urinalysis (Urine Test)",
+                    "Syphilis Rapid Test",
+                    "Hepatitis B (Antigen Test)",
+                    "Anti-HAV Test",
+                    "Drug Test",
+                    "Pregnancy Test",
+                    "Fasting Blood Suger Test",
+                    "Blood Uric Acid Test",
+                    "Blood Cholesterol Test",
+                    "Blood Creatinine Test",
+                    "Acid Fast Staining",
+                    "X-Ray Test",
+                    ]
     
         #Checkbox Def
+
     def showCheckbox(self):
+        for i in range(len(self.services)):
+            Selected=""
+            print(self.services[i].get())
+            if int(self.services[i].get()) >= 1:
+                Selected += str(i)
+                this=self.Value_Font[i]
+                print(Selected)
+                print(this)
+
+
         name=Name_Entry.get()
         age=AGE_Entry.get()
         bdate=Birth_Entry.get_date()
         gender=Gender_Mune.get()
         address=Address_Entry.get()
         today=date.today()
+
         print(name)
         print(age)
         print(bdate)
         print(gender)
         print(address)
         print(today)
-
-        for i in range(len(self.services)):
-            Selected=""
-            if int(self.services[i].get()) >= 1:
-                Selected += str(i)
-                this=self.Value[i]
-                print(Selected)
-                print(this)
-                # print(self.services[i].get())
                 
     def FrontDesk(self):
         def Home():
@@ -77,54 +98,34 @@ class Main:
         FrontDesk_Title.place(x=20,y=20)
         Box_Title=Label(Frame_Body,text="Laboratory Test List",font='Arial 25')
         Box_Title.place(x=54,y=300)
-        Box=Frame(Frame_LIST,width=560,height=300,highlightbackground="black",highlightthickness=1)
-        Box.place(x=50,y=320)
+        self.Box=Frame(Frame_LIST,width=560,height=300,highlightbackground="black",highlightthickness=1)
+        self.Box.place(x=50,y=320)
         #checkbox
         
-        self.Value=[
-                    "Complete Blood Count",
-                    "Blood Type",
-                    "Stool Exam",
-                    "Urinalysis (Urine Test)",
-                    "Syphilis Rapid Test",
-                    "Hepatitis B (Antigen Test)",
-                    "Anti-HAV Test",
-                    "Drug Test",
-                    "Pregnancy Test",
-                    "Fasting Blood Suger Test",
-                    "Blood Uric Acid Test",
-                    "Blood Cholesterol Test",
-                    "Blood Creatinine Test",
-                    "Acid Fast Staining",
-                    "X-Ray Test",
-                    ]
-
         self.services=[]
-        for i in range (15):
-            Test=StringVar()
+        for i in range(15):
+            Test=IntVar()   
             Test.set(0)
-            self.services.append(Test)
-        
-        Checkbutton(Box,text="Complete Blood Count",variable=self.services[0],font='Arial 12 ').place(x=30,y=50)
-        Checkbutton(Box,text="Blood Type",variable=self.services[1],font='Arial 12 ').place(x=30,y=75)
-        Checkbutton(Box,text="Stool Exam",variable=self.services[2],font='Arial 12 ').place(x=30,y=100)
-        Checkbutton(Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Arial 12 ').place(x=30,y=125)
-        Checkbutton(Box,text="Syphilis Rapid Test",variable=self.services[4],font='Arial 12 ').place(x=30,y=150)
-        Checkbutton(Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Arial 12 ').place(x=30,y=175)
-        Checkbutton(Box,text="Anti-HAV Test",variable=self.services[6],font='Arial 12 ').place(x=30,y=200)
-        Checkbutton(Box,text="Drug Test",variable=self.services[7],font='Arial 12 ').place(x=30,y=222)
-        Checkbutton(Box,text="Pregnancy Test",variable=self.services[8],font='Arial 12 ').place(x=30,y=245)
-        Checkbutton(Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Arial 12 ').place(x=280,y=50)
-        Checkbutton(Box,text="Blood Uric Acid Test",variable=self.services[10],font='Arial 12 ').place(x=280,y=75)
-        Checkbutton(Box,text="Blood Cholesterol Test",variable=self.services[11],font='Arial 12 ').place(x=280,y=100)
-        Checkbutton(Box,text="Blood Creatinine Test",variable=self.services[12],font='Arial 12 ').place(x=280,y=125)
-        Checkbutton(Box,text="Acid Fast Staining",variable=self.services[13],font='Arial 12 ').place(x=280,y=150)
-        Checkbutton(Box,text="X-Ray Test",variable=self.services[14],font='Arial 12 ').place(x=280,y=175)
-
+            self.services.append(Test) 
+            
+        C=Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Arial 12 ').place(x=30,y=50)
+        C=Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Arial 12 ').place(x=30,y=75)
+        C=Checkbutton(self.Box,text="Stool Exam",variable=self.services[2],font='Arial 12 ').place(x=30,y=100)
+        C=Checkbutton(self.Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Arial 12 ').place(x=30,y=125)
+        C=Checkbutton(self.Box,text="Syphilis Rapid Test",variable=self.services[4],font='Arial 12 ').place(x=30,y=150)
+        C=Checkbutton(self.Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Arial 12 ').place(x=30,y=175)
+        C=Checkbutton(self.Box,text="Anti-HAV Test",variable=self.services[6],font='Arial 12 ').place(x=30,y=200)
+        C=Checkbutton(self.Box,text="Drug Test",variable=self.services[7],font='Arial 12 ').place(x=30,y=222)
+        C=Checkbutton(self.Box,text="Pregnancy Test",variable=self.services[8],font='Arial 12 ').place(x=30,y=245)
+        C=Checkbutton(self.Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Arial 12 ').place(x=280,y=50)
+        C=Checkbutton(self.Box,text="Blood Uric Acid Test",variable=self.services[10],font='Arial 12 ').place(x=280,y=75)
+        C=Checkbutton(self.Box,text="Blood Cholesterol Test",variable=self.services[11],font='Arial 12 ').place(x=280,y=100)
+        C=Checkbutton(self.Box,text="Blood Creatinine Test",variable=self.services[12],font='Arial 12 ').place(x=280,y=125)
+        C=Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Arial 12 ').place(x=280,y=150)
+        C=Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Arial 12 ').place(x=280,y=175)
+  
         #Body-------
-        #DEF INPUT------
-        def Gender_Click():
-            Genderlabel=Label(Frame_Input,Gender_Mune.get(),font="Arial 12")
+
 
         #IMPUT-----------------
         Frame_Input=Frame(Frame_Body,width=680,height=700)
@@ -152,7 +153,6 @@ class Main:
         Option=["Male","Female","Other"]
         Gender_Mune=ttk.Combobox(Frame_Input,value=Option,font='Arial 12',state='readonly')
         Gender_Mune.current(0)
-        Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
         Gender_Mune.place(x=412,y=432)
 
         global Address_Entry,addrs
@@ -380,14 +380,14 @@ class Main:
         AGE_Entry=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3)
         AGE_Entry.place(x=450,y=70)
 
-        def Gender_Click():
-            Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
+        # def Gender_Click(value):
+        #     Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
 
         Gender_Label=Label(Frame_Body,text="Gender:",font='Arial 12').place(x=150,y=100)
         Option=["Male","Female","Other"]
         Gender_Mune=ttk.Combobox(Frame_Body,value=Option,font='Arial 12',state='readonly')
         Gender_Mune.set("Select Gender")
-        Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
+        # Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
         Gender_Mune.place(x=150,y=120)
 
         Date_Label=Label(Frame_Body,text="Date:",font="Arial 12").place(x=20,y=100)
@@ -528,7 +528,7 @@ class Main:
             Plus_ADD_button=Button(Plus_Body,text="ADD",font=("Arail 10"),width=5,borderwidth=5)
             Plus_ADD_button.place(x=450,y=560)
            
-            Plus_Cancel_button=Button(Plus_Body,text="Cancel",font=("Arail 10"),width=5,borderwidth=5)
+            Plus_Cancel_button=Button(Plus_Body,text="Cancel",font=("Arail 10"),width=5,borderwidth=5,command=self.Close_Plus_Finding)
             Plus_Cancel_button.place(x=520,y=560)
 
             PageOpen += 1
@@ -775,5 +775,5 @@ class Main:
         self.Main_Dashboard()
 
 
-# app=Main()
-# app.start()
+app=Main()
+app.start()

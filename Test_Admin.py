@@ -32,21 +32,21 @@ class Admin:
                 profession.set("")
 
                 self.Registration_Page.destroy()
+    
+    def submit(self):
+        uname=username.get()
+        passwd=password.get()
+        fname=firstname.get()
+        lname=lastname.get()
+        how_muchyour_age=age.get()
+        addrss=address.get()
+        role=profession.get()
+
+        NewEmp=employee.Employee(uname,passwd,fname,lname,how_muchyour_age,addrss,role,filepath)
+        NewEmp.register()
 
     def Regist(self):
         global PageOpen
-
-        def submit(self):
-            uname=username.get()
-            passwd=password.get()
-            fname=firstname.get()
-            lname=lastname.get()
-            how_muchyour_age=age.get()
-            addrss=address.get()
-            role=profession.get()
-
-            NewEmp=employee.Employee(uname,passwd,fname,lname,how_muchyour_age,addrss,role,filepath)
-            NewEmp.register()
 
         if PageOpen<2:
             self.Registration_Page=Toplevel()
@@ -111,13 +111,15 @@ class Admin:
             Entry_Birthdate=DateEntry(Regist_Body,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
             Entry_Birthdate.place(x=100,y=289)
 
-            Label_Address=Label(Regist_Body,text="Address:",textvariable=address,font=("Arial",10,"bold")).place(x=15,y=320)
-            Entry_Address=Entry(Regist_Body,text="Address:",font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=340)
+
+            Label_Address=Label(Regist_Body,text="Address:",font=("Arial",10,"bold"))
+            Label_Address.place(x=15,y=320)
+            Entry_Address=Entry(Regist_Body,text="Address:",textvariable=address,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=340)
 
             Label_Pro=Label(Regist_Body,text="Profession:",font=("Arial",10,"bold")).place(x=15,y=370)
             Entry_Pro=Entry(Regist_Body,text="Profession:",textvariable=profession,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=15,y=390)
 
-            Reg_Submit=Button(Regist_Body,text="Submit",width=5,height=1,font=("Arail",8,"bold"),borderwidth=3,command=submit)
+            Reg_Submit=Button(Regist_Body,text="Submit",width=5,height=1,font=("Arail",8,"bold"),borderwidth=3,command=self.submit)
             Reg_Submit.place(x=270,y=425)
             
             Reg_Cancel=Button(Regist_Body,text="Cancel",width=5,height=1,font=("Arail",8,"bold"),borderwidth=3,command=self.Rig_close)
