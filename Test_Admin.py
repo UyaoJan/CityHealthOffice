@@ -138,15 +138,15 @@ class Admin:
             Entry_Pro=Entry(Regist_Body,text="Profession:",textvariable=profession,font=("Arial",10,"bold"),width=50,borderwidth=3)
             Entry_Pro.place(x=15,y=390)
 
-            Label(Regist_Body,text="Department",font=("Arial",10,"bold")).place(x=15,y=425)
+            Label(Regist_Body,text="Department",font=("Arial",10,"bold")).place(x=15,y=420)
             Entry_Dept=ttk.Combobox(Regist_Body,value=['Laboratory Department', 'Imaging Center'],font='Arial 12',width=37,state='readonly')
             Entry_Dept.place(x=15,y=440)
 
             Reg_Submit=Button(Regist_Body,text="Submit",width=5,height=1,font=("Arail",8,"bold"),borderwidth=3,command=submit)
-            Reg_Submit.place(x=270,y=500)
+            Reg_Submit.place(x=270,y=480)
             
             Reg_Cancel=Button(Regist_Body,text="Cancel",width=5,height=1,font=("Arail",8,"bold"),borderwidth=3,command=self.Rig_close)
-            Reg_Cancel.place(x=320,y=500)
+            Reg_Cancel.place(x=320,y=480)
 
             PageOpen +=1
         else:
@@ -168,7 +168,7 @@ class Admin:
                 self.View_Page=Toplevel()
                 self.View_Page.title("Edit Profile")
                 PAGE_width=700
-                PAGE_height=450
+                PAGE_height=430
                 self.View_Page.geometry(f'{PAGE_width}x{PAGE_height}+{400}+{200}')
                 self.View_Page.resizable(False,False)
                 self.View_Page.protocol("WM_DELETE_WINDOW", self.View_on_close)
@@ -230,6 +230,7 @@ class Admin:
 
                         else: messagebox.showinfo("No Changes Made","No Changes have been Made!")
                 
+                Profile=Label(self.View_Body,text="Profile",font=("Arial",35,"bold")).place(x=10,y=10)
 
                 View_img=Label(self.View_Body,text="Image",font=("Arial",15),bg="gray").place(x=470,y=10,relwidth=0.3,relheight=0.5)
 
@@ -258,19 +259,20 @@ class Admin:
                 Label_View_Pro=Label(self.View_Body,text="Profession:",font=("Arial",10,"bold")).place(x=10,y=280)
                 self.Entry_View_Pro=Entry(self.View_Body,text="Profession:",textvariable=profession2,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=10,y=300)
 
+                Label_Pro=Label(self.View_Body,text="Department",font=("Arial",10,"bold")).place(x=10,y=330)
                 Entry_Pro=ttk.Combobox(self.View_Body,value=['Laboratory Department', 'Imaging Center'],font='Arial 12',width=37,state='readonly')
                 Entry_Pro.current(Entry_Pro['values'].index(res[4]))
-                Entry_Pro.place(x=15,y=425)
+                Entry_Pro.place(x=10,y=350)
                 
                 View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id))
-                View_EDIT.place(x=510,y=200)
+                View_EDIT.place(x=510,y=270)
 
                 View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
                 View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
-                View_DELETE.place(x=510,y=240)
+                View_DELETE.place(x=510,y=310)
 
                 View_Cancel=Button(self.View_Body,text="Cancel",width=15,height=1,font=("Arail",10),borderwidth=5,command=self.View_on_close)
-                View_Cancel.place(x=510,y=290)
+                View_Cancel.place(x=510,y=350)
 
                 PageOpen +=1
             else:
