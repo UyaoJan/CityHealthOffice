@@ -266,90 +266,6 @@ class Main:
         else:
             messagebox.showinfo("Error","The Window is already Open!")
 
-
-    def Client_on_close(self):
-        global PageOpen
-        if messagebox.askokcancel('Close', 'Are you sure you want to close the View Page all the data will not be Save?'):
-            PageOpen=1
-            self.Client_Page.destroy()
-    
-    def ClientList(self,value):
-        global PageOpen
-        if PageOpen < 2:
-            self.Client_Page=Toplevel()
-            self.Client_Page.title("Client List")
-            self.Client_Page
-            Record_width=450
-            Record_height=600
-            self.Client_Page.geometry(f'{Record_width}x{Record_height}+{480}+{100}')
-            self.Client_Page.protocol("WM_DELETE_WINDOW", self.Client_on_close)
-
-            self.CListBody= Frame(self.Client_Page)
-            self.CListBody.pack(expand=1,fill=BOTH)
-
-            Client_search_LB=Label(self.CListBody,text="SEARCH: ",font='Arial 12 bold').place(x=10,y=100)
-            Client_search_EN=Entry(self.CListBody,font='Arial 12',borderwidth=5)
-            Client_search_EN.place(x=90,y=98,relwidth=0.6)
-            Client_search_BT=Button(self.CListBody,text="Search",font='Arial 10',width=6,height=0,borderwidth=5)
-            Client_search_BT.place(x=365,y=94)
-
-            ClistFrame=Frame(self.CListBody,highlightbackground="black",highlightthickness=1)
-            ClistFrame.place(x=0,y=130,relwidth=1.0,relheight=0.78)
-            CListBOX= Canvas(ClistFrame,highlightbackground="black",highlightthickness=1)
-            CListBOX.pack(side=LEFT,fill=BOTH,expand=1)
-
-            Clistscroll=ttk.Scrollbar(ClistFrame,orient=VERTICAL,command=CListBOX.yview)
-            Clistscroll.pack(side=RIGHT,fill=Y)
-
-            CListBOX.configure(yscrollcommand=Clistscroll.set)
-            CListBOX.bind('<Configure>',lambda e: CListBOX.configure(scrollregion= CListBOX.bbox("all")))
-
-            Client_List=Frame(CListBOX,highlightbackground="black",highlightthickness=2)
-            CListBOX.create_window((0,0),window=Client_List,anchor=NW)
-            #print(self.Value_Laboratory)
-            if value == "Laboratory":
-                result=self.user.getClients_lab()
-                #print(value)
-                for i in range(len(result)):
-                    ClientL_Number=Frame(Client_List,width=427,height=80)
-                    ClientL_Number.grid(row=i,column=0)
-
-                    Client_Page=Frame(ClientL_Number,width=250,height=50,bg="gray",highlightbackground="black",highlightthickness=1)
-                    Client_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
-
-                    CL_Number_BOX=Frame(Client_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
-                    CL_Number_BOX.place(x=10,y=10)
-                    Client_Number=Label(CL_Number_BOX,text=result[i][0],font=("Arial",25,"bold")).place(x=3,y=0)
-                    Client_Name=Label(Client_Page,text="NAME: "+result[i][1],font=("Arial",12,"bold")).place(x=85,y=10)
-                    Client_Test=Label(Client_Page,text="TEST: "+result[i][6],font=("Arial",8,"bold")).place(x=85,y=30)
-
-                    Take_Button=Button(Client_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
-                    Take_Button.place(x=360,y=37)
-            
-            elif value == "X_RAY":
-                result=self.user.getClients_Xray()
-                #print(value)
-                for i in range(len(result)):
-                    X_RAY_Client_Number=Frame(Client_List,width=427,height=80)
-                    X_RAY_Client_Number.grid(row=i,column=0)
-
-                    X_RAY_Client_Page=Frame(X_RAY_Client_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
-                    X_RAY_Client_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
-
-                    CLX_Number_BOX=Frame(X_RAY_Client_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
-                    CLX_Number_BOX.place(x=10,y=10)
-                    Client_Number=Label(CLX_Number_BOX,text=result[i][0],font=("Arial",25,"bold")).place(x=3,y=0)
-
-                    X_Client_Name=Label(X_RAY_Client_Page,text="NAME: "+result[i][1],font=("Arial",12,"bold")).place(x=85,y=10)
-                    X_Client_Test=Label(X_RAY_Client_Page,text="TEST: "+result[i][6],font=("Arial",8,"bold")).place(x=85,y=30)
-
-                    Take_Button=Button(X_RAY_Client_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
-                    Take_Button.place(x=360,y=37)
-
-            PageOpen += 1
-
-        else:
-            messagebox.showinfo("Error","The Window is already Open!")
 #Laboratory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Laboratory(self):
         if self.user.return_dept()!='Laboratory Department':
@@ -405,12 +321,27 @@ class Main:
             Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
             Gender_Mune.place(x=150,y=120)
 
-            Date_Label=Label(Frame_Body,text="Date:",font="Arial 12").place(x=20,y=100)
+            Date_Label=Label(Frame_Body,text="Date:",font=("Arial 12")).place(x=20,y=100)
             Date_Entry=DateEntry(Frame_Body,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
             Date_Entry.place(x=20,y=120)
+            
+            Testlist=Frame(Frame_Body,bg="blue",highlightbackground="black",highlightthickness=1)
+            Testlist.place(x=850,y=0,relwidth=0.25,relheight=1.0)
 
-            CList_Button=Button(Frame_Body,text="Client List",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.ClientList(self.Value_Laboratory[0]))
-            CList_Button.place(x=1200,y=60)
+            Test_Table=ttk.Treeview(Testlist)
+            style=ttk.Style()
+            style.theme_use("default")
+            style.configure("Treeview")
+            Test_Table['column']=("Laboratory","Complete")
+
+            Test_Table.column("#0",width=0,stretch=NO)
+            Test_Table.column("Laboratory",width=200)
+            Test_Table.column("Complete",width=100)
+
+            Test_Table.heading("#0")
+            Test_Table.heading("Laboratory",text="Laboratory Test")
+            Test_Table.heading("Complete",text="Complete")
+            Test_Table.pack(expand=1,fill=BOTH)
 
             Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
             Record_Button.place(x=1200,y=100)
@@ -422,12 +353,13 @@ class Main:
             Test_Label=Label(Frame_Test,text="Laboratory Test",width=123,font="Arial 15",anchor=W,highlightbackground="black",highlightthickness=1)
             Test_Label.place(x=0,y=0)
 
-            Test=[#"Complete Blood Count",
+            Test=[  
+                    #"Complete Blood Count",
                     # "Blood Type",
                     # "Stool Exam",
                     "Serology",
                     "Miscelaneous",
-                    ]
+                ]
 
             def Option_TEST(event):
                 if LabTest_Mune.get() == "Serology":
@@ -467,6 +399,8 @@ class Main:
                     ST_BOX12_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
                     ST_BOX12_L.grid(row=5,column=1)
 
+                    ST_Button=Button(Serology_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5)
+                    ST_Button.place(x=1200,y=430)
 
                 elif LabTest_Mune.get() == "Miscelaneous":
                     Serology_Page.pack_forget()
@@ -488,6 +422,9 @@ class Main:
                     PT_BOX4=ttk.Combobox(PT_Box,value=PT_Result,font=("Arial",15),state='readonly')
                     PT_BOX4.set("Select Result")
                     PT_BOX4.grid(row=1,column=1)
+
+                    PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5)
+                    PT_Button.place(x=1200,y=430)
 
 
             Test_Label=Label(Frame_Test,text="TEST:",font='Arial 12 bold').place(x=1075,y=3)
@@ -769,9 +706,57 @@ class Main:
         Frame_FilterBody=Frame(Frame_SumBody,height=130,border=2,borderwidth=5,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
         Frame_FilterBody.pack(fill=X)
 
+        Sum_Test=[  
+                    "Complete Blood Count",
+                    "Blood Type",
+                    "Stool Exam",
+                    "Serology",
+                    "Miscelaneous",
+                ]
+
+        LabTest_Checkbox=Checkbutton(Frame_FilterBody,text="Laboratory Report For :",font='Arial 12',).place(x=200,y=10)
+        LabTest_SUM=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly')
+        LabTest_SUM.set("TEST")
+        LabTest_SUM.bind("<<ComboboxSelected>>")
+        LabTest_SUM.place(x=390,y=14)
+
+        MidTech_Checkbox=Checkbutton(Frame_FilterBody,text="Medical Technoligst For :",font='Arial 12',).place(x=200,y=40)
+        MidTech_SUM=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly',width=40)
+        MidTech_SUM.set("Medical Technoligst")
+        MidTech_SUM.bind("<<ComboboxSelected>>")
+        MidTech_SUM.place(x=203,y=63)
+
+        Month_Checkbox=Checkbutton(Frame_FilterBody,text="Month of :",font='Arial 10',).place(x=650,y=10)
+        Month_SUM=ttk.Combobox(Frame_FilterBody,font='Arial 10',state='readonly')
+        Month_SUM['values']=('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December')
+        Month_SUM.set("Select Month")
+        Month_SUM.bind("<<ComboboxSelected>>")
+        Month_SUM.place(x=740,y=12)
+
+        Year_Checkbox=Checkbutton(Frame_FilterBody,text="Yearly of :",font='Arial 10',).place(x=650,y=40)
+        Year_SUM=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly')
+        Year_SUM.set("Select Yearly")
+        Year_SUM.bind("<<ComboboxSelected>>")
+        Year_SUM.place(x=740,y=42)
+
+        Daily_Checkbox=Checkbutton(Frame_FilterBody,text="Daily of :",font='Arial 10',).place(x=650,y=70)
+        Daily_SUM=DateEntry(Frame_FilterBody,width=15,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
+        Daily_SUM.place(x=740,y=74)
+
+        Semi_Checkbox=Checkbutton(Frame_FilterBody,text="Semi of :",font='Arial 10',).place(x=920,y=10)
+        Semi_SUM=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly')
+        Semi_SUM.set("Select Semi")
+        Semi_SUM.bind("<<ComboboxSelected>>")
+        Semi_SUM.place(x=1000,y=12)
+
+        Quart_Checkbox=Checkbutton(Frame_FilterBody,text="Quart of :",font='Arial 10',).place(x=920,y=40)
+        Quart_SUM=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly')
+        Quart_SUM.set("Select Quart")
+        Quart_SUM.bind("<<ComboboxSelected>>")
+        Quart_SUM.place(x=1000,y=42)
+
         Frame_TableBody=Frame(Frame_SumBody,bg="grey",borderwidth=5,highlightbackground="black",highlightthickness=1)
         Frame_TableBody.pack(expand=1,fill=BOTH)
-
         Summary_Table=ttk.Treeview(Frame_TableBody)
         style=ttk.Style()
         style.theme_use("default")
