@@ -632,19 +632,20 @@ class Main:
                 f_types = [('Jpg Files', '*.jpg')]
                 filepath = filedialog.askopenfilename(filetypes=f_types)
                 img=Image.open(filepath)
-                img_resized=img.resize((285,375)) # new width & height
+                img_resized=img.resize((285,375)) 
                 img=ImageTk.PhotoImage(img_resized)
-                b2 =Button(Image_Box,image=img,borderwidth=5,command=open_file) # using Button 
+                b2 =Button(Image_Box,image=img,borderwidth=5,command=open_file) 
                 b2.place(x=0,y=0)
             
             def submit():
                 if name.get() =="":
                     messagebox.showerror("Error","Select a Client First")
                 else:
-                    if Finding_BOX.get("1.0","end-1c")=="" and IMPRESSIONS_BOX.get("1.0","end-1c")=="":
-                        messagebox.showerror("Error","Empty Finding and Impression Box")
+                    if Finding_BOX.get("1.0","end-1c")=="" and IMPRESSIONS_BOX.get("1.0","end-1c")=="" and 'filepath' not in globals():
+                        messagebox.showerror("Error","Empty Finding, Impression and Xray Box")
                     elif Finding_BOX.get("1.0","end-1c")=="": messagebox.showerror("Error","Empty Finding Box")
                     elif IMPRESSIONS_BOX.get("1.0","end-1c")=="": messagebox.showerror("Error","Empty Impression Box")
+                    elif filepath is None:messagebox.showerror("Error","Empty Xray Box")
                     else:
                         document=Path(__file__).parent / "XRAY_TEMPLATE.docx"
                         doc=DocxTemplate(document)
@@ -663,7 +664,6 @@ class Main:
                         }
                         doc.render(context)
                         doc.save(Path(__file__).parent/"newDoc.docx")
-
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
             
             CList_Xray=Button(Img_Body,text="Client List",width=10,bg="green",font='Arial 11',command=lambda:self.ClientList(self.Value_Laboratory[1])).place(x=300,y=630)

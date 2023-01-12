@@ -58,8 +58,6 @@ class Admin:
 
             messagebox.showinfo("Account Added Successfully","Added Succesfully")
 
-            messagebox.showinfo("Account Added Successfully","Added Succesfully")
-
         if PageOpen<2:
             self.Registration_Page=Toplevel()
             self.Registration_Page.title("Registration")
@@ -161,8 +159,9 @@ class Admin:
     def ViewProfile(self,id,label_reference):        
             global label_refer
             label_refer=label_reference
-            global PageOpen    
+            global PageOpen, state
             global EditAccount, res
+            
             res=employee.Employee.findAccount(id)
             if PageOpen<2:
                 self.View_Page=Toplevel()
@@ -179,95 +178,130 @@ class Admin:
                 global username2,password2,firstname2,lastname2,age2,address2,profession2
 
                 username2=StringVar()
-                username2.set(res[6])
+                username2.set(res[7])
                 password2=StringVar()
-                password2.set(res[7])
+                password2.set(res[8])
                 firstname2=StringVar()
                 firstname2.set(res[1])
                 lastname2=StringVar()
                 lastname2.set(res[2])
                 age2=IntVar()
-                age2.set(str(res[4]))
+                age2.set(str(res[5]))
                 address2=StringVar()
-                address2.set(res[5])
+                address2.set(res[6])
                 profession2=StringVar()
                 profession2.set(res[3])
 
-                
+                state=0
+                print(state)
                 def deleteAccount(id):
                     answer=messagebox.askyesno("Confirm Delete","Delete User?")
                     if answer:
                         messagebox.showinfo("User Deleted","User Deleted Successfully")
                         employee.Employee.deleteEmployee(id)
                                 
-                def editAccount2(id):
-                    Account=(
-                    id,
-                    firstname2.get(),
-                    lastname2.get(),
-                    profession2.get(),
-                    age2.get(),
-                    address2.get(),
-                    
-                    username2.get(),
-                    password2.get(),)
-                    
-                    ress=list(res)
-                    del ress[-1]
-                    ress=tuple(ress)
+                def editAccount2(id,state):
+                    if state==0:
+                        state=1
+                        print(state)
+                        self.Entry_View_Username.config(state='normal')
+                        self.Entry_View_Password.config(state='normal')
+                        self.Entry_View_FName.config(state='normal')
+                        self.Entry_View_LName.config(state='normal')
+                        self.Entry_View_Age.config(state='normal')
+                        self.Entry_Birthdate.config(state='readonly')
+                        self.Entry_View_Address.config(state='normal')
+                        self.Entry_View_Pro.config(state='readonly')
+                        self.Entry_Pro.config(state='readonly')
+                        
+                    elif state==1:
+                        Account=(
+                        id,
+                        firstname2.get(),
+                        lastname2.get(),
+                        profession2.get(),
+                        age2.get(),
+                        address2.get(),
+                        
+                        username2.get(),
+                        password2.get(),)
+                        
+                        ress=list(res)
+                        del ress[-1]
+                        ress=tuple(ress)
 
-                    if Account==ress: 
-                        messagebox.showinfo("No Changes Made","No Changes have been Made!")
-                    
-                    else:
-                        answer = messagebox.askyesno(title='confirmation',
-                                    message='Save Changes?')
+                        if Account==ress: 
+                            messagebox.showinfo("No Changes Made","No Changes have been Made!")
+                        
+                        else:
+                            answer = messagebox.askyesno(title='confirmation',
+                                        message='Save Changes?')
 
-                        if answer:
-                            self.View_Page.destroy()
-                            employee.Employee.editAccount(Account)
-                            messagebox.showinfo("Changes Saved","Account Update Succesful")
+                            if answer:
+                                self.View_Page.destroy()
+                                employee.Employee.editAccount(Account)
+                                messagebox.showinfo("Changes Saved","Account Update Succesful")
 
-                        else: messagebox.showinfo("No Changes Made","No Changes have been Made!")
-                
+                            else: messagebox.showinfo("No Changes Made","No Changes have been Made!")
+                           
+                            state=0
+
+                            self.Entry_View_Username.config(state='disabled')
+                            self.Entry_View_Password.config(state='disabled')
+                            self.Entry_View_FName.config(state='disabled')
+                            self.Entry_View_LName.config(state='disabled')
+                            self.Entry_View_Age.config(state='disabled')
+                            self.Entry_Birthdate.config(state='disabled')
+                            self.Entry_View_Address.config(state='disabled')
+                            self.Entry_View_Pro.config(state='disabled')
+                            Entry_Pro.config(state='disabled')
+
+                print(state)
+            
                 Profile=Label(self.View_Body,text="Profile",font=("Arial",35,"bold")).place(x=10,y=10)
 
                 View_img=Label(self.View_Body,text="Image",font=("Arial",15),bg="gray").place(x=470,y=10,relwidth=0.3,relheight=0.5)
 
                 Label_View_Username=Label(self.View_Body,text="Username:",font=("Arial",10,"bold")).place(x=10,y=80)
-                self.Entry_View_Username=Entry(self.View_Body,text="Username:",textvariable=username2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=10,y=100)
+                self.Entry_View_Username=Entry(self.View_Body,text="Username:",textvariable=username2,font=("Arial",10,"bold"),width=30,borderwidth=3,state='disabled')
+                self.Entry_View_Username.place(x=10,y=100)
 
                 Label_View_Password=Label(self.View_Body,text="Password:",font=("Arial",10,"bold")).place(x=240,y=80)
-                self.Entry_View_Password=Entry(self.View_Body,text="Password:",textvariable=password2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=240,y=100)
+                self.Entry_View_Password=Entry(self.View_Body,text="Password:",textvariable=password2,font=("Arial",10,"bold"),width=30,borderwidth=3,state='disabled')
+                self.Entry_View_Password.place(x=240,y=100)
 
                 Label_View_FName=Label(self.View_Body,text="First Name:",font=("Arial",10,"bold")).place(x=10,y=130)
-                self.Entry_View_FName=Entry(self.View_Body,text="First Name:",textvariable=firstname2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=10,y=150)
+                self.Entry_View_FName=Entry(self.View_Body,text="First Name:",textvariable=firstname2,font=("Arial",10,"bold"),width=30,borderwidth=3,state='disabled')
+                self.Entry_View_FName.place(x=10,y=150)
 
                 Label_View_LName=Label(self.View_Body,text="Last Name:",font=("Arial",10,"bold")).place(x=240,y=130)
-                self.Entry_View_LName=Entry(self.View_Body,text="Last Name:",textvariable=lastname2,font=("Arial",10,"bold"),width=30,borderwidth=3).place(x=240,y=150)
+                self.Entry_View_LName=Entry(self.View_Body,text="Last Name:",textvariable=lastname2,font=("Arial",10,"bold"),width=30,borderwidth=3,state='disabled')
+                self.Entry_View_LName.place(x=240,y=150)
 
                 Label_View_Age=Label(self.View_Body,text="Age:",font=("Arial",10,"bold")).place(x=10,y=180)
-                self.Entry_View_Age=Entry(self.View_Body,text="Age:",textvariable=age2,font=("Arial",10,"bold"),width=10,borderwidth=3).place(x=10,y=200)
+                self.Entry_View_Age=Entry(self.View_Body,text="Age:",textvariable=age2,font=("Arial",10,"bold"),width=10,borderwidth=3,state='disabled')
+                self.Entry_View_Age.place(x=10,y=200)
 
                 Label_Birthdate=Label(self.View_Body,text="BirthDate:",font="Arial 12").place(x=100,y=180)
-                self.Entry_Birthdate=DateEntry(self.View_Body,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
+                self.Entry_Birthdate=DateEntry(self.View_Body,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='disabled')
                 self.Entry_Birthdate.place(x=100,y=200)
 
                 Label_View_Address=Label(self.View_Body,text="Address:",font=("Arial",10,"bold")).place(x=10,y=230)
-                self.Entry_View_Address=Entry(self.View_Body,text="Address:",textvariable=address2,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=10,y=250)
+                self.Entry_View_Address=Entry(self.View_Body,text="Address:",textvariable=address2,font=("Arial",10,"bold"),width=50,borderwidth=3,state='disabled')
+                self.Entry_View_Address.place(x=10,y=250)
 
                 Label_View_Pro=Label(self.View_Body,text="Profession:",font=("Arial",10,"bold")).place(x=10,y=280)
-                self.Entry_View_Pro=Entry(self.View_Body,text="Profession:",textvariable=profession2,font=("Arial",10,"bold"),width=50,borderwidth=3).place(x=10,y=300)
+                self.Entry_View_Pro=Entry(self.View_Body,text="Profession:",textvariable=profession2,font=("Arial",10,"bold"),width=50,borderwidth=3,state='disabled')
+                self.Entry_View_Pro.place(x=10,y=300)
 
                 Label_Pro=Label(self.View_Body,text="Department",font=("Arial",10,"bold")).place(x=10,y=330)
-                Entry_Pro=ttk.Combobox(self.View_Body,value=['Laboratory Department', 'Imaging Center'],font='Arial 12',width=37,state='readonly')
-                Entry_Pro.current(Entry_Pro['values'].index(res[4]))
-                Entry_Pro.place(x=10,y=350)
+                self.Entry_Pro=ttk.Combobox(self.View_Body,value=['Laboratory Department', 'Imaging Center'],font='Arial 12',width=37,state='disabled')
+                self.Entry_Pro.current(self.Entry_Pro['values'].index(res[4]))
+                self.Entry_Pro.place(x=10,y=350)
                 
-                View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id))
+                View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id,state))
                 View_EDIT.place(x=510,y=270)
 
-                View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
                 View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
                 View_DELETE.place(x=510,y=310)
 
