@@ -1,4 +1,5 @@
 from tkinter import messagebox
+import random
 import dbConnection,random
 class Employee:
     def __init__(self,id,username,password,fname,lname,age,address,role,dept,url):
@@ -44,6 +45,7 @@ class Employee:
         result =cursor.fetchall()
         return result
 
+
     def getClient_name(self,name):
         query="SELECT * FROM clients WHERE Name=%s LIMIT 1"
         cursor=self.Cursor
@@ -85,6 +87,17 @@ class Employee:
         cursor.execute(query)
         result=cursor.fetchall()
         return result
+
+    def generateClient_ORNumber(self):
+        num=random.randint(0,99999999)
+        query="SELECT id from summary"
+        cursor=self.Cursor
+        cursor.execute(query)
+        result=cursor.fetchall()
+        for number in result:
+            if number==num:
+                num=random.randint(0,99999999)
+        return num
 
     @staticmethod 
     def deleteEmployee(id):

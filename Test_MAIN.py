@@ -1,11 +1,12 @@
 from tkinter import *
 from PIL import ImageTk,Image
 from tkcalendar import Calendar,DateEntry
+import calendar
 from tkinter import ttk
 from tkinter import filedialog
 from PIL import Image, ImageTk
 from tkinter import messagebox
-from datetime import date
+from datetime import date, datetime
 import employee, LoginPage
 
 from pathlib import Path
@@ -450,7 +451,7 @@ class Main:
                             "NAME":Name_Entry.get(),
                             "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
                             "DATE":self.test_date,
-                            "OR_NO":133,
+                            "OR_NO":self.user.generateClient_ORNumber(),
                             "TEST":PT_BOX2.get(),
                             "RESULT":PT_BOX4.get(),
                             "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
@@ -745,54 +746,100 @@ class Main:
         Frame_FilterBody=Frame(Frame_SumBody,height=130,border=2,borderwidth=5,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
         Frame_FilterBody.pack(fill=X)
 
-        Sum_Test=[  
-                    "Complete Blood Count",
-                    "Blood Type",
-                    "Stool Exam",
-                    "Serology",
-                    "Miscelaneous",
-                ]
+        res= self.user.getAllTest()
+        Sum_Test=[x[0] for x in res]
 
-        LabTest_Checkbox=Checkbutton(Frame_FilterBody,text="Laboratory Report For :",font='Arial 12',).place(x=200,y=10)
-        LabTest_SUM=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly')
-        LabTest_SUM.set("TEST")
-        LabTest_SUM.bind("<<ComboboxSelected>>")
-        LabTest_SUM.place(x=390,y=14)
+        Label(Frame_FilterBody,text="Laboratory Test:",font='Arial 12',).place(x=200,y=10)
+        LabTest_Test=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly')
+        LabTest_Test.set("Select Here")
+        LabTest_Test.place(x=390,y=14)
 
-        MidTech_Checkbox=Checkbutton(Frame_FilterBody,text="Medical Technoligst For :",font='Arial 12',).place(x=200,y=40)
-        MidTech_SUM=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly',width=40)
-        MidTech_SUM.set("Medical Technoligst")
-        MidTech_SUM.bind("<<ComboboxSelected>>")
-        MidTech_SUM.place(x=203,y=63)
+        emp=employee.Employee.getAllEmployees()
+        emp_choices=[x[1] for x in emp]
 
-        Month_Checkbox=Checkbutton(Frame_FilterBody,text="Month of :",font='Arial 10',).place(x=650,y=10)
-        Month_SUM=ttk.Combobox(Frame_FilterBody,font='Arial 10',state='readonly')
-        Month_SUM['values']=('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December')
-        Month_SUM.set("Select Month")
-        Month_SUM.bind("<<ComboboxSelected>>")
-        Month_SUM.place(x=740,y=12)
+        Label(Frame_FilterBody,text="Medical Technologist",font='Arial 12',).place(x=200,y=40)
+        MidTech_Emp=ttk.Combobox(Frame_FilterBody,value=emp_choices,font='Arial 10',state='readonly',width=40)
+        MidTech_Emp.set("Select Medical Technologist")
+        MidTech_Emp.place(x=203,y=63)
 
-        Year_Checkbox=Checkbutton(Frame_FilterBody,text="Yearly of :",font='Arial 10',).place(x=650,y=40)
-        Year_SUM=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly')
-        Year_SUM.set("Select Yearly")
-        Year_SUM.bind("<<ComboboxSelected>>")
-        Year_SUM.place(x=740,y=42)
+        filter_options=["Monthly","Yearly","1st Semi Annual","2nd Semi Annual","1st Quarter","2nd Quarter","3rd Quarter","4th Quarter"]
+        Label(Frame_FilterBody,text="Filter By",font='Arial 12',).place(x=200,y=95)
+        MidTech_Filter=ttk.Combobox(Frame_FilterBody,value=filter_options,font='Arial 10',state='readonly',width=40)
+        MidTech_Filter.set("Select Filter Option")
+        MidTech_Filter.place(x=203,y=95)
 
-        Daily_Checkbox=Checkbutton(Frame_FilterBody,text="Daily of :",font='Arial 10',).place(x=650,y=70)
-        Daily_SUM=DateEntry(Frame_FilterBody,width=15,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
-        Daily_SUM.place(x=740,y=74)
+        def filter_Option(event):
+            if event.widget.get()=="Monthly":
+                months=list(calendar.month_name)
+                Label(Frame_FilterBody,text="Choose Month",font='Arial 12',).place(x=200,y=40)
+                month=ttk.Combobox(Frame_FilterBody,value=months,font='Arial 10',state='readonly',width=40)
+                month.set("Select Month")
+                month.place(x=400,y=40)
 
-        Semi_Checkbox=Checkbutton(Frame_FilterBody,text="Semi of :",font='Arial 10',).place(x=920,y=10)
-        Semi_SUM=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly')
-        Semi_SUM.set("Select Semi")
-        Semi_SUM.bind("<<ComboboxSelected>>")
-        Semi_SUM.place(x=1000,y=12)
+                yearr=datetime.today().year
+                years=[yearr - i for i in range (6)]
+                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
+                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
+                year.set("Select Year")
+                year.place(x=400,y=60)
 
-        Quart_Checkbox=Checkbutton(Frame_FilterBody,text="Quart of :",font='Arial 10',).place(x=920,y=40)
-        Quart_SUM=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly')
-        Quart_SUM.set("Select Quart")
-        Quart_SUM.bind("<<ComboboxSelected>>")
-        Quart_SUM.place(x=1000,y=42)
+            if event.widget.get()=="Yearly":
+                yearr=datetime.today().year
+                years=[yearr - i for i in range (6)]
+                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
+                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
+                year.set("Select Year")
+                year.place(x=400,y=40)
+            
+            if event.widget.get()=="1st Semi Annual":
+                yearr=datetime.today().year
+                years=[yearr - i for i in range (6)]
+                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
+                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
+                year.set("Select Year")
+                year.place(x=400,y=40)
+
+            if event.widget.get()=="2nd Semi Annual":
+                yearr=datetime.today().year
+                years=[yearr - i for i in range (6)]
+                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
+                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
+                year.set("Select Year")
+                year.place(x=400,y=40)
+            
+            if event.widget.get()=="1st Quarter":
+                yearr=datetime.today().year
+                years=[yearr - i for i in range (6)]
+                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
+                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
+                year.set("Select Year")
+                year.place(x=400,y=40)
+
+            if event.widget.get()=="2nd Quarter":
+                yearr=datetime.today().year
+                years=[yearr - i for i in range (6)]
+                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
+                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
+                year.set("Select Year")
+                year.place(x=400,y=40)
+
+            if event.widget.get()=="3rd Quarter":
+                yearr=datetime.today().year
+                years=[yearr - i for i in range (6)]
+                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
+                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
+                year.set("Select Year")
+                year.place(x=400,y=40)
+                
+            if event.widget.get()=="4th Quarter":
+                yearr=datetime.today().year
+                years=[yearr - i for i in range (6)]
+                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
+                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
+                year.set("Select Year")
+                year.place(x=400,y=40)
+
+        MidTech_Filter.bind("<<ComboboxSelected>>",filter_Option)
 
         Frame_TableBody=Frame(Frame_SumBody,bg="grey",borderwidth=5,highlightbackground="black",highlightthickness=1)
         Frame_TableBody.pack(expand=1,fill=BOTH)
