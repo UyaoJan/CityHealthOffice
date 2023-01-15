@@ -305,21 +305,35 @@ class Main:
             Labo_Title=Label(Frame_Body,text="Laboratory Test!",font='Arial 20')
             Labo_Title.place(x=10,y=5)
             Name_Label=Label(Frame_Body,text="Name: ",font='Arial 12').place(x=19,y=50)
-            Name_Entry=Entry(Frame_Body,width=59,borderwidth=3,font='Arial 9')
+            # Name_Entry=Entry(Frame_Body,width=59,borderwidth=3,font='Arial 9')
+            res=self.user.getClients_all()
+            names=[x[1] for x in res]
+            Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Arial 12',state='readonly')
             Name_Entry.place(x=20,y=70)
+
+            def setClient(event):
+                res=self.user.getClient_name(Name_Entry.get())
+                age=IntVar()
+                age.set(res[2])
+                
+                AGE_Entry.config(textvariable=age)
+                Gender_Mune.set(res[3])
+
+
+            Name_Entry.bind("<<ComboboxSelected>>",setClient)
 
             AGE_Label=Label(Frame_Body,text="Age: ",font='Arial 12').place(x=450,y=50)
             AGE_Entry=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3)
             AGE_Entry.place(x=450,y=70)
 
-            def Gender_Click():
-                Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
+            # def Gender_Click(event):
+            #     Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
 
             Gender_Label=Label(Frame_Body,text="Gender:",font='Arial 12').place(x=150,y=100)
             Option=["Male","Female","Other"]
             Gender_Mune=ttk.Combobox(Frame_Body,value=Option,font='Arial 12',state='readonly')
             Gender_Mune.set("Select Gender")
-            Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
+            # Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
             Gender_Mune.place(x=150,y=120)
 
             Date_Label=Label(Frame_Body,text="Date:",font=("Arial 12")).place(x=20,y=100)
@@ -414,17 +428,40 @@ class Main:
                     PT_Box.place(x=430,y=200)
                     PT_BOX1= Label(PT_Box,text="TEST",width=20,anchor=W,font=("Arial",15,"bold"))
                     PT_BOX1.grid(row=0,column=0)
-                    PT_BOX2= Label(PT_Box,text="PREGNANCY TEST",width=20,anchor=W,font=("Arial",15,"bold"))
+                    # PT_BOX2= Label(PT_Box,text="PREGNANCY TEST",width=20,anchor=W,font=("Arial",15,"bold"))
+                    res=self.user.getAllTest()
+                    TEST=[x[0] for x in res]
+                    PT_BOX2= ttk.Combobox(PT_Box,value=TEST,font=("Arial",15),state='readonly')
                     PT_BOX2.grid(row=0,column=1)
                     PT_BOX3= Label(PT_Box,text="RESULT",width=20,anchor=W,font=("Arial",15,"bold"))
                     PT_BOX3.grid(row=1,column=0)
 
-                    PT_Result=["POSITIVE","NEGATIVE"]
-                    PT_BOX4=ttk.Combobox(PT_Box,value=PT_Result,font=("Arial",15),state='readonly')
-                    PT_BOX4.set("Select Result")
+                    # PT_Result=["POSITIVE","NEGATIVE"]
+                    # PT_BOX4=ttk.Combobox(PT_Box,value=PT_Result,font=("Arial",15),state='readonly')
+                    # PT_BOX4.set("Select Result")
+                    PT_BOX4=Entry(PT_Box,font=("Arial",12),borderwidth=5)
                     PT_BOX4.grid(row=1,column=1)
 
-                    PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5)
+                    def submit():
+                        document=Path(__file__).parent / "MISCELLANEOUS_TEMPLATE.docx"
+                        doc=DocxTemplate(document)
+
+                        context={
+                            "NAME":Name_Entry.get(),
+                            "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                            "DATE":self.test_date,
+                            "OR_NO":133,
+                            "TEST":PT_BOX2.get(),
+                            "RESULT":PT_BOX4.get(),
+                            "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                            "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                        }
+                        doc.render(context)
+                        doc.save(Path(__file__).parent/"newDoc.docx")
+                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+
+
+                    PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
                     PT_Button.place(x=1200,y=430)
 
 

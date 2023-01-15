@@ -51,6 +51,13 @@ class Employee:
         result=cursor.fetchone()
         return result
 
+    def getAllTest(self):
+        query="SELECT ServiceName FROM services"
+        cursor=self.Cursor
+        cursor.execute(query)
+        result=cursor.fetchall()
+        return result
+
     def getClient(self,id):
         query="SELECT * FROM clients WHERE ClientID=%s LIMIT 1"
         cursor=self.Cursor
