@@ -13,7 +13,8 @@ from docxtpl import DocxTemplate
 from docxtpl import InlineImage
 from docx.shared import Inches
 
-import win32api
+import win32api, os, time
+import win32print
 
 
 class Main:
@@ -723,12 +724,13 @@ class Main:
                             "ID":client_id,
                             "FINDINGS":Finding_BOX.get("1.0","end-1c"),
                             "IMPRESSION":IMPRESSIONS_BOX.get("1.0","end-1c"),
-                            "IMAGE":image
+                            "IMAGE":image,
+                            "medtech_name":self.user.fname+" "+self.user.lname
                         }
                         doc.render(context)
                         doc.save(Path(__file__).parent/"newDoc.docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
-            
+                        
             CList_Xray=Button(Img_Body,text="Client List",width=10,bg="green",font='Arial 11',command=lambda:self.ClientList(self.Value_Laboratory[1])).place(x=300,y=630)
             Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
             Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Arial 11',command=lambda: submit()).place(x=520,y=630)
