@@ -415,7 +415,29 @@ class Main:
                     ST_BOX12_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
                     ST_BOX12_L.grid(row=5,column=1)
 
-                    ST_Button=Button(Serology_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5)
+                    def submit():
+                        pass
+                        # print(ST_BOX12_L.get()," blood type")
+                        # document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
+                        # doc=DocxTemplate(document)
+
+                        # context={
+                        #     "NAME":Name_Entry.get(),
+                        #     "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                        #     "DATE":self.test_date,
+                        #     "OR_NO":self.user.generateClient_ORNumber(),
+                            
+
+
+                        #     "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                        #     "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                        # }
+                        # doc.render(context)
+                        # doc.save(Path(__file__).parent/"newDoc.docx")
+                        # win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+
+
+                    ST_Button=Button(Serology_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5,command=submit())
                     ST_Button.place(x=1200,y=430)
 
                 elif LabTest_Mune.get() == "Miscelaneous":
