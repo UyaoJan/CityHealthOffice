@@ -415,9 +415,9 @@ class Main:
                     ST_BOX12_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
                     ST_BOX12_L.grid(row=5,column=1)
 
-                    def submit():
-                        pass
-                        # print(ST_BOX12_L.get()," blood type")
+                    def submit():   
+                        
+                        print(ST_BOX12_L.get()," blood type")
                         # document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
                         # doc=DocxTemplate(document)
 
