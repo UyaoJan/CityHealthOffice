@@ -826,6 +826,7 @@ class Main:
                 Yearly_yearr=datetime.today().year
                 Yearly_years=[Yearly_yearr - i for i in range (6)]
                 Valuebox.config(values=Yearly_years)
+                Valuebox.set('Select Year')
 
             elif event.widget.get()=="1st Semi Annual":
                 Monthly_Lyears.place_forget()
@@ -836,6 +837,7 @@ class Main:
                 Semi_1=datetime.today().year
                 Semi_1_years=[Semi_1 - i for i in range (6)]
                 Valuebox.config(values=Semi_1_years)
+                Valuebox.set('Select Year')
 
             elif event.widget.get()=="2nd Semi Annual":
                 Monthly_Lyears.place_forget()
@@ -846,6 +848,7 @@ class Main:
                 Semi_2=datetime.today().year
                 Semi_2_years=[Semi_2 - i for i in range (6)]
                 Valuebox.config(values=Semi_2_years)
+                Valuebox.set('Select Year')
             
             elif event.widget.get()=="1st Quarter":
                 Monthly_Lyears.place_forget()
@@ -856,17 +859,20 @@ class Main:
                 Quarter_1=datetime.today().year
                 Quarter_1_years=[Quarter_1 - i for i in range (6)]
                 Valuebox.config(values=Quarter_1_years)
+                Valuebox.set('Select Year')
 
             elif event.widget.get()=="2nd Quarter":
                 Monthly_Lyears.place_forget()
                 Monthly_year.place_forget()
                 Valuebox_label.config(text="2nd Quarter:")
+                Valuebox.set('Select Year')
                 
                 Valuebox_label.place(x=560,y=40)
                 Valuebox.place(x=560,y=60)
                 Quarter_2=datetime.today().year
                 Quarter_2_years=[Quarter_2 - i for i in range (6)]
                 Valuebox.config(values=Quarter_2_years)
+                Valuebox.set('Select Year')
 
             elif event.widget.get()=="3rd Quarter":
                 Valuebox_label.config(text="3rd Quarter:")
@@ -877,6 +883,7 @@ class Main:
                 Quarter_3=datetime.today().year
                 Quarter_3_years=[Quarter_3 - i for i in range (6)]
                 Valuebox.config(values=Quarter_3_years)
+                Valuebox.set('Select Year')
                 
             elif event.widget.get()=="4th Quarter":
                 Monthly_Lyears.place_forget()
@@ -887,6 +894,7 @@ class Main:
                 Quarter_4=datetime.today().year
                 Quarter_4_years=[Quarter_4 - i for i in range (6)]
                 Valuebox.config(values=Quarter_4_years)
+                Valuebox.set('Select Year')
 
         MidTech_Filter.bind("<<ComboboxSelected>>",filter_Option)
 
