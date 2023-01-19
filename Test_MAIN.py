@@ -343,19 +343,13 @@ class Main:
             Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Arial 12',state='readonly',width=40)
             Name_Entry.place(x=20,y=70)
 
-            def setClient(event):
-                res=self.user.getClient_name(Name_Entry.get())
-                age=IntVar()
-                age.set(res[2])
-                
-                AGE_Entry.config(textvariable=age)
-                Gender_Mune.set(res[3])
-
-            Name_Entry.bind("<<ComboboxSelected>>",setClient)
-
             AGE_Label=Label(Frame_Body,text="Age: ",font='Arial 12').place(x=400,y=50)
-            AGE_Entry=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3)
+            AGE_Entry=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3,state='disabled')
             AGE_Entry.place(x=400,y=70)
+
+            ID_LABEL=Label(Frame_Body,text="ID: ",font='Arial 12').place(x=500,y=50)
+            ID_ENTRY=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3,state='disabled')
+            ID_ENTRY.place(x=500,y=70)
 
             # def Gender_Click(event):
             #     Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
@@ -389,6 +383,35 @@ class Main:
             Test_Table.heading("Complete",text="Complete")
             Test_Table.pack(expand=1,fill=BOTH)
 
+            def setClient(event):
+                if Test_Table.get_children()!=0:
+                    Test_Table.delete(*Test_Table.get_children())
+                res=self.user.getClient_name(Name_Entry.get())
+                age=IntVar()
+                age.set(res[2])
+                
+                AGE_Entry.config(textvariable=age)
+                Gender_Mune.set(res[3])
+
+                client_identification=IntVar()
+                client_identification.set(res[0])
+                ID_ENTRY.config(textvariable=client_identification)
+                res=self.user.getclientTests(res[0])
+                count=0
+                for i in res:
+                    Test_Table.insert('','end',iid=count,text=res[count][0],values=(i[3],))
+                    count+=1
+                
+            def double_click(event):
+                iid=Test_Table.focus()
+                Test_Table.set(iid, 'Complete','Done')
+                item=Test_Table.item(iid)["text"]
+                self.user.markTest_as_done(item)
+
+
+            Name_Entry.bind("<<ComboboxSelected>>",setClient)
+            Test_Table.bind("<Double-Button-1>",double_click)
+
             Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
             Record_Button.place(x=1200,y=100)
 
@@ -400,9 +423,8 @@ class Main:
             Test_Label.place(x=0,y=0)
 
             Test=[  
-                    #"Complete Blood Count",
-                    # "Blood Type",
-                    # "Stool Exam",
+                    "Complete Blood Count / Hematology",
+                    "Urinalysis",
                     "Serology",
                     "Miscelaneous",
                 ]

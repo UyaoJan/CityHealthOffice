@@ -45,6 +45,18 @@ class Employee:
         result =cursor.fetchall()
         return result
 
+    def getclientTests(self,id):
+        query="SELECT tests.id,clients.ClientID,clients.Name, services.ServiceName FROM services,tests,clients WHERE services.ServiceID = tests.ServiceID AND clients.ClientID=tests.ClientID AND clients.ClientID=%s AND NOT tests.status ='done' AND NOT tests.ServiceID=15;"
+        cursor=self.Cursor
+        cursor.execute(query,(id,))
+        result=cursor.fetchall()
+        return result
+
+    def markTest_as_done(self,id):
+        query="UPDATE tests SET status='done' WHERE id =%s"
+        cursor=self.Cursor
+        cursor.execute(query,(id,))
+        self.Db.commit()
 
     def getClient_name(self,name):
         query="SELECT * FROM clients WHERE Name=%s LIMIT 1"
@@ -68,7 +80,8 @@ class Employee:
         return result
 
     def getClients_all(self):
-        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID;"
+        # query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID;"
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address FROM clients;"
         cursor=self.Cursor
         cursor.execute(query)
         result=cursor.fetchall()
