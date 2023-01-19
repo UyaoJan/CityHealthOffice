@@ -412,7 +412,7 @@ class Main:
                     Miscelaneous_Page.pack_forget()
                     Serology_Page.pack(expand=1,fill=BOTH)
 
-                    Serology_Title = Label(Serology_Page,text="MISCELLANEOUS",font=("Arial",20,"bold"))
+                    Serology_Title = Label(Serology_Page,text=LabTest_Mune.get(),font=("Arial",20,"bold"))
                     Serology_Title.place(x=570,y=30)
 
                     #RIGHT
@@ -446,35 +446,41 @@ class Main:
                     ST_BOX12_L.grid(row=5,column=1)
 
                     def submit():   
-                        
-                        print(ST_BOX12_L.get()," blood type")
-                        # document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
-                        # doc=DocxTemplate(document)
+                        blood_type=ST_BOX8_L.get()
+                        hepatitis_b_Screening=ST_BOX9_L.get()
+                        anti_hav_screening=ST_BOX10_L.get()
+                        syphilis_screen=ST_BOX11_L.get()
+                        dengue_ns1_antigen_test=ST_BOX12_L.get()
 
-                        # context={
-                        #     "NAME":Name_Entry.get(),
-                        #     "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
-                        #     "DATE":self.test_date,
-                        #     "OR_NO":self.user.generateClient_ORNumber(),
-                            
+                        document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
+                        doc=DocxTemplate(document)
+
+                        context={
+                            "NAME":Name_Entry.get(),
+                            "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                            "DATE":self.test_date,
+                            "OR_NO":self.user.generateClient_ORNumber(),
+                            "BLOODTYPE": blood_type,
+                            "HEPA_B_SCREEN": hepatitis_b_Screening,
+                            "ANTI_HAV_SCREEN": anti_hav_screening,
+                            "SYPHILIS_SCREEN": syphilis_screen,
+                            "DENGUE_ANTIGEN_TEST": dengue_ns1_antigen_test,
+                            "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                            "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                        }
+                        doc.render(context)
+                        doc.save(Path(__file__).parent/"newDoc.docx")
+                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
 
 
-                        #     "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                        #     "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
-                        # }
-                        # doc.render(context)
-                        # doc.save(Path(__file__).parent/"newDoc.docx")
-                        # win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
-
-
-                    ST_Button=Button(Serology_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5,command=submit())
+                    ST_Button=Button(Serology_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
                     ST_Button.place(x=1200,y=430)
 
                 elif LabTest_Mune.get() == "Miscelaneous":
                     Serology_Page.pack_forget()
                     Miscelaneous_Page.pack(expand=1,fill=BOTH)
 
-                    Miscelaneous_Title = Label(Miscelaneous_Page,text="MISCELLANEOUS",font=("Arial",20,"bold"))
+                    Miscelaneous_Title = Label(Miscelaneous_Page,text=LabTest_Mune.get(),font=("Arial",20,"bold"))
                     Miscelaneous_Title.place(x=570,y=30)
 
                     PT_Box=Frame(Miscelaneous_Page,bg='white')
