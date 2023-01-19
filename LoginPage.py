@@ -26,6 +26,8 @@ class Loginpage():
             else: messagebox.showerror("Credentials Not Found","Username and Password do not Match")
 
     def LoginStart(self):
+        self.LoginGUI.title("CITY HEALTH OFFICE LOGIN PAGE")
+        self.LoginGUI.resizable(False,False)
 
         global username,password
         username=StringVar()

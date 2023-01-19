@@ -309,7 +309,7 @@ class Main:
             # Name_Entry=Entry(Frame_Body,width=59,borderwidth=3,font='Arial 9')
             res=self.user.getClients_all()
             names=[x[1] for x in res]
-            Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Arial 12',state='readonly')
+            Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Arial 12',state='readonly',width=40)
             Name_Entry.place(x=20,y=70)
 
             def setClient(event):
@@ -320,12 +320,11 @@ class Main:
                 AGE_Entry.config(textvariable=age)
                 Gender_Mune.set(res[3])
 
-
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
 
-            AGE_Label=Label(Frame_Body,text="Age: ",font='Arial 12').place(x=450,y=50)
+            AGE_Label=Label(Frame_Body,text="Age: ",font='Arial 12').place(x=400,y=50)
             AGE_Entry=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3)
-            AGE_Entry.place(x=450,y=70)
+            AGE_Entry.place(x=400,y=70)
 
             # def Gender_Click(event):
             #     Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
@@ -771,95 +770,123 @@ class Main:
         res= self.user.getAllTest()
         Sum_Test=[x[0] for x in res]
 
-        Label(Frame_FilterBody,text="Laboratory Test:",font='Arial 12',).place(x=200,y=10)
-        LabTest_Test=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly')
+        Label(Frame_FilterBody,text="Laboratory Test:",font='Arial 11',).place(x=200,y=12)
+        LabTest_Test=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly',width=30)
         LabTest_Test.set("Select Here")
-        LabTest_Test.place(x=390,y=14)
+        LabTest_Test.place(x=310,y=14)
 
         emp=employee.Employee.getAllEmployees()
         emp_choices=[x[1] for x in emp]
 
-        Label(Frame_FilterBody,text="Medical Technologist",font='Arial 12',).place(x=200,y=40)
-        MidTech_Emp=ttk.Combobox(Frame_FilterBody,value=emp_choices,font='Arial 10',state='readonly',width=40)
+        Label(Frame_FilterBody,text="Medical Technologist",font='Arial 11',).place(x=200,y=40)
+        MidTech_Emp=ttk.Combobox(Frame_FilterBody,value=emp_choices,font='Arial 10',state='readonly',width=45)
         MidTech_Emp.set("Select Medical Technologist")
-        MidTech_Emp.place(x=203,y=63)
+        MidTech_Emp.place(x=203,y=60)
 
         filter_options=["Monthly","Yearly","1st Semi Annual","2nd Semi Annual","1st Quarter","2nd Quarter","3rd Quarter","4th Quarter"]
-        Label(Frame_FilterBody,text="Filter By",font='Arial 12',).place(x=200,y=95)
-        MidTech_Filter=ttk.Combobox(Frame_FilterBody,value=filter_options,font='Arial 10',state='readonly',width=40)
+        Label(Frame_FilterBody,text="Filter By:",font='Arial 11',).place(x=560,y=12)
+        MidTech_Filter=ttk.Combobox(Frame_FilterBody,value=filter_options,font='Arial 10',state='readonly',width=20)
         MidTech_Filter.set("Select Filter Option")
-        MidTech_Filter.place(x=203,y=95)
+        MidTech_Filter.place(x=620,y=14)
+
+        Valuebox_V=list(calendar.month_name)
+        Valuebox_label=Label(Frame_FilterBody,text="Choose Month:",font='Arial 11',)
+
+        Valuebox=ttk.Combobox(Frame_FilterBody,value=Valuebox_V,font='Arial 10',state='readonly',width=20)
+        Valuebox.set("Select Month")
+
+
+        Monthly_yearr=datetime.today().year
+        Monthly_years=[Monthly_yearr - i for i in range (6)]
+        Monthly_Lyears=Label(Frame_FilterBody,text="Choose Year :",font='Arial 11',)
+        Monthly_year=ttk.Combobox(Frame_FilterBody,value=Monthly_years,font='Arial 10',state='readonly',width=20)
+        Monthly_year.set("Select Year")
+       
+        
 
         def filter_Option(event):
             if event.widget.get()=="Monthly":
-                months=list(calendar.month_name)
-                Label(Frame_FilterBody,text="Choose Month",font='Arial 12',).place(x=200,y=40)
-                month=ttk.Combobox(Frame_FilterBody,value=months,font='Arial 10',state='readonly',width=40)
-                month.set("Select Month")
-                month.place(x=400,y=40)
+                Monthly_months=list(calendar.month_name)
+                Valuebox_label.config(text="Choose Month:")
+                Valuebox.config(values=Monthly_months)
 
-                yearr=datetime.today().year
-                years=[yearr - i for i in range (6)]
-                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
-                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
-                year.set("Select Year")
-                year.place(x=400,y=60)
+                Valuebox_label.place(x=560,y=40)
+                Valuebox.place(x=560,y=60)
 
-            if event.widget.get()=="Yearly":
-                yearr=datetime.today().year
-                years=[yearr - i for i in range (6)]
-                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
-                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
-                year.set("Select Year")
-                year.place(x=400,y=40)
+                Monthly_Lyears.place(x=750,y=40)
+                Monthly_year.place(x=750,y=60)
+
+            elif event.widget.get()=="Yearly":
+                Monthly_Lyears.place_forget()
+                Monthly_year.place_forget()
+                Valuebox_label.config(text="Choose Yearly:")
+                Valuebox_label.place(x=560,y=40)
+                Valuebox.place(x=560,y=60)
+
+                Yearly_yearr=datetime.today().year
+                Yearly_years=[Yearly_yearr - i for i in range (6)]
+                Valuebox.config(values=Yearly_years)
+
+            elif event.widget.get()=="1st Semi Annual":
+                Monthly_Lyears.place_forget()
+                Monthly_year.place_forget()
+                Valuebox_label.config(text="1st Semi Annual:")
+                Valuebox_label.place(x=560,y=40)
+                Valuebox.place(x=560,y=60)
+                Semi_1=datetime.today().year
+                Semi_1_years=[Semi_1 - i for i in range (6)]
+                Valuebox.config(values=Semi_1_years)
+
+            elif event.widget.get()=="2nd Semi Annual":
+                Monthly_Lyears.place_forget()
+                Monthly_year.place_forget()
+                Valuebox_label.config(text="2nd Semi Annual:")
+                Valuebox_label.place(x=560,y=40)
+                Valuebox.place(x=560,y=60)
+                Semi_2=datetime.today().year
+                Semi_2_years=[Semi_2 - i for i in range (6)]
+                Valuebox.config(values=Semi_2_years)
             
-            if event.widget.get()=="1st Semi Annual":
-                yearr=datetime.today().year
-                years=[yearr - i for i in range (6)]
-                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
-                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
-                year.set("Select Year")
-                year.place(x=400,y=40)
+            elif event.widget.get()=="1st Quarter":
+                Monthly_Lyears.place_forget()
+                Monthly_year.place_forget()
+                Valuebox_label.config(text="1st Quarter:")
+                Valuebox_label.place(x=560,y=40)
+                Valuebox.place(x=560,y=60)
+                Quarter_1=datetime.today().year
+                Quarter_1_years=[Quarter_1 - i for i in range (6)]
+                Valuebox.config(values=Quarter_1_years)
 
-            if event.widget.get()=="2nd Semi Annual":
-                yearr=datetime.today().year
-                years=[yearr - i for i in range (6)]
-                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
-                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
-                year.set("Select Year")
-                year.place(x=400,y=40)
-            
-            if event.widget.get()=="1st Quarter":
-                yearr=datetime.today().year
-                years=[yearr - i for i in range (6)]
-                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
-                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
-                year.set("Select Year")
-                year.place(x=400,y=40)
-
-            if event.widget.get()=="2nd Quarter":
-                yearr=datetime.today().year
-                years=[yearr - i for i in range (6)]
-                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
-                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
-                year.set("Select Year")
-                year.place(x=400,y=40)
-
-            if event.widget.get()=="3rd Quarter":
-                yearr=datetime.today().year
-                years=[yearr - i for i in range (6)]
-                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
-                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
-                year.set("Select Year")
-                year.place(x=400,y=40)
+            elif event.widget.get()=="2nd Quarter":
+                Monthly_Lyears.place_forget()
+                Monthly_year.place_forget()
+                Valuebox_label.config(text="2nd Quarter:")
                 
-            if event.widget.get()=="4th Quarter":
-                yearr=datetime.today().year
-                years=[yearr - i for i in range (6)]
-                Label(Frame_FilterBody,text="Choose Year",font='Arial 12',).place(x=200,y=50)
-                year=ttk.Combobox(Frame_FilterBody,value=years,font='Arial 10',state='readonly',width=40)
-                year.set("Select Year")
-                year.place(x=400,y=40)
+                Valuebox_label.place(x=560,y=40)
+                Valuebox.place(x=560,y=60)
+                Quarter_2=datetime.today().year
+                Quarter_2_years=[Quarter_2 - i for i in range (6)]
+                Valuebox.config(values=Quarter_2_years)
+
+            elif event.widget.get()=="3rd Quarter":
+                Valuebox_label.config(text="3rd Quarter:")
+                Monthly_Lyears.place_forget()
+                Monthly_year.place_forget()
+                Valuebox_label.place(x=560,y=40)
+                Valuebox.place(x=560,y=60)
+                Quarter_3=datetime.today().year
+                Quarter_3_years=[Quarter_3 - i for i in range (6)]
+                Valuebox.config(values=Quarter_3_years)
+                
+            elif event.widget.get()=="4th Quarter":
+                Monthly_Lyears.place_forget()
+                Monthly_year.place_forget()
+                Valuebox_label.config(text="4th Quarter:")
+                Valuebox_label.place(x=560,y=40)
+                Valuebox.place(x=560,y=60)
+                Quarter_4=datetime.today().year
+                Quarter_4_years=[Quarter_4 - i for i in range (6)]
+                Valuebox.config(values=Quarter_4_years)
 
         MidTech_Filter.bind("<<ComboboxSelected>>",filter_Option)
 
