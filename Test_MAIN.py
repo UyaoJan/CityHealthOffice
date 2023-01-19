@@ -35,11 +35,18 @@ class Main:
         #Checkbox Def
 
     def showCheckbox(self):
+        errors=0
         chosen_serve=[]
+        if Name_Entry.get() is None:
+            errors +=1
         name=Name_Entry.get()
+        if AGE_Entry.get() is None or AGE_Entry.get().isnumeric()==False:
+            errors+=1
         age=AGE_Entry.get()
         bdate=Birth_Entry.get_date()
         gender=Gender_Mune.get()
+        if Address_Entry.get() is None:
+            errors+=1
         address=Address_Entry.get()
         today=date.today()
         client_id=employee.Employee.generateID()
@@ -53,9 +60,15 @@ class Main:
                 # print(this)
                 chosen_serve.append(this)
                 # print(self.services[i].get())
-        client=(client_id,name,age,gender,bdate,address)
-        user=self.user
-        user.addNewClient(user, client,chosen_serve,today)
+        if errors ==0:
+            client=(client_id,name,age,gender,bdate,address)
+            user=self.user
+            user.addNewClient(user, client,chosen_serve,today)
+            messagebox.showinfo("Client Entered Successfully","New Client Data Registered Successfully")
+            
+            self.Main_Dashboard()
+
+        else: messagebox.showerror("Input Error","There is one or More Errors in Data Entered. \nPlease Make sure that the Data you entered followed Specifications")
 
     def logout(self):
         self.Dashboard_GUI.destroy()
@@ -67,6 +80,7 @@ class Main:
             Page_FrontDesk.destroy()
             self.Page_Dashboard.pack()
         self.Page_Dashboard.forget()
+        global Page_FrontDesk
         Page_FrontDesk=Frame(self.Dashboard_GUI)
         Page_FrontDesk.pack(expand=1, fill=BOTH)
         Frame_Header=Frame(Page_FrontDesk,width=1360,height=50,highlightbackground="black",highlightthickness=1)
@@ -101,6 +115,23 @@ class Main:
         self.Box=Frame(Frame_LIST,width=560,height=300,highlightbackground="black",highlightthickness=1)
         self.Box.place(x=50,y=320)
         #checkbox
+        self.Value=[
+                    "Complete Blood Count",
+                    "Blood Type",
+                    "Stool Exam",
+                    "Urinalysis (Urine Test)",
+                    "Syphilis Rapid Test",
+                    "Hepatitis B (Antigen Test)",
+                    "Anti-HAV Test",
+                    "Drug Test",
+                    "Pregnancy Test",
+                    "Fasting Blood Suger Test",
+                    "Blood Uric Acid Test",
+                    "Blood Cholesterol Test",
+                    "Blood Creatinine Test",
+                    "Acid Fast Staining",
+                    "X-Ray Test",
+                    ]
         
         self.services=[]
         for i in range (15):
