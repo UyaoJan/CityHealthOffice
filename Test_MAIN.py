@@ -650,8 +650,9 @@ class Main:
             XRAY_Title.place(x=10,y=15) 
 
             def setValue(event):
-                global client_id
+                global client_id, test_id
                 res=self.user.getClient_name(Name_Entry.get())
+                test_id=res[-1]
                 Name_Entry.set(res[1])
                 Birth_Entry.set_date(res[4])
                 age.set(res[2])
@@ -785,6 +786,8 @@ class Main:
                         doc.render(context)
                         doc.save(Path(__file__).parent/"newDoc.docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+
+                        self.user.markXray_as_done(test_id)
                         
             CList_Xray=Button(Img_Body,text="Client List",width=10,bg="green",font='Arial 11',command=lambda:self.ClientList(self.Value_Laboratory[1])).place(x=300,y=630)
             Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)

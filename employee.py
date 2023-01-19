@@ -52,14 +52,22 @@ class Employee:
         result=cursor.fetchall()
         return result
 
+    def markXray_as_done(self,id):
+        query2="UPDATE tests SET status='done' WHERE id =%s"
+        cursor=self.Cursor
+        cursor.execute(query2,(id,))
+        self.Db.commit()
+
     def markTest_as_done(self,id):
         query="UPDATE tests SET status='done' WHERE id =%s"
+        query2="UPDATE tests SET MedTechId=%s WHERE id =%s"
         cursor=self.Cursor
         cursor.execute(query,(id,))
+        cursor.execute(query2,(self.id,id))
         self.Db.commit()
 
     def getClient_name(self,name):
-        query="SELECT * FROM clients WHERE Name=%s LIMIT 1"
+        query="SELECT clients.ClientID, clients.Name, clients.age,clients.gender,clients.bday,clients.address,tests.id FROM clients,tests WHERE Name=%s AND clients.ClientID = tests.ClientID AND tests.ServiceID=15 AND NOT tests.status='done' LIMIT 1 ;"
         cursor=self.Cursor
         cursor.execute(query,(name,))
         result=cursor.fetchone()
@@ -95,7 +103,7 @@ class Employee:
         return result
 
     def getClients_Xray(self):
-        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.ServiceID=15;"
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName, tests.id FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.ServiceID=15;"
         cursor=self.Cursor
         cursor.execute(query)
         result=cursor.fetchall()
@@ -175,12 +183,12 @@ class Employee:
     def addNewClient(user,client,tests,date):
         client_insert="INSERT INTO clients VALUES(%s, %s, %s, %s, %s, %s)"
         user.Cursor.execute(client_insert, client)
-        test_insert="INSERT INTO tests (ClientID, MedTechID,status,date,ServiceID) VALUES(%s, %s, %s, %s, %s)"
+        test_insert="INSERT INTO tests (ClientID, status,date,ServiceID) VALUES(%s, %s, %s, %s)"
         get_serviceID_query="SELECT ServiceID FROM services WHERE ServiceName LIKE %s LIMIT 1"
         for test in tests:
             user.Cursor.execute(get_serviceID_query,(test,))
             ServiceID=user.Cursor.fetchone()
-            user.Cursor.execute(test_insert,(client[0],user.id, "Pending", date, ServiceID[0]))
+            user.Cursor.execute(test_insert,(client[0], "Pending", date, ServiceID[0]))
 
         user.Db.commit()
 
