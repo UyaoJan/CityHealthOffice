@@ -131,10 +131,11 @@ class Main:
                     "Blood Creatinine Test",
                     "Acid Fast Staining",
                     "X-Ray Test",
+                    "Serology"
                     ]
         
         self.services=[]
-        for i in range (15):
+        for i in range (16):
             Test=IntVar()
             Test.set(0)
             self.services.append(Test)
@@ -157,6 +158,7 @@ class Main:
         Checkbutton(self.Box,text="Blood Creatinine Test",variable=self.services[12],font='Arial 12 ',command=lambda i=self.services[12]:check(i)).place(x=280,y=125)
         Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Arial 12 ',command=lambda i=self.services[13]:check(i)).place(x=280,y=150)
         Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Arial 12 ',command=lambda i=self.services[14]:check(i)).place(x=280,y=175)
+        Checkbutton(self.Box,text="Serology",variable=self.services[15],font='Arial 12 ',command=lambda i=self.services[15]:check(i)).place(x=280,y=200)
 
         #Body-------
 
@@ -170,6 +172,7 @@ class Main:
 
         image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
         Img=Label(FrameIMG,image = image)
+        Img.image=image
         Img.place(x=0,y=0,width=300, height=300)
 
         global Name_Entry
@@ -391,11 +394,15 @@ class Main:
             def setClient(event):
                 if Test_Table.get_children()!=0:
                     Test_Table.delete(*Test_Table.get_children())
+
                 res=self.user.getClient_name(Name_Entry.get())
                 age=IntVar()
                 age.set(res[2])
                 
-                AGE_Entry.config(textvariable=age)
+                AGE_Entry.config(state='normal')
+                AGE_Entry.insert(0,res[2])
+                AGE_Entry.config(state='disabled')
+
                 Gender_Mune.set(res[3])
 
                 client_identification=IntVar()

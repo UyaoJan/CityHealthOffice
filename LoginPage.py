@@ -36,7 +36,7 @@ class Loginpage():
 
         self.LoginFrame1=Frame(self.LoginGUI,width=350,height=350,highlightbackground="black",highlightthickness=1)
         self.LoginFrame1.grid(row=0,column=0)
-        H_LOGO = ImageTk.PhotoImage(Image.open("C:/Users/Administrator/Documents/CityHealt/CHO_LOGO.png").resize((300, 300)))
+        H_LOGO = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
         self.IMG=Label(self.LoginFrame1,image=H_LOGO)
         self.IMG.place(x=30,y=30,width=300, height=300)
 

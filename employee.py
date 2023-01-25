@@ -67,10 +67,11 @@ class Employee:
         self.Db.commit()
 
     def getClient_name(self,name):
-        query="SELECT clients.ClientID, clients.Name, clients.age,clients.gender,clients.bday,clients.address,tests.id FROM clients,tests WHERE Name=%s AND clients.ClientID = tests.ClientID AND tests.ServiceID=15 AND NOT tests.status='done' LIMIT 1 ;"
+        query="SELECT clients.ClientID, clients.Name, clients.age,clients.gender,clients.bday,clients.address,tests.id FROM clients,tests WHERE Name=%s AND clients.ClientID = tests.ClientID AND NOT tests.ServiceID=15 AND NOT tests.status='done' LIMIT 1 ;"
         cursor=self.Cursor
         cursor.execute(query,(name,))
         result=cursor.fetchone()
+        print(result)
         return result
 
     def getAllTest(self):
