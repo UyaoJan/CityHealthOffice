@@ -133,8 +133,13 @@ class Main:
         #IMPUT-----------------
         Frame_Input=Frame(Frame_Body,width=680,height=700)
         Frame_Input.pack()
+                
+        FrameIMG=Frame(Frame_Input,width=300,height=300)
+        FrameIMG.place(x=170,y=40)
 
-        Img=Label(Frame_Input,width=50,height=20,bg="green").place(x=170,y=40)
+        image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
+        Img=Label(FrameIMG,image = image)
+        Img.place(x=0,y=0,width=300, height=300)
 
         global Name_Entry
         Name_Label=Label(Frame_Input,text="Name: ",font='Arial 12').place(x=46,y=400)
@@ -727,9 +732,8 @@ class Main:
                         doc.save(Path(__file__).parent/"newDoc.docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                         
-            CList_Xray=Button(Img_Body,text="Client List",width=10,bg="green",font='Arial 11',command=lambda:self.ClientList(self.Value_Laboratory[1])).place(x=300,y=630)
-            Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
-            Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Arial 11',command=lambda: submit()).place(x=520,y=630)
+            Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',borderwidth=2,command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
+            Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Arial 11',borderwidth=2,command=lambda: submit()).place(x=520,y=630)
 
 #X_Ray Laboratory  END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -913,6 +917,7 @@ class Main:
         Summary_Table.heading("FILE",text="FILE")
         Summary_Table.pack(expand=1,fill=BOTH)
 
+    #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
         self.Dashboard_GUI=Tk()
         self.Dashboard_GUI.title('CITY HEALTH')
@@ -944,28 +949,39 @@ class Main:
         #Message
         Frame_Center=Frame(self.Page_Dashboard,width=1360,height=413,highlightbackground="black",highlightthickness=1)
         Frame_Center.pack()
+        VISION=Label(Frame_Center,text="VISION: \nCAGAYAN DE ORO CITY HEALTH OFFICE - \nThe nations ideal public health care service provider to ensure healthy and empowered \nCagay-anons",justify=LEFT,font=("Arail",15,"bold")).place(x=450,y=30)
+        MISSION=Label(Frame_Center,text="MISSION \nWe, the Health care managers and providers pledge to deliver quality health care through \nregulative, preventive, curative and rehabilitative services. To attain our mission, \nwe subscribed to the following \nValues: \n• Equality / Liberty \n• Knowledge / Insight \n• Self-actualization \n• Service / vocation",justify=LEFT,font=("Arail",15,"bold")).place(x=450,y=150)
 
+        CDOH_LOGO = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
+        CDOH_Label=Label(Frame_Center,image=CDOH_LOGO)
+        CDOH_Label.place(x=100,y=50,width=300, height=300)
+
+        #FrontDesk
         Frame_Laboratory=Frame(self.Page_Dashboard,width=1360,height=290,highlightbackground="black",highlightthickness=1)
         Frame_Laboratory.pack()
 
         Frame_FrontDesk=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
         Frame_FrontDesk.place(x=0,y=0)
-        Button_FronDesk=Button(Frame_FrontDesk,text="ENTER",width=8,height=2,bg="green",command=self.FrontDesk).place(x=120,y=200)
+        FrontDesk_label=Label(Frame_FrontDesk,text="FRONT DESK",font=("Arail",35,"bold")).place(x=20,y=40)
+        Button_FronDesk=Button(Frame_FrontDesk,text="ENTER",width=8,height=2,bg="green",borderwidth=4,command=self.FrontDesk).place(x=120,y=200)
 
         #Lab-list
         Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
         Frame_LabTest.place(x=350,y=0)
         Frame_LabCH=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
         Frame_LabCH.place(x=0,y=0)
-        Button_LabCH=Button(Frame_LabCH,text="ENTER",width=8,height=2,bg="green",command=self.Laboratory).place(x=500,y=50)
+        Laboratory_label=Label(Frame_LabCH,text="LABORATORY TEST",font=("Arail",35,"bold")).place(x=10,y=50)
+        Button_LabCH=Button(Frame_LabCH,text="ENTER",width=8,height=2,bg="green",borderwidth=4,command=self.Laboratory).place(x=570,y=50)
 
         Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
         Frame_XRay.place(x=0,y=145)
-        Button_XRay=Button(Frame_XRay,text="ENTER",width=8,height=2,bg="green",command=self.X_Ray).place(x=500,y=50)
+        Xray_label=Label(Frame_XRay,text="X-RAY LABORATORY",font=("Arail",35,"bold")).place(x=20,y=40)
+        Button_XRay=Button(Frame_XRay,text="ENTER",width=8,height=2,bg="green",borderwidth=4,command=self.X_Ray).place(x=570,y=50)
 
         Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
         Frame_Summary.place(x=1009,y=0)
-        Button_Summary=Button(Frame_Summary,text="ENTER",width=8,height=2,bg="green",command=self.Summary).place(x=140,y=200)
+        Summary_label=Label(Frame_Summary,text="SUMMARY",font=("Arail",35,"bold")).place(x=30,y=50)
+        Button_Summary=Button(Frame_Summary,text="ENTER",width=8,height=2,bg="green",borderwidth=4,command=self.Summary).place(x=140,y=200)
 
         self.Dashboard_GUI.mainloop()
     
