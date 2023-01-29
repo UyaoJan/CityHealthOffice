@@ -16,6 +16,7 @@ from docx.shared import Inches
 
 import win32api, os, time
 import win32print
+import summary_filter
 
 
 class Main:
@@ -1341,7 +1342,7 @@ class Main:
         Summary_Table.column("MEDTECH")
         #Header
         Summary_Table.heading("#0")
-        Summary_Table.heading("ID",text="ID")
+        Summary_Table.heading("ID",text="No")
         Summary_Table.heading("NAME",text="NAME")
         Summary_Table.heading("TEST",text="TEST")
         Summary_Table.heading("DATE STARTED",text="DATE STARTED")
@@ -1351,9 +1352,11 @@ class Main:
 
         res=self.user.getAllClient_Done()
         count=0
+        number=1
         for item in range(len(res)):
-            Summary_Table.insert(parent='',index='end',iid=count,value=(res[item][0],res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
+            Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
             count+=1
+            number+=1
 
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
