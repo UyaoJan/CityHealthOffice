@@ -291,7 +291,6 @@ class Main:
                     self.client_bdate=result[4]
                     self.client_address=result[5]
 
-
                 for i in range(len(records)):
                     X_RAY_Record_Number=Frame(Record_List,width=427,height=80)
                     X_RAY_Record_Number.grid(row=i,column=0)
@@ -461,6 +460,9 @@ class Main:
             def Option_TEST(event):
                 if LabTest_Mune.get() == "Serology":
                     Miscelaneous_Page.pack_forget()
+                    Urinalysis_Page.pack_forget()
+                    CBC_Page.pack_forget()
+
                     Serology_Page.pack(expand=1,fill=BOTH)
 
                     Serology_Title = Label(Serology_Page,text=LabTest_Mune.get(),font=("Arial",20,"bold"))
@@ -469,31 +471,31 @@ class Main:
                     #RIGHT
                     ST_Box=Frame(Serology_Page,bg='white')
                     ST_Box.place(x=380,y=150)
-                    ST_BOX1_R= Label(ST_Box,text="",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX1_R= Label(ST_Box,text="",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX1_R.grid(row=0,column=0)
-                    ST_BOX2_R= Label(ST_Box,text="BLOOD TYPE",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX2_R= Label(ST_Box,text="BLOOD TYPE",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX2_R.grid(row=1,column=0)
-                    ST_BOX3_R= Label(ST_Box,text="HEPATITIS B SCREENING (HBsAg)",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX3_R= Label(ST_Box,text="HEPATITIS B SCREENING (HBsAg)",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX3_R.grid(row=2,column=0)
-                    ST_BOX4_R= Label(ST_Box,text="ANTI-HAV SCREENING (HAV lgG/igM)",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX4_R= Label(ST_Box,text="ANTI-HAV SCREENING (HAV lgG/igM)",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX4_R.grid(row=3,column=0)
-                    ST_BOX5_R= Label(ST_Box,text="SYPHILIS SCREENING",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX5_R= Label(ST_Box,text="SYPHILIS SCREENING",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX5_R.grid(row=4,column=0)
-                    ST_BOX6_R= Label(ST_Box,text="DENGUE NS1 ANTIGEN TEST",font=("Arial",15,"bold"),width=35,anchor=W)
+                    ST_BOX6_R= Label(ST_Box,text="DENGUE NS1 ANTIGEN TEST",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX6_R.grid(row=5,column=0)
                     
                     #LEFT
-                    ST_BOX7_L= Label(ST_Box,text="RESULT",font=("Arial",15,"bold"))
+                    ST_BOX7_L= Label(ST_Box,text="RESULT",font=("Arial",15,"bold"),width=18,highlightbackground="black",highlightthickness=1)
                     ST_BOX7_L.grid(row=0,column=1)
-                    ST_BOX8_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
+                    ST_BOX8_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
                     ST_BOX8_L.grid(row=1,column=1)
-                    ST_BOX9_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
+                    ST_BOX9_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
                     ST_BOX9_L.grid(row=2,column=1)
-                    ST_BOX10_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
+                    ST_BOX10_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
                     ST_BOX10_L.grid(row=3,column=1)
-                    ST_BOX11_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
+                    ST_BOX11_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
                     ST_BOX11_L.grid(row=4,column=1)
-                    ST_BOX12_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
+                    ST_BOX12_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
                     ST_BOX12_L.grid(row=5,column=1)
 
                     def submit():
@@ -529,27 +531,29 @@ class Main:
 
                 elif LabTest_Mune.get() == "Miscelaneous":
                     Serology_Page.pack_forget()
-                    Miscelaneous_Page.pack(expand=1,fill=BOTH)
+                    Urinalysis_Page.pack_forget()
+                    CBC_Page.pack_forget()
 
+                    Miscelaneous_Page.pack(expand=1,fill=BOTH)
                     Miscelaneous_Title = Label(Miscelaneous_Page,text=LabTest_Mune.get(),font=("Arial",20,"bold"))
                     Miscelaneous_Title.place(x=570,y=30)
 
                     PT_Box=Frame(Miscelaneous_Page,bg='white')
                     PT_Box.place(x=430,y=200)
-                    PT_BOX1= Label(PT_Box,text="TEST",width=20,anchor=W,font=("Arial",15,"bold"))
+                    PT_BOX1= Label(PT_Box,text="TEST",width=20,anchor=W,font=("Arial",15,"bold"),highlightbackground="black",highlightthickness=1)
                     PT_BOX1.grid(row=0,column=0)
                     # PT_BOX2= Label(PT_Box,text="PREGNANCY TEST",width=20,anchor=W,font=("Arial",15,"bold"))
                     res=self.user.getAllTest()
                     TEST=[x[0] for x in res]
                     PT_BOX2= ttk.Combobox(PT_Box,value=TEST,font=("Arial",15),state='readonly')
                     PT_BOX2.grid(row=0,column=1)
-                    PT_BOX3= Label(PT_Box,text="RESULT",width=20,anchor=W,font=("Arial",15,"bold"))
+                    PT_BOX3= Label(PT_Box,text="RESULT",width=20,anchor=W,font=("Arial",15,"bold"),highlightbackground="black",highlightthickness=1)
                     PT_BOX3.grid(row=1,column=0)
 
                     # PT_Result=["POSITIVE","NEGATIVE"]
                     # PT_BOX4=ttk.Combobox(PT_Box,value=PT_Result,font=("Arial",15),state='readonly')
                     # PT_BOX4.set("Select Result")
-                    PT_BOX4=Entry(PT_Box,font=("Arial",12),borderwidth=5)
+                    PT_BOX4=Entry(PT_Box,font=("Arial",12),width=25,borderwidth=3,highlightbackground="black",highlightthickness=1)
                     PT_BOX4.grid(row=1,column=1)
 
                     def submit():
@@ -573,6 +577,315 @@ class Main:
 
                     PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
                     PT_Button.place(x=1200,y=430)
+                
+                elif LabTest_Mune.get() == "Urinalysis":
+                    Serology_Page.pack_forget()
+                    Miscelaneous_Page.pack_forget()
+                    CBC_Page.pack_forget()
+
+                    Urinalysis_Page.pack(expand=1,fill=BOTH)
+
+                    Urinalysis_Title = Label(Urinalysis_Page,text=LabTest_Mune.get(),font=("Arial",20,"bold"))
+                    Urinalysis_Title.place(x=570,y=30)
+
+                    UR_Box=Frame(Urinalysis_Page,bg='white')
+                    UR_Box.place(x=130,y=90)
+                    UR_Column1_BOX= Label(UR_Box,text="TEST",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column1_BOX.grid(row=0,column=0)
+                    UR_Column1_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column1_BOX1.grid(row=0,column=1,padx=1)
+                    UR_Column1_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column1_BOX2.grid(row=0,column=2)
+
+                    UR_Column2_BOX= Label(UR_Box,text="CLARITY",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column2_BOX.grid(row=1,column=0)
+                    UR_Column2_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column2_BOX1.grid(row=1,column=1,padx=1)
+                    UR_Column2_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column2_BOX2.grid(row=1,column=2)
+
+                    UR_Column3_BOX= Label(UR_Box,text="BLOOD",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column3_BOX.grid(row=2,column=0)
+                    UR_Column3_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column3_BOX1.grid(row=2,column=1,padx=1)
+                    UR_Column3_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column3_BOX2.grid(row=2,column=2)
+
+                    UR_Column4_BOX= Label(UR_Box,text="BILIRUBIN",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column4_BOX.grid(row=4,column=0)
+                    UR_Column4_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column4_BOX1.grid(row=4,column=1,padx=1)
+                    UR_Column4_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column4_BOX2.grid(row=4,column=2)
+
+                    UR_Column5_BOX= Label(UR_Box,text="LEUKOCYTE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column5_BOX.grid(row=5,column=0)
+                    UR_Column5_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column5_BOX1.grid(row=5,column=1,padx=1)
+                    UR_Column5_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column5_BOX2.grid(row=5,column=2)
+
+                    UR_Column6_BOX= Label(UR_Box,text="KETONE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column6_BOX.grid(row=6,column=0)
+                    UR_Column6_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column6_BOX1.grid(row=6,column=1,padx=1)
+                    UR_Column6_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column6_BOX2.grid(row=6,column=2)
+
+                    UR_Column7_BOX= Label(UR_Box,text="NITRITE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column7_BOX.grid(row=7,column=0)
+                    UR_Column7_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column7_BOX1.grid(row=7,column=1,padx=1)
+                    UR_Column7_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column7_BOX2.grid(row=7,column=2)
+
+                    UR_Column8_BOX= Label(UR_Box,text="PROTEIN",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column8_BOX.grid(row=8,column=0)
+                    UR_Column8_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column8_BOX1.grid(row=8,column=1,padx=1)
+                    UR_Column8_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column8_BOX2.grid(row=8,column=2)
+
+                    UR_Column9_BOX= Label(UR_Box,text="GLUCOSE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column9_BOX.grid(row=9,column=0)
+                    UR_Column9_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column9_BOX1.grid(row=9,column=1,padx=1)
+                    UR_Column9_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column9_BOX2.grid(row=9,column=2)
+
+                    UR_Column10_BOX= Label(UR_Box,text="PH",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column10_BOX.grid(row=10,column=0)
+                    UR_Column10_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column10_BOX1.grid(row=10,column=1,padx=1)
+                    UR_Column10_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column10_BOX2.grid(row=10,column=2)
+
+                    UR_Column11_BOX= Label(UR_Box,text="SPECIFIC GRAVITY",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column11_BOX.grid(row=11,column=0)
+                    UR_Column11_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column11_BOX1.grid(row=11,column=1,padx=1)
+                    UR_Column11_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column11_BOX2.grid(row=11,column=2)
+
+                    UR_Box_Side=Frame(Urinalysis_Page,bg='white')
+                    UR_Box_Side.place(x=650,y=90)
+
+                    UR_Column12_BOX= Label(UR_Box_Side,text="MICROSCOPIC EXAMINATION",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column12_BOX.grid(row=12,column=0)
+                    UR_Column12_BOX1= Label(UR_Box_Side,text="RESULT",width=18,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column12_BOX1.grid(row=12,column=1,padx=1)
+                    UR_Column12_BOX2= Label(UR_Box_Side,text="UNIT",width=18,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column12_BOX2.grid(row=12,column=2)
+
+                    UR_Column13_BOX= Label(UR_Box_Side,text="WBC",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column13_BOX.grid(row=13,column=0)
+                    UR_Column13_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column13_BOX1.grid(row=13,column=1,padx=1)
+                    UR_Column13_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column13_BOX2.grid(row=13,column=2)
+
+                    UR_Column14_BOX= Label(UR_Box_Side,text="RBC",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column14_BOX.grid(row=14,column=0)
+                    UR_Column14_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column14_BOX1.grid(row=14,column=1,padx=1)
+                    UR_Column14_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column14_BOX2.grid(row=14,column=2)
+
+                    UR_Column15_BOX= Label(UR_Box_Side,text="EPITHELIAL CELLS",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column15_BOX.grid(row=15,column=0)
+                    UR_Column15_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column15_BOX1.grid(row=15,column=1,padx=1)
+                    UR_Column15_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column15_BOX2.grid(row=15,column=2)
+
+                    UR_Column16_BOX= Label(UR_Box_Side,text="MUCOUS THREADS",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column16_BOX.grid(row=16,column=0)
+                    UR_Column16_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column16_BOX1.grid(row=16,column=1,padx=1)
+                    UR_Column16_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column16_BOX2.grid(row=16,column=2)
+
+                    UR_Column17_BOX= Label(UR_Box_Side,text="BACTERIA",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column17_BOX.grid(row=17,column=0)
+                    UR_Column17_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column17_BOX1.grid(row=17,column=1,padx=1)
+                    UR_Column17_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column17_BOX2.grid(row=17,column=2)
+
+                    UR_Column18_BOX= Label(UR_Box_Side,text="A. URATES / PHOSPHATE",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column18_BOX.grid(row=18,column=0)
+                    UR_Column18_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column18_BOX1.grid(row=18,column=1,padx=1)
+                    UR_Column18_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column18_BOX2.grid(row=18,column=2)
+
+                    UR_Column19_BOX= Label(UR_Box_Side,text="CASTS",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column19_BOX.grid(row=19,column=0)
+                    UR_Column19_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column19_BOX1.grid(row=19,column=1,padx=1)
+                    UR_Column19_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column19_BOX2.grid(row=19,column=2)
+
+                    UR_Column20_BOX= Label(UR_Box_Side,text="CRYSTALS:",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column20_BOX.grid(row=20,column=0)
+                    UR_Column20_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column20_BOX1.grid(row=20,column=1,padx=1)
+                    UR_Column20_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column20_BOX2.grid(row=20,column=2)
+
+                    UR_Column21_BOX= Label(UR_Box_Side,text="OTHERS",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column21_BOX.grid(row=21,column=0)
+                    UR_Column21_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column21_BOX1.grid(row=21,column=1,padx=1)
+                    UR_Column21_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column21_BOX2.grid(row=21,column=2)
+
+                    UR_Button=Button(Urinalysis_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5)
+                    UR_Button.place(x=1200,y=430)
+                
+                elif LabTest_Mune.get() == "Complete Blood Count / Hematology":
+                    Serology_Page.pack_forget()
+                    Miscelaneous_Page.pack_forget()
+                    Urinalysis_Page.pack_forget()
+
+                    CBC_Page.pack(expand=1,fill=BOTH)
+                    CBC_Title = Label(CBC_Page,text=LabTest_Mune.get(),font=("Arial",20,"bold"))
+                    CBC_Title.place(x=400,y=30)
+
+                    CBC_Box=Frame(CBC_Page,bg='white')
+                    CBC_Box.place(x=60,y=120)
+                    CBC_Column1_BOX= Label(CBC_Box,text="",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column1_BOX.grid(row=0,column=0)
+                    CBC_Column1_BOX1= Label(CBC_Box,text="RESULT",width=18,anchor=CENTER,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column1_BOX1.grid(row=0,column=1,padx=1)
+                    CBC_Column1_BOX2= Label(CBC_Box,text="NORMAL VALUES",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column1_BOX2.grid(row=0,column=2)
+
+                    CBC_Column2_BOX= Label(CBC_Box,text="WBC",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column2_BOX.grid(row=1,column=0)
+                    CBC_Column2_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column2_BOX1.grid(row=1,column=1,padx=1)
+                    CBC_Column2_BOX2= Label(CBC_Box,text="5,000 - 10,000 / CUMM",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column2_BOX2.grid(row=1,column=2)
+
+                    CBC_Column3_BOX= Label(CBC_Box,text="RBC",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column3_BOX.grid(row=2,column=0)
+                    CBC_Column3_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column3_BOX1.grid(row=2,column=1,padx=1)
+                    CBC_Column3_BOX2= Label(CBC_Box,text="F: 3.8 - 5.1 10^ uL ; M: 4.20 - 5.6 10^ uL",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column3_BOX2.grid(row=2,column=2)
+
+                    CBC_Column4_BOX= Label(CBC_Box,text="HEMOGLOBIN",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column4_BOX.grid(row=4,column=0)
+                    CBC_Column4_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column4_BOX1.grid(row=4,column=1,padx=1)
+                    CBC_Column4_BOX2= Label(CBC_Box,text="F: 11.70 - 14.5g/dL ; M: 13.7 - 16.7g/dL",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column4_BOX2.grid(row=4,column=2)
+
+                    CBC_Column5_BOX= Label(CBC_Box,text="HEMATOCRIT",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column5_BOX.grid(row=5,column=0)
+                    CBC_Column5_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column5_BOX1.grid(row=5,column=1,padx=1)
+                    CBC_Column5_BOX2= Label(CBC_Box,text="F: 34.1  - 44.3vol% ; M: 13.7 - 49.7 vol%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column5_BOX2.grid(row=5,column=2)
+
+                    CBC_Column6_BOX= Label(CBC_Box,text="MCV",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column6_BOX.grid(row=6,column=0)
+                    CBC_Column6_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column6_BOX1.grid(row=6,column=1,padx=1)
+                    CBC_Column6_BOX2= Label(CBC_Box,text="80-100 El",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column6_BOX2.grid(row=6,column=2)
+
+                    CBC_Column7_BOX= Label(CBC_Box,text="MCH",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column7_BOX.grid(row=7,column=0)
+                    CBC_Column7_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column7_BOX1.grid(row=7,column=1,padx=1)
+                    CBC_Column7_BOX2= Label(CBC_Box,text="29 + 2 pg",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column7_BOX2.grid(row=7,column=2)
+
+                    CBC_Column8_BOX= Label(CBC_Box,text="MCHC",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column8_BOX.grid(row=8,column=0)
+                    CBC_Column8_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column8_BOX1.grid(row=8,column=1,padx=1)
+                    CBC_Column8_BOX2= Label(CBC_Box,text="33.4-35.5 g/dL",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column8_BOX2.grid(row=8,column=2)
+
+                    CBC_Column9_BOX= Label(CBC_Box,text="RDW",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column9_BOX.grid(row=9,column=0)
+                    CBC_Column9_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column9_BOX1.grid(row=9,column=1,padx=1)
+                    CBC_Column9_BOX2= Label(CBC_Box,text="12% to 15%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column9_BOX2.grid(row=9,column=2)
+
+                    CBC_Column10_BOX= Label(CBC_Box,text="PLATELET",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column10_BOX.grid(row=10,column=0)
+                    CBC_Column10_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column10_BOX1.grid(row=10,column=1,padx=1)
+                    CBC_Column10_BOX2= Label(CBC_Box,text="150,000 - 450,000 uL",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column10_BOX2.grid(row=10,column=2)
+
+                    CBC_Column11_BOX= Label(CBC_Box,text="MPV",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column11_BOX.grid(row=11,column=0)
+                    CBC_Column11_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column11_BOX1.grid(row=11,column=1,padx=1)
+                    CBC_Column11_BOX2= Label(CBC_Box,text="8.9 - 11.8 fL",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column11_BOX2.grid(row=11,column=2)
+
+
+                    #SIDE 
+                    CBC_Box_Side=Frame(CBC_Page,bg='white')
+                    CBC_Box_Side.place(x=700,y=120)
+                    CBCS_Column1_BOX= Label(CBC_Box_Side,text="DIFFERENTIAL COUNT",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column1_BOX.grid(row=0,column=0)
+                    CBCS_Column1_BOX1= Label(CBC_Box_Side,text="",width=18,anchor=CENTER,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column1_BOX1.grid(row=0,column=1,padx=1)
+                    CBCS_Column1_BOX2= Label(CBC_Box_Side,text="",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column1_BOX2.grid(row=0,column=2)
+
+                    CBCS_Column2_BOX= Label(CBC_Box_Side,text="NEUTROPHIL",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column2_BOX.grid(row=1,column=0)
+                    CBCS_Column2_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column2_BOX1.grid(row=1,column=1,padx=1)
+                    CBCS_Column2_BOX2= Label(CBC_Box_Side,text="45%"+" - "+"70%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column2_BOX2.grid(row=1,column=2)
+
+                    CBCS_Column3_BOX= Label(CBC_Box_Side,text="LYMPHOCYTE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column3_BOX.grid(row=2,column=0)
+                    CBCS_Column3_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column3_BOX1.grid(row=2,column=1,padx=1)
+                    CBCS_Column3_BOX2= Label(CBC_Box_Side,text="18%"+" - ""45%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column3_BOX2.grid(row=2,column=2)
+
+                    CBCS_Column4_BOX= Label(CBC_Box_Side,text="MONOCYTE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column4_BOX.grid(row=4,column=0)
+                    CBCS_Column4_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column4_BOX1.grid(row=4,column=1,padx=1)
+                    CBCS_Column4_BOX2= Label(CBC_Box_Side,text="4% "+" - "+"8%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column4_BOX2.grid(row=4,column=2)
+
+                    CBCS_Column5_BOX= Label(CBC_Box_Side,text="EOSINOPHIL",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column5_BOX.grid(row=5,column=0)
+                    CBCS_Column5_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column5_BOX1.grid(row=5,column=1,padx=1)
+                    CBCS_Column5_BOX2= Label(CBC_Box_Side,text="2% "+" - "+"3%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column5_BOX2.grid(row=5,column=2)
+
+                    CBCS_Column6_BOX= Label(CBC_Box_Side,text="EOSINOPHIL",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column6_BOX.grid(row=6,column=0)
+                    CBCS_Column6_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column6_BOX1.grid(row=6,column=1,padx=1)
+                    CBCS_Column6_BOX2= Label(CBC_Box_Side,text="0% "+" - "+"2%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column6_BOX2.grid(row=6,column=2)
+
+                    CBCS_Column7_BOX= Label(CBC_Box_Side,text="TOTAL:",width=20,anchor=E,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column7_BOX.grid(row=7,column=0)
+                    CBCS_Column7_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column7_BOX1.grid(row=7,column=1,padx=1)
+                    CBCS_Column7_BOX2= Label(CBC_Box_Side,text="",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column7_BOX2.grid(row=7,column=2)
+
+                    CBC_Button=Button(CBC_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5)
+                    CBC_Button.place(x=1200,y=430)
 
 
             Test_Label=Label(Frame_Test,text="TEST:",font='Arial 12 bold').place(x=1075,y=3)
@@ -588,6 +901,8 @@ class Main:
             Serology_Page = Frame(Contener)
             Serology_Page.pack(expand=1,fill=BOTH)
             Miscelaneous_Page = Frame(Contener)
+            Urinalysis_Page= Frame(Contener)
+            CBC_Page= Frame(Contener)
 
 #Laboratory-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Close_Plus_Finding(self):
