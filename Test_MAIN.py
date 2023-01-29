@@ -1330,13 +1330,14 @@ class Main:
         style=ttk.Style()
         style.theme_use("default")
         style.configure("Treeview")
-        Summary_Table['column']=("ID","NAME","TEST","DATE STARTED","MEDTECH")
+        Summary_Table['column']=("ID","NAME","TEST","DATE STARTED","DATE FINISHED","MEDTECH")
         #Column
         Summary_Table.column("#0",width=0,stretch=NO)
         Summary_Table.column("ID")
         Summary_Table.column("NAME")
         Summary_Table.column("TEST")
         Summary_Table.column("DATE STARTED")
+        Summary_Table.column("DATE FINISHED")
         Summary_Table.column("MEDTECH")
         #Header
         Summary_Table.heading("#0")
@@ -1344,13 +1345,14 @@ class Main:
         Summary_Table.heading("NAME",text="NAME")
         Summary_Table.heading("TEST",text="TEST")
         Summary_Table.heading("DATE STARTED",text="DATE STARTED")
+        Summary_Table.heading("DATE FINISHED",text="DATE FINISHED")
         Summary_Table.heading("MEDTECH",text="MEDTECH")
         Summary_Table.pack(expand=1,fill=BOTH)
 
         res=self.user.getAllClient_Done()
         count=0
         for item in range(len(res)):
-            Summary_Table.insert(parent='',index='end',iid=count,value=(res[item][0],res[item][1],res[item][2],res[item][3],res[item][4]))
+            Summary_Table.insert(parent='',index='end',iid=count,value=(res[item][0],res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
             count+=1
 
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
