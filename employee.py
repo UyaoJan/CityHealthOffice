@@ -79,7 +79,8 @@ class Employee:
 
     def getAllClient_Done(self):
         cursor=self.Cursor
-        query="SELECT clients.ClientID,clients.Name,services.ServiceName,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id;"
+        # query="SELECT clients.ClientID,clients.Name,services.ServiceName,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id;"
+        query="SELECT clients.ClientID,clients.Name,services.ServiceName,tests.date,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id;"
         cursor.execute(query)
         result=cursor.fetchall()
         return result
@@ -126,6 +127,7 @@ class Employee:
         cursor.execute(query,(name,))
         result=cursor.fetchone()
         return result
+        
 
     def getClient_name(self,name):
         query="SELECT clients.ClientID, clients.Name, clients.age,clients.gender,clients.bday,clients.address,tests.id FROM clients,tests WHERE clients.Name=%s AND clients.ClientID = tests.ClientID AND NOT tests.ServiceID=15 AND NOT tests.status='done' LIMIT 1 ;"
