@@ -752,6 +752,43 @@ class Main:
 
                     UR_Button=Button(Urinalysis_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5)
                     UR_Button.place(x=1200,y=430)
+
+                    def submit():
+                        blood_type=ST_BOX8_L.get()
+                        hepatitis_b_Screening=ST_BOX9_L.get()
+                        anti_hav_screening=ST_BOX10_L.get()
+                        syphilis_screen=ST_BOX11_L.get()
+                        dengue_ns1_antigen_test=ST_BOX12_L.get()
+
+                        document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
+                        doc=DocxTemplate(document)
+                            
+                        context={
+                            "NAME":Name_Entry.get(),
+                            "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                            "DATE":self.test_date,
+                            "OR_NO":self.user.generateClient_ORNumber(),
+                            "BLOODTYPE": blood_type,
+                            "HEPA_B_SCREEN": hepatitis_b_Screening,
+                            "ANTI_HAV_SCREEN": anti_hav_screening,
+                            "SYPHILIS_SCREEN": syphilis_screen,
+                            "DENGUE_ANTIGEN_TEST": dengue_ns1_antigen_test,
+                            "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                            "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                        }
+                        doc.render(context)
+                        doc.save(Path(__file__).parent/"newDoc.docx")
+                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                        serviceid=self.user.get_test_id("Serology")
+                        client_id=self.user.getClient_name(Name_Entry.get())
+                        total=self.user.get_test_price(serviceid[0])
+                        id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                        self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                        test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                        self.user.markTest_as_done(test_id[0])
+
+                    ST_Button=Button(Serology_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
+                    ST_Button.place(x=1200,y=430)
                 
                 elif LabTest_Mune.get() == "Complete Blood Count / Hematology":
                     Serology_Page.pack_forget()
@@ -1229,8 +1266,6 @@ class Main:
         Monthly_year=ttk.Combobox(Frame_FilterBody,value=Monthly_years,font='Arial 10',state='readonly',width=20)
         Monthly_year.set("Select Year")
 
-        
-
         def filter_Option(event):
             if event.widget.get()=="Monthly":
                 Monthly_months=list(calendar.month_name)
@@ -1357,6 +1392,33 @@ class Main:
             Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
             count+=1
             number+=1
+
+        def LabTest_callback(event):
+            test_choice=event.widget.get()
+            sum=summary_filter.Summary()
+            res=sum.filter_byTest(test_choice)
+            count=0
+            number=1
+            Summary_Table.delete(*Summary_Table.get_children())
+            for item in range(len(res)):
+                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
+                count+=1
+                number+=1
+            
+        def nameCallback(event):
+            test_choice=event.widget.get()
+            sum=summary_filter.Summary()
+            res=sum.filter_byName(test_choice)
+            count=0
+            number=1
+            Summary_Table.delete(*Summary_Table.get_children())
+            for item in range(len(res)):
+                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
+                count+=1
+                number+=1
+                
+        LabTest_Test.bind("<<ComboboxSelected>>",LabTest_callback)
+        MidTech_Emp.bind("<<ComboboxSelected>>",nameCallback)
 
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
