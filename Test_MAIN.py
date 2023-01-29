@@ -1386,11 +1386,11 @@ class Main:
         #Header
         Summary_Table.heading("#0")
         Summary_Table.heading("ID",text="No")
-        Summary_Table.heading("NAME",text="NAME")
+        Summary_Table.heading("NAME",text="NAME",anchor=W)
         Summary_Table.heading("TEST",text="TEST")
-        Summary_Table.heading("DATE STARTED",text="DATE STARTED")
-        Summary_Table.heading("DATE FINISHED",text="DATE FINISHED")
-        Summary_Table.heading("MEDTECH",text="MEDTECH")
+        Summary_Table.heading("DATE STARTED",text="DATE STARTED",anchor=W)
+        Summary_Table.heading("DATE FINISHED",text="DATE FINISHED",anchor=W)
+        Summary_Table.heading("MEDTECH",text="Medical Technologists",anchor=W)
         Summary_Table.pack(expand=1,fill=BOTH)
 
         res=self.user.getAllClient_Done()
