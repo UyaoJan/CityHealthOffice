@@ -65,8 +65,9 @@ class Main:
             user=self.user
             user.addNewClient(user, client,chosen_serve,today)
             messagebox.showinfo("Client Entered Successfully","New Client Data Registered Successfully")
-            
-            self.Main_Dashboard()
+                
+            Page_FrontDesk.destroy()
+            self.Page_Dashboard.pack()
 
         else: messagebox.showerror("Input Error","There is one or More Errors in Data Entered. \nPlease Make sure that the Data you entered followed Specifications")
 
@@ -185,6 +186,11 @@ class Main:
         AGE_Entry=Entry(Frame_Input,width=5,font='Arial 12',borderwidth=3)
         AGE_Entry.place(x=100,y=430)
 
+        def calculate_age(birthdate):
+            today = date.today()
+            age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+            return age
+
         global Birth_Entry
         Birth_Label=Label(Frame_Input,text="Birthdate:",font="Arial 12").place(x=160,y=430)
         Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
@@ -202,6 +208,7 @@ class Main:
         Address_Label=Label(Frame_Input,text="Address: ",font='Arial 12').place(x=46,y=460)
         Address_Entry=Entry(Frame_Input,textvariable=addrs,width=38,borderwidth=3,font='Arial 12')
         Address_Entry.place(x=120,y=460)
+
 
         global Date_Entry
         Date_Label=Label(Frame_Input,text="Date:",font="Arial 12").place(x=480,y=460)
@@ -351,6 +358,16 @@ class Main:
             Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Arial 12',state='readonly',width=40)
             Name_Entry.place(x=20,y=70)
 
+            def setClient(event):
+                res=self.user.getClient_name(Name_Entry.get())
+                age=IntVar()
+                age.set(res[2])
+                
+                AGE_Entry.config(textvariable=age)
+                Gender_Mune.set(res[3])
+
+            Name_Entry.bind("<<ComboboxSelected>>",setClient)
+
             AGE_Label=Label(Frame_Body,text="Age: ",font='Arial 12').place(x=400,y=50)
             AGE_Entry=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3,state='disabled')
             AGE_Entry.place(x=400,y=70)
@@ -479,7 +496,7 @@ class Main:
                     ST_BOX12_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=5)
                     ST_BOX12_L.grid(row=5,column=1)
 
-                    def submit():   
+                    def submit():
                         blood_type=ST_BOX8_L.get()
                         hepatitis_b_Screening=ST_BOX9_L.get()
                         anti_hav_screening=ST_BOX10_L.get()
@@ -488,7 +505,7 @@ class Main:
 
                         document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
                         doc=DocxTemplate(document)
-
+                            
                         context={
                             "NAME":Name_Entry.get(),
                             "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
@@ -798,7 +815,7 @@ class Main:
                         doc.render(context)
                         doc.save(Path(__file__).parent/"newDoc.docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
-
+                        
                         self.user.markXray_as_done(test_id)
                         
             Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',borderwidth=2,command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
@@ -874,7 +891,7 @@ class Main:
         Monthly_Lyears=Label(Frame_FilterBody,text="Choose Year :",font='Arial 11',)
         Monthly_year=ttk.Combobox(Frame_FilterBody,value=Monthly_years,font='Arial 10',state='readonly',width=20)
         Monthly_year.set("Select Year")
-       
+
         
 
         def filter_Option(event):
