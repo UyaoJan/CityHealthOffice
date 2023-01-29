@@ -1231,6 +1231,14 @@ class Main:
         Frame_FilterBody=Frame(Frame_SumBody,height=130,border=2,borderwidth=5,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
         Frame_FilterBody.pack(fill=X)
 
+        FrameIMG1=Frame(Frame_FilterBody,width=110,height=110)
+        FrameIMG1.place(x=40,y=0)
+
+        image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((110, 110)))
+        Img1=Label(FrameIMG1,image = image)
+        Img1.image=image
+        Img1.place(x=0,y=0,width=110, height=110)
+
         res= self.user.getAllTest()
         Sum_Test=[x[0] for x in res]
 
@@ -1369,11 +1377,11 @@ class Main:
         Summary_Table['column']=("ID","NAME","TEST","DATE STARTED","DATE FINISHED","MEDTECH")
         #Column
         Summary_Table.column("#0",width=0,stretch=NO)
-        Summary_Table.column("ID")
-        Summary_Table.column("NAME")
-        Summary_Table.column("TEST")
-        Summary_Table.column("DATE STARTED")
-        Summary_Table.column("DATE FINISHED")
+        Summary_Table.column("ID",width=50,stretch=NO,anchor=CENTER)
+        Summary_Table.column("NAME",)
+        Summary_Table.column("TEST",width=200,stretch=NO)
+        Summary_Table.column("DATE STARTED",width=100,stretch=NO,anchor=CENTER)
+        Summary_Table.column("DATE FINISHED",width=100,stretch=NO,anchor=CENTER)
         Summary_Table.column("MEDTECH")
         #Header
         Summary_Table.heading("#0")
