@@ -1,6 +1,7 @@
 from tkinter import messagebox
 import random
 import dbConnection,random
+from datetime import date
 class Employee:
     def __init__(self,id,username,password,fname,lname,age,address,role,dept,url):
         self.Db=dbConnection.get_connection()
@@ -29,6 +30,42 @@ class Employee:
 
     def return_dept(self):
         return self.dept
+
+    def get_test_id(self,test):
+        cursor=self.Cursor
+        query="SELECT ServiceID FROM services WHERE ServiceName=%s"
+        cursor.execute(query,(test,))
+        res=cursor.fetchone()
+        return res
+    
+    def get_test_price(self,serviceid):
+        cursor=self.Cursor
+        query="SELECT Cost FROM services WHERE ServiceID=%s"
+        cursor.execute(query,(serviceid,))
+        res=cursor.fetchone()
+        return res
+
+    def save_to_summary(self,total,idd):
+        id=random.randint(0,999)
+        today=date.today()
+        cursor=self.Cursor
+        id_query="SELECT id FROM summary"
+        cursor.execute(id_query)
+        id_res=cursor.fetchall()
+        for i in id_res:
+            if i==id:
+                id=random.random(0,999)
+        query="INSERT INTO summary (id,ClientID,totalcost,dateFinished) VALUES(%s,%s,%s,%s)"
+        values=(id,idd,total,today)
+        cursor.execute(query,values)
+        self.Db.commit()
+
+    def getAllClient_Done(self):
+        cursor=self.Cursor
+        query="SELECT clients.ClientID,clients.Name,services.ServiceName,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id;"
+        cursor.execute(query)
+        result=cursor.fetchall()
+        return result
 
     def register(self):
         query="INSERT INTO medtechs VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"

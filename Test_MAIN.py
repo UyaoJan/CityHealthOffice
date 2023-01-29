@@ -60,6 +60,10 @@ class Main:
                 # print(this)
                 chosen_serve.append(this)
                 # print(self.services[i].get())
+
+        if len(chosen_serve)==0:
+            errors+=1
+            
         if errors ==0:
             client=(client_id,name,age,gender,bdate,address)
             user=self.user
@@ -361,8 +365,7 @@ class Main:
                 res=self.user.getClient_name(Name_Entry.get())
                 age=IntVar()
                 age.set(res[2])
-                
-                AGE_Entry.config(textvariable=age)
+            
                 Gender_Mune.set(res[3])
 
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
@@ -414,10 +417,7 @@ class Main:
                 res=self.user.getClient_name(Name_Entry.get())
                 age=IntVar()
                 age.set(res[2])
-                
-                AGE_Entry.config(state='normal')
-                AGE_Entry.insert(0,res[2])
-                AGE_Entry.config(state='disabled')
+                AGE_Entry.config(textvariable=age)
 
                 Gender_Mune.set(res[3])
 
@@ -573,6 +573,9 @@ class Main:
                         doc.render(context)
                         doc.save(Path(__file__).parent/"newDoc.docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                        serviceid=self.user.get_test_id(PT_BOX2.get())
+                        total=self.user.get_test_price(serviceid[0])
+                        self.user.save_to_summary(total[0],serviceid[0])
 
 
                     PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
@@ -1309,22 +1312,26 @@ class Main:
         style=ttk.Style()
         style.theme_use("default")
         style.configure("Treeview")
-        Summary_Table['column']=("ID","NAME","TEST","MEDTECH","FILE")
+        Summary_Table['column']=("ID","NAME","TEST","MEDTECH")
         #Column
         Summary_Table.column("#0",width=0,stretch=NO)
         Summary_Table.column("ID")
         Summary_Table.column("NAME")
         Summary_Table.column("TEST")
         Summary_Table.column("MEDTECH")
-        Summary_Table.column("FILE")
         #Header
         Summary_Table.heading("#0")
         Summary_Table.heading("ID",text="ID")
         Summary_Table.heading("NAME",text="NAME")
         Summary_Table.heading("TEST",text="TEST")
         Summary_Table.heading("MEDTECH",text="MEDTECH")
-        Summary_Table.heading("FILE",text="FILE")
         Summary_Table.pack(expand=1,fill=BOTH)
+
+        res=self.user.getAllClient_Done()
+        count=0
+        for item in range(len(res)):
+            Summary_Table.insert(parent='',index='end',iid=count,value=(res[item][0],res[item][1],res[item][2],res[item][3]))
+            count+=1
 
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
