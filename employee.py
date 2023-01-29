@@ -45,7 +45,15 @@ class Employee:
         res=cursor.fetchone()
         return res
 
-    def save_to_summary(self,total,idd):
+    def get_tests_id(self,client,service):
+        cursor=self.Cursor
+        query="SELECT id FROM tests WHERE ClientID=%s AND ServiceID=%s"
+        cursor.execute(query,(client,service))
+        result=cursor.fetchone()
+        return result
+        
+
+    def save_to_summary(self,total,idd,clientID):
         id=random.randint(0,999)
         today=date.today()
         cursor=self.Cursor
@@ -55,8 +63,17 @@ class Employee:
         for i in id_res:
             if i==id:
                 id=random.random(0,999)
-        query="INSERT INTO summary (id,ClientID,totalcost,dateFinished) VALUES(%s,%s,%s,%s)"
-        values=(id,idd,total,today)
+        query="INSERT INTO summary (id,ClientID,test_id,totalcost,dateFinished) VALUES(%s,%s,%s,%s,%s)"
+        values=(id,clientID,idd,total,today)
+        cursor.execute(query,values)
+        self.Db.commit()
+
+        return id
+
+    def update_summaryID_test(self,id,client,test):
+        cursor=self.Cursor
+        query="UPDATE tests SET summary_id=%s WHERE ClientID=%s AND ServiceID=%s"
+        values=(id,client,test)
         cursor.execute(query,values)
         self.Db.commit()
 
@@ -103,12 +120,18 @@ class Employee:
         cursor.execute(query2,(self.id,id))
         self.Db.commit()
 
-    def getClient_name(self,name):
-        query="SELECT clients.ClientID, clients.Name, clients.age,clients.gender,clients.bday,clients.address,tests.id FROM clients,tests WHERE Name=%s AND clients.ClientID = tests.ClientID AND NOT tests.ServiceID=15 AND NOT tests.status='done' LIMIT 1 ;"
+    def getClient_name_Xray(self,name):
+        query="SELECT clients.ClientID, clients.Name, clients.age,clients.gender,clients.bday,clients.address,tests.id FROM clients,tests WHERE clients.Name=%s AND clients.ClientID = tests.ClientID AND tests.ServiceID=15 AND tests.status='Pending' "
         cursor=self.Cursor
         cursor.execute(query,(name,))
         result=cursor.fetchone()
-        print(result)
+        return result
+
+    def getClient_name(self,name):
+        query="SELECT clients.ClientID, clients.Name, clients.age,clients.gender,clients.bday,clients.address,tests.id FROM clients,tests WHERE clients.Name=%s AND clients.ClientID = tests.ClientID AND NOT tests.ServiceID=15 AND NOT tests.status='done' LIMIT 1 ;"
+        cursor=self.Cursor
+        cursor.execute(query,(name,))
+        result=cursor.fetchone()
         return result
 
     def getAllTest(self):
@@ -127,7 +150,8 @@ class Employee:
 
     def getClients_all(self):
         # query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID;"
-        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address FROM clients;"
+        # query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address FROM clients;"
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address FROM clients,tests WHERE tests.ClientID=clients.ClientID AND tests.status='Pending'"
         cursor=self.Cursor
         cursor.execute(query)
         result=cursor.fetchall()

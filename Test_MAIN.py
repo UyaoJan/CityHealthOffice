@@ -524,7 +524,13 @@ class Main:
                         doc.render(context)
                         doc.save(Path(__file__).parent/"newDoc.docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
-
+                        serviceid=self.user.get_test_id("Serology")
+                        client_id=self.user.getClient_name(Name_Entry.get())
+                        total=self.user.get_test_price(serviceid[0])
+                        id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                        self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                        test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                        self.user.markTest_as_done(test_id[0])
 
                     ST_Button=Button(Serology_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
                     ST_Button.place(x=1200,y=430)
@@ -998,7 +1004,9 @@ class Main:
 
             def setValue(event):
                 global client_id, test_id
-                res=self.user.getClient_name(Name_Entry.get())
+                print(Name_Entry.get())
+                res=self.user.getClient_name_Xray(Name_Entry.get())
+                print(res)
                 test_id=res[-1]
                 Name_Entry.set(res[1])
                 Birth_Entry.set_date(res[4])
@@ -1114,6 +1122,11 @@ class Main:
                     elif IMPRESSIONS_BOX.get("1.0","end-1c")=="": messagebox.showerror("Error","Empty Impression Box")
                     elif filepath is None:messagebox.showerror("Error","Empty Xray Box")
                     else:
+                        serviceid=self.user.get_test_id("X-Ray Test")
+                        client_id=self.user.getClient_name_Xray(Name_Entry.get())
+                        total=self.user.get_test_price(serviceid[0])
+                        test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+
                         document=Path(__file__).parent / "XRAY_TEMPLATE.docx"
                         doc=DocxTemplate(document)
 
@@ -1134,7 +1147,12 @@ class Main:
                         doc.save(Path(__file__).parent/"newDoc.docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                         
-                        self.user.markXray_as_done(test_id)
+                        # self.user.markXray_as_done(test_id)
+
+                        
+                        id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                        self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                        self.user.markTest_as_done(test_id[0])
                         
             Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',borderwidth=2,command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
             Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Arial 11',borderwidth=2,command=lambda: submit()).place(x=520,y=630)
