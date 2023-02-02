@@ -13,7 +13,8 @@ from pathlib import Path
 from docxtpl import DocxTemplate
 from docxtpl import InlineImage
 from docx.shared import Inches
-
+import numpy as np
+import matplotlib.pyplot as plt
 import win32api, os, time
 import win32print
 import summary_filter
@@ -1267,12 +1268,48 @@ class Main:
         Valuebox=ttk.Combobox(Frame_FilterBody,value=Valuebox_V,font='Arial 10',state='readonly',width=20)
         Valuebox.set("Select Month")
 
-
         Monthly_yearr=datetime.today().year
         Monthly_years=[Monthly_yearr - i for i in range (6)]
-        Monthly_Lyears=Label(Frame_FilterBody,text="Choose Year :",font='Arial 11',)
+        Monthly_Lyears=Label(Frame_FilterBody,text="Choose Year :",font='Arial 11')
         Monthly_year=ttk.Combobox(Frame_FilterBody,value=Monthly_years,font='Arial 10',state='readonly',width=20)
         Monthly_year.set("Select Year")
+
+        Graph_Label=Label(Frame_FilterBody,text="Graph Model:",font='Arial 11').place(x=850,y=14)
+        Graph_Value=["GRAPH BAR","GRAPH PIE"]        
+        Graph_Selection=ttk.Combobox(Frame_FilterBody,value=Graph_Value,font='Arial 10',state='readonly',width=20)
+        Graph_Selection.set("Select Graph Model")
+        Graph_Selection.place(x=940,y=14)
+
+        def Graph_create():
+            Selected_value = Graph_Selection.get()
+            if Selected_value== "GRAPH BAR":
+                fig, ax = plt.subplots()
+                fruits = ['apple', 'blueberry', 'cherry', 'orange']
+                counts = [40, 100, 30, 55]
+                bar_labels = ['red', 'blue', '_red', 'orange']
+                bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
+                ax.bar(fruits, counts, label=bar_labels, color=bar_colors)
+                ax.set_ylabel('fruit supply')
+                ax.set_title('Fruit supply by kind and color')
+                ax.legend(title='Fruit color')
+
+                plt.show()
+
+            elif Selected_value== "GRAPH PIE":
+                labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
+                sizes = [15, 30, 45, 10]
+                explode = (0, 0.1, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
+                fig1, ax1 = plt.subplots()
+                ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
+                        shadow=True, startangle=90)
+                ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+                plt.show()
+            
+            else:
+                messagebox.showerror("Access Denied","Please Select A Graph Model to Use For Data Analyst")
+
+        Graph_button = Button(Frame_FilterBody,text="Create Graph",font='Arial 7',borderwidth=3,command=Graph_create)
+        Graph_button.place(x=1100,y=12)
 
         def filter_Option(event):
             if event.widget.get()=="Monthly":
@@ -1365,8 +1402,9 @@ class Main:
                 Quarter_4_years=[Quarter_4 - i for i in range (6)]
                 Valuebox.config(values=Quarter_4_years)
                 Valuebox.set('Select Year')
-
+                
         MidTech_Filter.bind("<<ComboboxSelected>>",filter_Option)
+
 
         Frame_TableBody=Frame(Frame_SumBody,bg="grey",borderwidth=5,highlightbackground="black",highlightthickness=1)
         Frame_TableBody.pack(expand=1,fill=BOTH)
