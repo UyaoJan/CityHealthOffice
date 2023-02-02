@@ -419,7 +419,6 @@ class Main:
                 age=IntVar()
                 age.set(res[2])
                 AGE_Entry.config(textvariable=age)
-
                 Gender_Mune.set(res[3])
 
                 client_identification=IntVar()
@@ -550,8 +549,8 @@ class Main:
                     PT_BOX1= Label(PT_Box,text="TEST",width=20,anchor=W,font=("Arial",15,"bold"),highlightbackground="black",highlightthickness=1)
                     PT_BOX1.grid(row=0,column=0)
                     # PT_BOX2= Label(PT_Box,text="PREGNANCY TEST",width=20,anchor=W,font=("Arial",15,"bold"))
-                    res=self.user.getAllTest()
-                    TEST=[x[0] for x in res]
+                    res_test=self.user.getAllTest()
+                    TEST=[x[0] for x in res_test]
                     PT_BOX2= ttk.Combobox(PT_Box,value=TEST,font=("Arial",15),state='readonly')
                     PT_BOX2.grid(row=0,column=1)
                     PT_BOX3= Label(PT_Box,text="RESULT",width=20,anchor=W,font=("Arial",15,"bold"),highlightbackground="black",highlightthickness=1)
@@ -582,7 +581,10 @@ class Main:
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                         serviceid=self.user.get_test_id(PT_BOX2.get())
                         total=self.user.get_test_price(serviceid[0])
-                        self.user.save_to_summary(total[0],serviceid[0])
+                        id=self.user.save_to_summary(total[0],serviceid[0],res[0][0])
+                        self.user.update_summaryID_test(id,res[0][0],serviceid[0])
+                        test_id=self.user.get_tests_id(res[0][0],serviceid[0])
+                        self.user.markTest_as_done(test_id[0])
 
 
                     PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
@@ -1042,9 +1044,7 @@ class Main:
 
             def setValue(event):
                 global client_id, test_id
-                print(Name_Entry.get())
                 res=self.user.getClient_name_Xray(Name_Entry.get())
-                print(res)
                 test_id=res[-1]
                 Name_Entry.set(res[1])
                 Birth_Entry.set_date(res[4])
@@ -1240,7 +1240,7 @@ class Main:
         LabTest_Test.place(x=310,y=14)
 
         emp=employee.Employee.getAllEmployees()
-        emp_choices=[x[1] for x in emp]
+        emp_choices=[x[1]+' '+x[2] for x in emp]
 
         Label(Frame_FilterBody,text="Medical Technologist",font='Arial 11',).place(x=200,y=40)
         MidTech_Emp=ttk.Combobox(Frame_FilterBody,value=emp_choices,font='Arial 10',state='readonly',width=45)
@@ -1392,11 +1392,14 @@ class Main:
             Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
             count+=1
             number+=1
+            global name_Choice,test_choice
 
         def LabTest_callback(event):
             test_choice=event.widget.get()
             sum=summary_filter.Summary()
-            res=sum.filter_byTest(test_choice)
+            if "name_Choice" not in globals():
+                name_Choice=""
+            res=sum.filter_byTest(name_Choice,test_choice)
             count=0
             number=1
             Summary_Table.delete(*Summary_Table.get_children())
@@ -1406,9 +1409,12 @@ class Main:
                 number+=1
             
         def nameCallback(event):
-            test_choice=event.widget.get()
+            name_Choice=event.widget.get()
             sum=summary_filter.Summary()
-            res=sum.filter_byName(test_choice)
+            if "test_choice" not in globals():
+                test_choice=""
+
+            res=sum.filter_byName(name_Choice,test_choice)
             count=0
             number=1
             Summary_Table.delete(*Summary_Table.get_children())

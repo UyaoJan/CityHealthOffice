@@ -153,7 +153,8 @@ class Employee:
     def getClients_all(self):
         # query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID;"
         # query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address FROM clients;"
-        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address FROM clients,tests WHERE tests.ClientID=clients.ClientID AND tests.status='Pending'"
+        # query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address FROM clients,tests WHERE tests.ClientID=clients.ClientID AND tests.status='Pending'"
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address FROM clients,tests WHERE tests.ClientID=clients.ClientID AND tests.status='Pending' GROUP BY clients.ClientID"
         cursor=self.Cursor
         cursor.execute(query)
         result=cursor.fetchall()
