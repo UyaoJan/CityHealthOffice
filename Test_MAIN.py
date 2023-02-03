@@ -1474,8 +1474,12 @@ class Main:
                 count+=1
                 number+=1
 
+        def PrintResults():
+            pass
 
-        Button(Frame_FilterBody,text="Apply Filter",command=lambda: ApplyFilter()).place(x=800,y=14)
+
+        Button(Frame_FilterBody,text="Apply Filter",command=lambda: ApplyFilter()).place(x=800,y=50)
+        Button(Frame_FilterBody,text="Print Out Results",command=lambda: PrintResults()).place(x=900,y=50)
 
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
