@@ -1479,7 +1479,7 @@ class Main:
 
         def PrintResults():
             all_items=Summary_Table.get_children()
-            # Open the header file
+
             doc = docx.Document("SUMMARY_REPORT_TEMPLATE.docx")
             data=[]
             for i in all_items:
@@ -1504,9 +1504,8 @@ class Main:
                 row_cell[4].text=dateFin
                 row_cell[5].text=medTech
 
-            # Save the new document
             doc.save("new_document.docx")
-
+            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"new_document.docx"), None, ".", 0)
 
         Button(Frame_FilterBody,text="Apply Filter",command=lambda: ApplyFilter()).place(x=800,y=50)
         Button(Frame_FilterBody,text="Print Out Results",command=lambda: PrintResults()).place(x=900,y=50)
