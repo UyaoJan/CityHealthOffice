@@ -1527,7 +1527,7 @@ class Main:
         IMG_HEADER.place(x=10,y=8)
         HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
 
-        HEADER_USERNAME=Label(Frame_Header,text="UserName:",font='Arial 12 ').place(x=1100,y=10)
+        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),font='Arial 12 ').place(x=1100,y=10)
         IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
         IMG_USERNAME.place(x=1200,y=8)
 
