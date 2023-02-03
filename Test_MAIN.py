@@ -9,6 +9,9 @@ from tkinter import messagebox
 from datetime import date, datetime
 import employee, LoginPage
 
+import docx
+
+
 from pathlib import Path
 from docxtpl import DocxTemplate
 from docxtpl import InlineImage
@@ -1475,7 +1478,34 @@ class Main:
                 number+=1
 
         def PrintResults():
-            pass
+            all_items=Summary_Table.get_children()
+            # Open the header file
+            doc = docx.Document("SUMMARY_REPORT_TEMPLATE.docx")
+            data=[]
+            for i in all_items:
+                itemVal=Summary_Table.item(i, "values")
+                data.append(itemVal)
+
+            menuTable = doc.add_table(rows=1,cols=6)
+            hdr_Cells = menuTable.rows[0].cells
+            hdr_Cells[0].text="No"
+            hdr_Cells[1].text="Name"
+            hdr_Cells[2].text="Test"
+            hdr_Cells[3].text="Date Started"
+            hdr_Cells[4].text="Date Finished"
+            hdr_Cells[5].text="Medical Technologist"
+
+            for no, name,test, dateStart,dateFin,medTech in data:
+                row_cell=menuTable.add_row().cells
+                row_cell[0].text=str(no)
+                row_cell[1].text=name
+                row_cell[2].text=test
+                row_cell[3].text=dateStart
+                row_cell[4].text=dateFin
+                row_cell[5].text=medTech
+
+            # Save the new document
+            doc.save("new_document.docx")
 
 
         Button(Frame_FilterBody,text="Apply Filter",command=lambda: ApplyFilter()).place(x=800,y=50)
