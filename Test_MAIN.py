@@ -1233,18 +1233,20 @@ class Main:
 
         res= self.user.getAllTest()
         Sum_Test=[x[0] for x in res]
+        Sum_Test.insert(0,'All')
 
         Label(Frame_FilterBody,text="Laboratory Test:",font='Arial 11',).place(x=200,y=12)
         LabTest_Test=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly',width=30)
-        LabTest_Test.set("Select Here")
+        LabTest_Test.set("All")
         LabTest_Test.place(x=310,y=14)
 
         emp=employee.Employee.getAllEmployees()
         emp_choices=[x[1]+' '+x[2] for x in emp]
+        emp_choices.insert(0,'All')
 
         Label(Frame_FilterBody,text="Medical Technologist",font='Arial 11',).place(x=200,y=40)
         MidTech_Emp=ttk.Combobox(Frame_FilterBody,value=emp_choices,font='Arial 10',state='readonly',width=45)
-        MidTech_Emp.set("Select Medical Technologist")
+        MidTech_Emp.set("All")
         MidTech_Emp.place(x=203,y=60)
 
         filter_options=["Monthly","Yearly","1st Semi Annual","2nd Semi Annual","1st Quarter","2nd Quarter","3rd Quarter","4th Quarter"]
@@ -1392,39 +1394,42 @@ class Main:
             Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
             count+=1
             number+=1
-            global name_Choice,test_choice
+
+        global name_Choice,test_choice
+
+        name_Choice=None
+        test_choice=None
 
         def LabTest_callback(event):
+            global test_choice
             test_choice=event.widget.get()
-            sum=summary_filter.Summary()
-            if "name_Choice" not in globals():
-                name_Choice=""
-            res=sum.filter_byTest(name_Choice,test_choice)
-            count=0
-            number=1
-            Summary_Table.delete(*Summary_Table.get_children())
-            for item in range(len(res)):
-                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
-                count+=1
-                number+=1
             
         def nameCallback(event):
+            global name_Choice
             name_Choice=event.widget.get()
-            sum=summary_filter.Summary()
-            if "test_choice" not in globals():
-                test_choice=""
-
-            res=sum.filter_byName(name_Choice,test_choice)
-            count=0
-            number=1
-            Summary_Table.delete(*Summary_Table.get_children())
-            for item in range(len(res)):
-                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
-                count+=1
-                number+=1
                 
         LabTest_Test.bind("<<ComboboxSelected>>",LabTest_callback)
         MidTech_Emp.bind("<<ComboboxSelected>>",nameCallback)
+
+        def ApplyFilter():
+            global name_Choice,test_choice
+            if name_Choice is None:
+                name_Choice="All"
+            if test_choice is None:
+                test_choice="All"
+
+            sum=summary_filter.Summary()
+            res=sum.filterOut(name_Choice,test_choice)
+            count=0
+            number=1
+            Summary_Table.delete(*Summary_Table.get_children())
+            for item in range(len(res)):
+                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
+                count+=1
+                number+=1
+
+
+        Button(Frame_FilterBody,text="Apply Filter",command=lambda: ApplyFilter()).place(x=800,y=14)
 
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
