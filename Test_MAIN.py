@@ -13,7 +13,8 @@ from pathlib import Path
 from docxtpl import DocxTemplate
 from docxtpl import InlineImage
 from docx.shared import Inches
-
+import numpy as np
+import matplotlib.pyplot as plt
 import win32api, os, time
 import win32print
 import summary_filter
@@ -1231,6 +1232,14 @@ class Main:
         Frame_FilterBody=Frame(Frame_SumBody,height=130,border=2,borderwidth=5,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
         Frame_FilterBody.pack(fill=X)
 
+        FrameIMG1=Frame(Frame_FilterBody,width=110,height=110)
+        FrameIMG1.place(x=40,y=0)
+
+        image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((110, 110)))
+        Img1=Label(FrameIMG1,image = image)
+        Img1.image=image
+        Img1.place(x=0,y=0,width=110, height=110)
+
         res= self.user.getAllTest()
         Sum_Test=[x[0] for x in res]
         Sum_Test.insert(0,'All')
@@ -1261,12 +1270,48 @@ class Main:
         Valuebox=ttk.Combobox(Frame_FilterBody,value=Valuebox_V,font='Arial 10',state='readonly',width=20)
         Valuebox.set("Select Month")
 
-
         Monthly_yearr=datetime.today().year
         Monthly_years=[Monthly_yearr - i for i in range (6)]
-        Monthly_Lyears=Label(Frame_FilterBody,text="Choose Year :",font='Arial 11',)
+        Monthly_Lyears=Label(Frame_FilterBody,text="Choose Year :",font='Arial 11')
         Monthly_year=ttk.Combobox(Frame_FilterBody,value=Monthly_years,font='Arial 10',state='readonly',width=20)
         Monthly_year.set("Select Year")
+
+        Graph_Label=Label(Frame_FilterBody,text="Graph Model:",font='Arial 11').place(x=850,y=14)
+        Graph_Value=["GRAPH BAR","GRAPH PIE"]        
+        Graph_Selection=ttk.Combobox(Frame_FilterBody,value=Graph_Value,font='Arial 10',state='readonly',width=20)
+        Graph_Selection.set("Select Graph Model")
+        Graph_Selection.place(x=940,y=14)
+
+        def Graph_create():
+            Selected_value = Graph_Selection.get()
+            if Selected_value== "GRAPH BAR":
+                fig, ax = plt.subplots()
+                fruits = ['apple', 'blueberry', 'cherry', 'orange']
+                counts = [40, 100, 30, 55]
+                bar_labels = ['red', 'blue', '_red', 'orange']
+                bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
+                ax.bar(fruits, counts, label=bar_labels, color=bar_colors)
+                ax.set_ylabel('fruit supply')
+                ax.set_title('Fruit supply by kind and color')
+                ax.legend(title='Fruit color')
+
+                plt.show()
+
+            elif Selected_value== "GRAPH PIE":
+                labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
+                sizes = [15, 30, 45, 10]
+                explode = (0, 0.1, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
+                fig1, ax1 = plt.subplots()
+                ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
+                        shadow=True, startangle=90)
+                ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+                plt.show()
+            
+            else:
+                messagebox.showerror("Access Denied","Please Select A Graph Model to Use For Data Analyst")
+
+        Graph_button = Button(Frame_FilterBody,text="Create Graph",font='Arial 7',borderwidth=3,command=Graph_create)
+        Graph_button.place(x=1100,y=12)
 
         def filter_Option(event):
             if event.widget.get()=="Monthly":
@@ -1359,8 +1404,9 @@ class Main:
                 Quarter_4_years=[Quarter_4 - i for i in range (6)]
                 Valuebox.config(values=Quarter_4_years)
                 Valuebox.set('Select Year')
-
+                
         MidTech_Filter.bind("<<ComboboxSelected>>",filter_Option)
+
 
         Frame_TableBody=Frame(Frame_SumBody,bg="grey",borderwidth=5,highlightbackground="black",highlightthickness=1)
         Frame_TableBody.pack(expand=1,fill=BOTH)
@@ -1371,20 +1417,20 @@ class Main:
         Summary_Table['column']=("ID","NAME","TEST","DATE STARTED","DATE FINISHED","MEDTECH")
         #Column
         Summary_Table.column("#0",width=0,stretch=NO)
-        Summary_Table.column("ID")
-        Summary_Table.column("NAME")
-        Summary_Table.column("TEST")
-        Summary_Table.column("DATE STARTED")
-        Summary_Table.column("DATE FINISHED")
+        Summary_Table.column("ID",width=50,stretch=NO,anchor=CENTER)
+        Summary_Table.column("NAME",)
+        Summary_Table.column("TEST",width=200,stretch=NO)
+        Summary_Table.column("DATE STARTED",width=100,stretch=NO,anchor=CENTER)
+        Summary_Table.column("DATE FINISHED",width=100,stretch=NO,anchor=CENTER)
         Summary_Table.column("MEDTECH")
         #Header
         Summary_Table.heading("#0")
         Summary_Table.heading("ID",text="No")
-        Summary_Table.heading("NAME",text="NAME")
+        Summary_Table.heading("NAME",text="NAME",anchor=W)
         Summary_Table.heading("TEST",text="TEST")
-        Summary_Table.heading("DATE STARTED",text="DATE STARTED")
-        Summary_Table.heading("DATE FINISHED",text="DATE FINISHED")
-        Summary_Table.heading("MEDTECH",text="MEDTECH")
+        Summary_Table.heading("DATE STARTED",text="DATE STARTED",anchor=W)
+        Summary_Table.heading("DATE FINISHED",text="DATE FINISHED",anchor=W)
+        Summary_Table.heading("MEDTECH",text="Medical Technologists",anchor=W)
         Summary_Table.pack(expand=1,fill=BOTH)
 
         res=self.user.getAllClient_Done()
