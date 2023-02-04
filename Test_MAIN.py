@@ -6,6 +6,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from PIL import Image, ImageTk
 from tkinter import messagebox
+import datetime
 from datetime import date, datetime
 import employee, LoginPage
 
@@ -1267,6 +1268,8 @@ class Main:
         MidTech_Filter.set("Select Filter Option")
         MidTech_Filter.place(x=620,y=14)
 
+        global Valuebox, Monthly_year
+
         Valuebox_V=list(calendar.month_name)
         Valuebox_label=Label(Frame_FilterBody,text="Choose Month:",font='Arial 11',)
 
@@ -1316,7 +1319,17 @@ class Main:
         Graph_button = Button(Frame_FilterBody,text="Create Graph",font='Arial 7',borderwidth=3,command=Graph_create)
         Graph_button.place(x=1100,y=12)
 
+        global name_Choice,test_choice, filter_choice,filter_date_from,filter_date_to
+
+        name_Choice=None
+        test_choice=None
+        filter_choice=None
+        filter_date_from=None
+        filter_date_to=None
+
         def filter_Option(event):
+            global filter_choice
+            filter_choice=event.widget.get()
             if event.widget.get()=="Monthly":
                 Monthly_months=list(calendar.month_name)
                 Valuebox_label.config(text="Choose Month:")
@@ -1327,6 +1340,7 @@ class Main:
 
                 Monthly_Lyears.place(x=750,y=40)
                 Monthly_year.place(x=750,y=60)
+
 
             elif event.widget.get()=="Yearly":
                 Monthly_Lyears.place_forget()
@@ -1444,10 +1458,6 @@ class Main:
             count+=1
             number+=1
 
-        global name_Choice,test_choice
-
-        name_Choice=None
-        test_choice=None
 
         def LabTest_callback(event):
             global test_choice
@@ -1461,14 +1471,52 @@ class Main:
         MidTech_Emp.bind("<<ComboboxSelected>>",nameCallback)
 
         def ApplyFilter():
-            global name_Choice,test_choice
+            global name_Choice,test_choice,filter_date_from,filter_date_to,filter_choice
+            if filter_choice is not None:
+                if Valuebox.get()=="Select Month" or Monthly_year.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Month and/or Year is Empty.")
+                else:
+                    if Valuebox.get()=="January":
+                        month_num=1
+                    elif Valuebox.get()=="February":
+                        month_num=2
+                    elif Valuebox.get()=="March":
+                        month_num=3
+                    elif Valuebox.get()=="April":
+                        month_num=4
+                    elif Valuebox.get()=="May":
+                        month_num=5
+                    elif Valuebox.get()=="June":
+                        month_num=6
+                    elif Valuebox.get()=="July":
+                        month_num=7
+                    elif Valuebox.get()=="August":
+                        month_num=8
+                    elif Valuebox.get()=="September":
+                        month_num=9
+                    elif Valuebox.get()=="October":
+                        month_num=10
+                    elif Valuebox.get()=="November":
+                        month_num=11
+                    elif Valuebox.get()=="December":
+                        month_num=12
+
+                    filter_date_from_dateObj=date(int(Monthly_year.get()),month_num,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(filter_date_from_dateObj.year, filter_date_from_dateObj.month)
+                    day=res[1]
+                    filter_date_to=date(int(Monthly_year.get()),month_num,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
             if name_Choice is None:
                 name_Choice="All"
             if test_choice is None:
                 test_choice="All"
-
             sum=summary_filter.Summary()
-            res=sum.filterOut(name_Choice,test_choice)
+            if filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice=="Monthly" and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)
             count=0
             number=1
             Summary_Table.delete(*Summary_Table.get_children())
@@ -1507,8 +1555,8 @@ class Main:
             doc.save("new_document.docx")
             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"new_document.docx"), None, ".", 0)
 
-        Button(Frame_FilterBody,text="Apply Filter",command=lambda: ApplyFilter()).place(x=800,y=50)
-        Button(Frame_FilterBody,text="Print Out Results",command=lambda: PrintResults()).place(x=900,y=50)
+        Button(Frame_FilterBody,text="Apply Filter",command=lambda: ApplyFilter()).place(x=1000,y=50)
+        Button(Frame_FilterBody,text="Print Out Results",command=lambda: PrintResults()).place(x=1100,y=50)
 
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
