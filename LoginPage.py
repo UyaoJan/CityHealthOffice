@@ -17,6 +17,7 @@ class Loginpage():
         passwd=password.get()
         if uname==admin_uname and passwd==admin_pass:
             admin=Test_Admin.Admin()
+            self.LoginGUI.destroy()
             admin.start()
         else:
             log=employee.Employee.login(uname,passwd)

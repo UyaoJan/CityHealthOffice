@@ -94,23 +94,25 @@ class Main:
         global Page_FrontDesk
         Page_FrontDesk=Frame(self.Dashboard_GUI)
         Page_FrontDesk.pack(expand=1, fill=BOTH)
-        Frame_Header=Frame(Page_FrontDesk,width=1360,height=50,highlightbackground="black",highlightthickness=1)
+        Frame_Header=Frame(Page_FrontDesk,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
         Frame_Header.pack()
-        IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_HEADER.place(x=10,y=8)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
+        image5 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
+        IMG_HEADER_FD=Label(Frame_Header,image=image5,bg='#BDFFC4',width=40,height=40)
+        IMG_HEADER_FD.image=image5
+        IMG_HEADER_FD.place(x=5,y=1)
+        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Arial 25 bold').place(x=50,y=1)
 
-        HEADER_USERNAME=Label(Frame_Header,text="UserName:",font='Arial 12 ').place(x=1100,y=10)
-        IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_USERNAME.place(x=1200,y=8)
+        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Arial 20 ').place(x=1150,y=5)
+        # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+        # IMG_USERNAME.place(x=1200,y=5)
 
         Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
         Toggle_Button.place(x=1290,y=10)
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="HOME",command=Home)
-        Toggle_Button.menu.add_command(label="Logout",command=lambda:self.logout())
+        Toggle_Button.menu.add_command(label="Home",font='Arial 12',command=Home)
+        Toggle_Button.menu.add_command(label="Logout",font='Arial 12',command=lambda:self.logout())
 
         #Header-------
         #Body-------
@@ -335,24 +337,25 @@ class Main:
             self.Page_Dashboard.forget()
             Page_Laboratory=Frame(self.Dashboard_GUI,bg="green")
             Page_Laboratory.pack(expand=1, fill=BOTH)
-            Frame_Header=Frame(Page_Laboratory,width=1360,height=50,highlightbackground="black",highlightthickness=1)
+            Frame_Header=Frame(Page_Laboratory,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
             Frame_Header.pack()
+            image4 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
+            IMG_HEADER_Lab=Label(Frame_Header,image=image4,bg='#BDFFC4',width=40,height=40)
+            IMG_HEADER_Lab.image=image4
+            IMG_HEADER_Lab.place(x=5,y=1)
+            HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Arial 25 bold').place(x=50,y=1)
 
-            IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-            IMG_HEADER.place(x=10,y=8)
-            HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
-
-            HEADER_USERNAME=Label(Frame_Header,text="UserName:",font='Arial 12 ').place(x=1100,y=10)
-            IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-            IMG_USERNAME.place(x=1200,y=8)
+            HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Arial 20 ').place(x=1150,y=5)
+            # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+            # IMG_USERNAME.place(x=1250,y=8)
 
             Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
             Toggle_Button.place(x=1290,y=10)
             Toggle_Button.menu=Menu(Toggle_Button)
             Toggle_Button["menu"]=Toggle_Button.menu
 
-            Toggle_Button.menu.add_command(label="HOME",command=Home)
-            Toggle_Button.menu.add_command(label="Logout",command=lambda:self.logout())
+            Toggle_Button.menu.add_command(label="Home",font='Arial 12',command=Home)
+            Toggle_Button.menu.add_command(label="Logout",font='Arial 12',command=lambda:self.logout())
             #Header-------
             #BODY >> Laboratory
             Frame_Body=Frame(Page_Laboratory,width=1360,height=150,highlightbackground="black",highlightthickness=1)
@@ -1020,25 +1023,25 @@ class Main:
             self.Page_Dashboard.forget()
             Page_XRAY=Frame(self.Dashboard_GUI,bg="green")
             Page_XRAY.pack(expand=1, fill=BOTH)
-            # Page_scroll=Scrollbar(Page_XRAY,orient='vertical')
-            # Page_scroll.pack(side=RIGHT,fill='y')
-            Frame_Header=Frame(Page_XRAY,width=1360,height=50,highlightbackground="black",highlightthickness=1)
+            Frame_Header=Frame(Page_XRAY,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
             Frame_Header.pack()
-            IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-            IMG_HEADER.place(x=10,y=8)
-            HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
+            image3 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
+            IMG_HEADER_Xray=Label(Frame_Header,image=image3,bg='#BDFFC4',width=40,height=40)
+            IMG_HEADER_Xray.image=image3
+            IMG_HEADER_Xray.place(x=3,y=1)
+            HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Arial 20 bold').place(x=50,y=8)
 
-            HEADER_USERNAME=Label(Frame_Header,text="Username:",font='Arial 12 ').place(x=1100,y=10)
-            IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-            IMG_USERNAME.place(x=1200,y=8)
+            HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Arial 20 ').place(x=1150,y=5)
+            # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+            # IMG_USERNAME.place(x=1200,y=8)
 
             Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
             Toggle_Button.place(x=1290,y=10)
             Toggle_Button.menu=Menu(Toggle_Button)
             Toggle_Button["menu"]=Toggle_Button.menu
 
-            Toggle_Button.menu.add_command(label="HOME",command=Home)
-            Toggle_Button.menu.add_command(label="Logout",command=lambda:self.logout())
+            Toggle_Button.menu.add_command(label="Home",font='Arail 12',command=Home)
+            Toggle_Button.menu.add_command(label="Logout",font='Arail 12',command=lambda:self.logout())
             #Header-------
             #BODY >> Laboratory
             Detail_Body=Frame(Page_XRAY,width=300)
@@ -1207,26 +1210,29 @@ class Main:
         def Home():
             self.Page_Summary.destroy()
             self.Page_Dashboard.pack()
+
         self.Page_Dashboard.forget()
         self.Page_Summary=Frame(self.Dashboard_GUI,bg="green")
         self.Page_Summary.pack(expand=1, fill=BOTH)
-        Frame_Header=Frame(self.Page_Summary,width=1360,height=50,highlightbackground="black",highlightthickness=1)
+        Frame_Header=Frame(self.Page_Summary,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
         Frame_Header.pack()
-        IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_HEADER.place(x=10,y=8)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
+        image2 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
+        IMG_HEADER_SUM=Label(Frame_Header,image=image2,bg='#BDFFC4',width=40,height=40)
+        IMG_HEADER_SUM.image=image2
+        IMG_HEADER_SUM.place(x=5,y=1)
+        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Arial 25 bold').place(x=50,y=1)
 
-        HEADER_USERNAME=Label(Frame_Header,text="UserName:",font='Arial 12 ').place(x=1100,y=10)
-        IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_USERNAME.place(x=1200,y=8)
+        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),font='Arial 20 ',bg='#BDFFC4').place(x=1150,y=5)
+        # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+        # IMG_USERNAME.place(x=1200,y=8)
 
         Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
         Toggle_Button.place(x=1290,y=10)
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="HOME",command=Home)
-        Toggle_Button.menu.add_command(label="Logout",command=lambda:self.logout())
+        Toggle_Button.menu.add_command(label="Home",font='Arial 12 ',command=Home)
+        Toggle_Button.menu.add_command(label="Logout",font='Arial 12 ',command=lambda:self.logout())
         #Header-------
         #BODY >> Summary
 
@@ -1341,7 +1347,6 @@ class Main:
                 Monthly_Lyears.place(x=750,y=40)
                 Monthly_year.place(x=750,y=60)
 
-
             elif event.widget.get()=="Yearly":
                 Monthly_Lyears.place_forget()
                 Monthly_year.place_forget()
@@ -1424,7 +1429,6 @@ class Main:
                 
         MidTech_Filter.bind("<<ComboboxSelected>>",filter_Option)
 
-
         Frame_TableBody=Frame(Frame_SumBody,bg="grey",borderwidth=5,highlightbackground="black",highlightthickness=1)
         Frame_TableBody.pack(expand=1,fill=BOTH)
         Summary_Table=ttk.Treeview(Frame_TableBody)
@@ -1448,7 +1452,10 @@ class Main:
         Summary_Table.heading("DATE STARTED",text="DATE STARTED",anchor=W)
         Summary_Table.heading("DATE FINISHED",text="DATE FINISHED",anchor=W)
         Summary_Table.heading("MEDTECH",text="Medical Technologists",anchor=W)
+        Summaryscroll=ttk.Scrollbar(Frame_TableBody,orient=VERTICAL,command=Summary_Table.yview)
+        Summaryscroll.pack(side=RIGHT,fill=Y)
         Summary_Table.pack(expand=1,fill=BOTH)
+
 
         res=self.user.getAllClient_Done()
         count=0
@@ -1466,7 +1473,7 @@ class Main:
         def nameCallback(event):
             global name_Choice
             name_Choice=event.widget.get()
-                
+
         LabTest_Test.bind("<<ComboboxSelected>>",LabTest_callback)
         MidTech_Emp.bind("<<ComboboxSelected>>",nameCallback)
 
@@ -1508,6 +1515,7 @@ class Main:
                     day=res[1]
                     filter_date_to=date(int(Monthly_year.get()),month_num,day)
                     filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
             if name_Choice is None:
                 name_Choice="All"
             if test_choice is None:
@@ -1524,7 +1532,7 @@ class Main:
                 Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
                 count+=1
                 number+=1
-
+                
         def PrintResults():
             all_items=Summary_Table.get_children()
 
@@ -1568,30 +1576,31 @@ class Main:
 
         self.Page_Dashboard=Frame(self.Dashboard_GUI,bg="green")
         self.Page_Dashboard.pack(expand=1, fill=BOTH)
-        Frame_Header=Frame(self.Page_Dashboard,width=1360,height=50,highlightbackground="black",highlightthickness=1)
+        Frame_Header=Frame(self.Page_Dashboard,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
         Frame_Header.pack()
+        image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
+        IMG_HEADER_MD=Label(Frame_Header,image=image,bg='#BDFFC4',width=40,height=40)
+        IMG_HEADER_MD.place(x=3,y=1)
+        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Arial 25 bold').place(x=50,y=1)
 
-        IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_HEADER.place(x=10,y=8)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
+        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Arial 20').place(x=1150,y=3)
+        # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
+        # IMG_USERNAME.place(x=1200,y=8)
 
-        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),font='Arial 12 ').place(x=1100,y=10)
-        IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_USERNAME.place(x=1200,y=8)
-
-        Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
+        Toggle_Button=Menubutton(Frame_Header,width=5,text="=",bg="white",highlightbackground="black",highlightthickness=1,justify=RIGHT)
         Toggle_Button.place(x=1290,y=10)
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
-
-        Toggle_Button.menu.add_command(label="Logout",command=lambda:self.logout())
+        Toggle_Button.menu.add_command(label="LOGOUT",font='Arial 12 bold',command=lambda:self.logout())
         #Header END------------
 
         #Message
         Frame_Center=Frame(self.Page_Dashboard,width=1360,height=413,highlightbackground="black",highlightthickness=1)
         Frame_Center.pack()
-        VISION=Label(Frame_Center,text="VISION: \nCAGAYAN DE ORO CITY HEALTH OFFICE - \nThe nations ideal public health care service provider to ensure healthy and empowered \nCagay-anons",justify=LEFT,font=("Arail",15,"bold")).place(x=450,y=30)
-        MISSION=Label(Frame_Center,text="MISSION \nWe, the Health care managers and providers pledge to deliver quality health care through \nregulative, preventive, curative and rehabilitative services. To attain our mission, \nwe subscribed to the following \nValues: \n• Equality / Liberty \n• Knowledge / Insight \n• Self-actualization \n• Service / vocation",justify=LEFT,font=("Arail",15,"bold")).place(x=450,y=150)
+        VISION=Label(Frame_Center,text="VISSION:",font=("Arail",20,'bold')).place(x=440,y=20)
+        VISION_BODY=Label(Frame_Center,text="CAGAYAN DE ORO CITY HEALTH OFFICE - \nThe nations ideal public health care service provider to ensure healthy and empowered \nCagay-anons",justify=LEFT,font=("Arail",13)).place(x=480,y=50)
+        MISSION=Label(Frame_Center,text="MISSION",justify=LEFT,font=("Arail",20,'bold')).place(x=440,y=150)
+        MISSION_BODY=Label(Frame_Center,text="We, the Health care managers and providers pledge to deliver quality health care through \nregulative, preventive, curative and rehabilitative services. To attain our mission, \nwe subscribed to the following \nValues: \n• Equality / Liberty \n• Knowledge / Insight \n• Self-actualization \n• Service / vocation",justify=LEFT,font=("Arail",13)).place(x=480,y=180)
 
         CDOH_LOGO = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
         CDOH_Label=Label(Frame_Center,image=CDOH_LOGO)
@@ -1604,7 +1613,7 @@ class Main:
         Frame_FrontDesk=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
         Frame_FrontDesk.place(x=0,y=0)
         FrontDesk_label=Label(Frame_FrontDesk,text="FRONT DESK",font=("Arail",35,"bold")).place(x=20,y=40)
-        Button_FronDesk=Button(Frame_FrontDesk,text="ENTER",width=8,height=2,bg="green",borderwidth=4,command=self.FrontDesk).place(x=120,y=200)
+        Button_FronDesk=Button(Frame_FrontDesk,text="ENTER",width=8,height=1,bg="green",borderwidth=4,command=self.FrontDesk).place(x=120,y=200)
 
         #Lab-list
         Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
@@ -1612,17 +1621,17 @@ class Main:
         Frame_LabCH=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
         Frame_LabCH.place(x=0,y=0)
         Laboratory_label=Label(Frame_LabCH,text="LABORATORY TEST",font=("Arail",35,"bold")).place(x=10,y=50)
-        Button_LabCH=Button(Frame_LabCH,text="ENTER",width=8,height=2,bg="green",borderwidth=4,command=self.Laboratory).place(x=570,y=50)
+        Button_LabCH=Button(Frame_LabCH,text="ENTER",width=8,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=50)
 
         Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
         Frame_XRay.place(x=0,y=145)
         Xray_label=Label(Frame_XRay,text="X-RAY LABORATORY",font=("Arail",35,"bold")).place(x=20,y=40)
-        Button_XRay=Button(Frame_XRay,text="ENTER",width=8,height=2,bg="green",borderwidth=4,command=self.X_Ray).place(x=570,y=50)
+        Button_XRay=Button(Frame_XRay,text="ENTER",width=8,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=50)
 
         Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
         Frame_Summary.place(x=1009,y=0)
         Summary_label=Label(Frame_Summary,text="SUMMARY",font=("Arail",35,"bold")).place(x=30,y=50)
-        Button_Summary=Button(Frame_Summary,text="ENTER",width=8,height=2,bg="green",borderwidth=4,command=self.Summary).place(x=140,y=200)
+        Button_Summary=Button(Frame_Summary,text="ENTER",width=8,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=140,y=200)
 
         self.Dashboard_GUI.mainloop()
     
