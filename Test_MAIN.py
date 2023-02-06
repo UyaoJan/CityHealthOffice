@@ -9,7 +9,7 @@ from tkinter import messagebox
 import datetime
 from datetime import date, datetime
 import employee, LoginPage
-
+import matplotlib.pyplot as plt
 import docx
 
 
@@ -1436,12 +1436,14 @@ class Main:
         style=ttk.Style()
         style.theme_use("default")
         style.configure("Treeview")
-        Summary_Table['column']=("ID","NAME","TEST","DATE STARTED","DATE FINISHED","MEDTECH")
+        Summary_Table['column']=("ID","NAME","GENDER","TEST",'AGE',"DATE STARTED","DATE FINISHED","MEDTECH")
         #Column
         Summary_Table.column("#0",width=0,stretch=NO)
         Summary_Table.column("ID",width=50,stretch=NO,anchor=CENTER)
-        Summary_Table.column("NAME",)
+        Summary_Table.column("NAME")
+        Summary_Table.column("GENDER")
         Summary_Table.column("TEST",width=200,stretch=NO)
+        Summary_Table.column("AGE")
         Summary_Table.column("DATE STARTED",width=100,stretch=NO,anchor=CENTER)
         Summary_Table.column("DATE FINISHED",width=100,stretch=NO,anchor=CENTER)
         Summary_Table.column("MEDTECH")
@@ -1449,7 +1451,9 @@ class Main:
         Summary_Table.heading("#0")
         Summary_Table.heading("ID",text="No")
         Summary_Table.heading("NAME",text="NAME",anchor=W)
+        Summary_Table.heading("GENDER",text="Gender",anchor=W)
         Summary_Table.heading("TEST",text="TEST")
+        Summary_Table.heading("AGE",text="Age",anchor=W)
         Summary_Table.heading("DATE STARTED",text="DATE STARTED",anchor=W)
         Summary_Table.heading("DATE FINISHED",text="DATE FINISHED",anchor=W)
         Summary_Table.heading("MEDTECH",text="Medical Technologists",anchor=W)
@@ -1462,7 +1466,7 @@ class Main:
         count=0
         number=1
         for item in range(len(res)):
-            Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
+            Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5],res[item][6],res[item][7]))
             count+=1
             number+=1
 
@@ -1654,12 +1658,24 @@ class Main:
             number=1
             Summary_Table.delete(*Summary_Table.get_children())
             for item in range(len(res)):
-                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
+                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5],res[item][6],res[item][7]))
                 count+=1
                 number+=1
                 
         def PrintResults():
             all_items=Summary_Table.get_children()
+            tests={}
+
+            for item in Summary_Table.get_children():
+                itemValues=Summary_Table.item(item)['values']
+                if itemValues[2] not in tests.keys():
+                    tests[itemValues[2]]=1
+                elif itemValues[2] in tests.keys():
+                    tests[itemValues[2]]+=1
+                
+            fig, ax = plt.subplots()
+            ax.bar(tests.keys(), tests.values())
+            plt.show()
 
             doc = docx.Document("SUMMARY_REPORT_TEMPLATE.docx")
             data=[]
