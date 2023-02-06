@@ -1612,22 +1612,22 @@ class Main:
             if test_choice is None:
                 test_choice="All"
             sum=summary_filter.Summary()
-            if filter_choice=="Select Filter Option" and  name_Choice!="All" or test_choice!="All":
+            if filter_choice=="Select Filter Option" and  name_Choice!="All" and test_choice=="All" or filter_choice=="Select Filter Option" and name_Choice=="All" and test_choice!="All":
                 res=sum.filterOut(name_Choice,test_choice)
 
             elif filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
                 res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice=="Monthly" and name_Choice!="All" or test_choice!="All":
+            elif filter_choice=="Monthly" and name_Choice!="All" and test_choice=="All" or filter_choice=="Monthly" and name_Choice=="All" and test_choice!="All":
                 res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)
 
-            elif filter_choice=="Yearly" and name_Choice!="All" or test_choice!="All":
+            elif filter_choice=="Yearly" and name_Choice!="All" and test_choice=="All" or filter_choice=="Yearly" and name_Choice!="All" and test_choice!="All":
                 res=sum.filterYearlyTest(year,name_Choice,test_choice)
             elif filter_choice=="Yearly" and name_Choice=="All" and test_choice=="All":
                 res=sum.filterYearly(year)
 
             elif filter_choice=='1st Semi Annual' and name_Choice=="All" and test_choice=="All" or filter_choice=='2nd Semi Annual' and name_Choice=="All" and test_choice=="All":
                 res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice == '1st Semi Annual' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All":
+            elif filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All":
                 res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice) 
 
             elif filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All":
