@@ -1517,11 +1517,95 @@ class Main:
                     day=res[1]
                     filter_date_to=date(int(Monthly_year.get()),month_num,day)
                     filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
             elif filter_choice=="Yearly":
                 if Valuebox.get()=="Select Year":
                     messagebox.showerror("No Value Selected", "Year is Empty.")
                 elif Valuebox.get()!="Select Year":
                     year=Valuebox.get()
+            elif filter_choice=="1st Semi Annual": 
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),1,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 6)
+                    day=res[1]
+                    filter_date_to=date(int(year),6,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
+            elif filter_choice=="2nd Semi Annual": 
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),7,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 12)
+                    day=res[1]
+                    filter_date_to=date(int(year),12,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
+            elif filter_choice=="1st Quarter":
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),1,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 3)
+                    day=res[1]
+                    filter_date_to=date(int(year),3,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
+            elif filter_choice=="2nd Quarter":
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),4,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 6)
+                    day=res[1]
+                    filter_date_to=date(int(year),6,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
+            elif filter_choice=="3rd Quarter":
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),7,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 9)
+                    day=res[1]
+                    filter_date_to=date(int(year),9,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
+            elif filter_choice=="4th Quarter":
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),10,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 12)
+                    day=res[1]
+                    filter_date_to=date(int(year),12,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
 
             if name_Choice is None:
                 name_Choice="All"
@@ -1530,14 +1614,41 @@ class Main:
             sum=summary_filter.Summary()
             if filter_choice=="Select Filter Option" and  name_Choice!="All" or test_choice!="All":
                 res=sum.filterOut(name_Choice,test_choice)
+
             elif filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
                 res=sum.filterMonthly(filter_date_from,filter_date_to)
             elif filter_choice=="Monthly" and name_Choice!="All" or test_choice!="All":
                 res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)
+
             elif filter_choice=="Yearly" and name_Choice!="All" or test_choice!="All":
                 res=sum.filterYearlyTest(year,name_Choice,test_choice)
             elif filter_choice=="Yearly" and name_Choice=="All" and test_choice=="All":
                 res=sum.filterYearly(year)
+
+            elif filter_choice=='1st Semi Annual' and name_Choice=="All" and test_choice=="All" or filter_choice=='2nd Semi Annual' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '1st Semi Annual' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice) 
+
+            elif filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '1st Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '1st Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
+
+            elif filter_choice=='2nd Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='2nd Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '2nd Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
+
+            elif filter_choice=='3rd Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='3rd Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '3rd Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '3rd Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
+
+            elif filter_choice=='4th Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='4th Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '4th Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '4th Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice) 
 
             count=0
             number=1
