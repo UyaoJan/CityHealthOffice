@@ -1326,9 +1326,10 @@ class Main:
         filter_choice=None
         filter_date_from=None
         filter_date_to=None
+        year=None
 
         def filter_Option(event):
-            global filter_choice
+            global filter_choice, Yearly_years
             filter_choice=event.widget.get()
             if event.widget.get()=="Monthly":
                 Monthly_months=list(calendar.month_name)
@@ -1471,11 +1472,12 @@ class Main:
         MidTech_Emp.bind("<<ComboboxSelected>>",nameCallback)
 
         def ApplyFilter():
+            months=['January','February',"March","April","May","June","July","August","September","October","November","December"]
             global name_Choice,test_choice,filter_date_from,filter_date_to,filter_choice
-            if filter_choice is not None:
+            if filter_choice=="Monthly":
                 if Valuebox.get()=="Select Month" or Monthly_year.get()=="Select Year":
                     messagebox.showerror("No Value Selected", "Month and/or Year is Empty.")
-                else:
+                elif Valuebox.get()!="Select Month" and Valuebox.get() in months:
                     if Valuebox.get()=="January":
                         month_num=1
                     elif Valuebox.get()=="February":
@@ -1508,15 +1510,28 @@ class Main:
                     day=res[1]
                     filter_date_to=date(int(Monthly_year.get()),month_num,day)
                     filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+            elif filter_choice=="Yearly":
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
             if name_Choice is None:
                 name_Choice="All"
             if test_choice is None:
                 test_choice="All"
             sum=summary_filter.Summary()
-            if filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
+            if filter_choice=="Select Filter Option" and  name_Choice!="All" or test_choice!="All":
+                res=sum.filterOut(name_Choice,test_choice)
+            elif filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
                 res=sum.filterMonthly(filter_date_from,filter_date_to)
             elif filter_choice=="Monthly" and name_Choice!="All" or test_choice!="All":
                 res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)
+            elif filter_choice=="Yearly" and name_Choice!="All" or test_choice!="All":
+                res=sum.filterYearlyTest(year,name_Choice,test_choice)
+            elif filter_choice=="Yearly" and name_Choice=="All" and test_choice=="All":
+                res=sum.filterYearly(year)
+
             count=0
             number=1
             Summary_Table.delete(*Summary_Table.get_children())
