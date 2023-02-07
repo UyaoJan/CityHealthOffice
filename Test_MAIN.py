@@ -9,10 +9,7 @@ from tkinter import messagebox
 import datetime
 from datetime import date, datetime
 import employee, LoginPage
-import matplotlib.pyplot as plt
 import docx
-
-
 from pathlib import Path
 from docxtpl import DocxTemplate
 from docxtpl import InlineImage
@@ -100,9 +97,9 @@ class Main:
         IMG_HEADER_FD=Label(Frame_Header,image=image5,bg='#BDFFC4',width=40,height=40)
         IMG_HEADER_FD.image=image5
         IMG_HEADER_FD.place(x=5,y=1)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Arial 25 bold').place(x=50,y=1)
+        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').place(x=50,y=1)
 
-        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Arial 20 ').place(x=1150,y=5)
+        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ').place(x=1150,y=5)
         # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
         # IMG_USERNAME.place(x=1200,y=5)
 
@@ -111,8 +108,8 @@ class Main:
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="Home",font='Arial 12',command=Home)
-        Toggle_Button.menu.add_command(label="Logout",font='Arial 12',command=lambda:self.logout())
+        Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=Home)
+        Toggle_Button.menu.add_command(label="Logout",font='Roboto 12',command=lambda:self.logout())
 
         #Header-------
         #Body-------
@@ -121,9 +118,9 @@ class Main:
 
         Frame_LIST=Frame(Frame_Body,width=680,height=700)
         Frame_LIST.pack(side=LEFT)
-        FrontDesk_Title=Label(Frame_Body,text="New Client",font='Arial 75')
+        FrontDesk_Title=Label(Frame_Body,text="New Client",font='Roboto 75')
         FrontDesk_Title.place(x=20,y=20)
-        Box_Title=Label(Frame_Body,text="Laboratory Test List",font='Arial 25')
+        Box_Title=Label(Frame_Body,text="Laboratory Test List",font='Roboto 25')
         Box_Title.place(x=54,y=300)
         self.Box=Frame(Frame_LIST,width=560,height=300,highlightbackground="black",highlightthickness=1)
         self.Box.place(x=50,y=320)
@@ -154,24 +151,29 @@ class Main:
             self.services.append(Test)
 
         def check(i):
-            i.set(1)
-        
-        Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Arial 12 ',command=lambda i=self.services[0]:check(i)).place(x=30,y=50)
-        Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Arial 12 ',command=lambda i=self.services[1]:check(i)).place(x=30,y=75)
-        Checkbutton(self.Box,text="Stool Exam",variable=self.services[2],font='Arial 12 ',command=lambda i=self.services[2]:check(i)).place(x=30,y=100)
-        Checkbutton(self.Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Arial 12 ',command=lambda i=self.services[3]:check(i)).place(x=30,y=125)
-        Checkbutton(self.Box,text="Syphilis Rapid Test",variable=self.services[4],font='Arial 12 ',command=lambda i=self.services[4]:check(i)).place(x=30,y=150)
-        Checkbutton(self.Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Arial 12 ',command=lambda i=self.services[5]:check(i)).place(x=30,y=175)
-        Checkbutton(self.Box,text="Anti-HAV Test",variable=self.services[6],font='Arial 12 ',command=lambda i=self.services[6]:check(i)).place(x=30,y=200)
-        Checkbutton(self.Box,text="Drug Test",variable=self.services[7],font='Arial 12 ',command=lambda i=self.services[7]:check(i)).place(x=30,y=222)
-        Checkbutton(self.Box,text="Pregnancy Test",variable=self.services[8],font='Arial 12 ',command=lambda i=self.services[8]:check(i)).place(x=30,y=245)
-        Checkbutton(self.Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Arial 12 ',command=lambda i=self.services[9]:check(i)).place(x=280,y=50)
-        Checkbutton(self.Box,text="Blood Uric Acid Test",variable=self.services[10],font='Arial 12 ',command=lambda i=self.services[10]:check(i)).place(x=280,y=75)
-        Checkbutton(self.Box,text="Blood Cholesterol Test",variable=self.services[11],font='Arial 12 ',command=lambda i=self.services[11]:check(i)).place(x=280,y=100)
-        Checkbutton(self.Box,text="Blood Creatinine Test",variable=self.services[12],font='Arial 12 ',command=lambda i=self.services[12]:check(i)).place(x=280,y=125)
-        Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Arial 12 ',command=lambda i=self.services[13]:check(i)).place(x=280,y=150)
-        Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Arial 12 ',command=lambda i=self.services[14]:check(i)).place(x=280,y=175)
-        Checkbutton(self.Box,text="Serology",variable=self.services[15],font='Arial 12 ',command=lambda i=self.services[15]:check(i)).place(x=280,y=200)
+            if i == self.services(i):
+                print("if it working")
+                i.set(0)
+            else:
+                print("else it working")
+                i.set(1)
+            
+        Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Roboto 12 ',command=lambda i=self.services[0]:check(i)).place(x=30,y=50)
+        Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Roboto 12 ',command=lambda i=self.services[1]:check(i)).place(x=30,y=75)
+        Checkbutton(self.Box,text="Stool Exam",variable=self.services[2],font='Roboto 12 ',command=lambda i=self.services[2]:check(i)).place(x=30,y=100)
+        Checkbutton(self.Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Roboto 12 ',command=lambda i=self.services[3]:check(i)).place(x=30,y=125)
+        Checkbutton(self.Box,text="Syphilis Rapid Test",variable=self.services[4],font='Roboto 12 ',command=lambda i=self.services[4]:check(i)).place(x=30,y=150)
+        Checkbutton(self.Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Roboto 12 ',command=lambda i=self.services[5]:check(i)).place(x=30,y=175)
+        Checkbutton(self.Box,text="Anti-HAV Test",variable=self.services[6],font='Roboto 12 ',command=lambda i=self.services[6]:check(i)).place(x=30,y=200)
+        Checkbutton(self.Box,text="Drug Test",variable=self.services[7],font='Roboto 12 ',command=lambda i=self.services[7]:check(i)).place(x=30,y=222)
+        Checkbutton(self.Box,text="Pregnancy Test",variable=self.services[8],font='Roboto 12 ',command=lambda i=self.services[8]:check(i)).place(x=30,y=245)
+        Checkbutton(self.Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Roboto 12 ',command=lambda i=self.services[9]:check(i)).place(x=280,y=50)
+        Checkbutton(self.Box,text="Blood Uric Acid Test",variable=self.services[10],font='Roboto 12 ',command=lambda i=self.services[10]:check(i)).place(x=280,y=75)
+        Checkbutton(self.Box,text="Blood Cholesterol Test",variable=self.services[11],font='Roboto 12 ',command=lambda i=self.services[11]:check(i)).place(x=280,y=100)
+        Checkbutton(self.Box,text="Blood Creatinine Test",variable=self.services[12],font='Roboto 12 ',command=lambda i=self.services[12]:check(i)).place(x=280,y=125)
+        Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Roboto 12 ',command=lambda i=self.services[13]:check(i)).place(x=280,y=150)
+        Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Roboto 12 ',command=lambda i=self.services[14]:check(i)).place(x=280,y=175)
+        Checkbutton(self.Box,text="Serology",variable=self.services[15],font='Roboto 12 ',command=lambda i=self.services[15]:check(i)).place(x=280,y=200)
 
         #Body-------
 
@@ -189,13 +191,13 @@ class Main:
         Img.place(x=0,y=0,width=300, height=300)
 
         global Name_Entry
-        Name_Label=Label(Frame_Input,text="Name: ",font='Arial 12').place(x=46,y=400)
-        Name_Entry=Entry(Frame_Input,width=59,borderwidth=3,font='Arial 12')
+        Name_Label=Label(Frame_Input,text="Name: ",font='Roboto 12').place(x=46,y=400)
+        Name_Entry=Entry(Frame_Input,width=59,borderwidth=3,font='Roboto 12')
         Name_Entry.place(x=100,y=400)
 
         global AGE_Entry
-        AGE_Label=Label(Frame_Input,text="Age: ",font='Arial 12').place(x=46,y=430)
-        AGE_Entry=Entry(Frame_Input,width=5,font='Arial 12',borderwidth=3)
+        AGE_Label=Label(Frame_Input,text="Age: ",font='Roboto 12').place(x=46,y=430)
+        AGE_Entry=Entry(Frame_Input,width=5,font='Roboto 12',borderwidth=3)
         AGE_Entry.place(x=100,y=430)
 
         def calculate_age(birthdate):
@@ -204,30 +206,30 @@ class Main:
             return age
 
         global Birth_Entry
-        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Arial 12").place(x=160,y=430)
-        Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
+        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=160,y=430)
+        Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
         Birth_Entry.place(x=230,y=430)
 
         global Gender_Mune
-        Gender_Label=Label(Frame_Input,text="Gender:",font='Arial 12').place(x=350,y=430)
+        Gender_Label=Label(Frame_Input,text="Gender:",font='Roboto 12').place(x=350,y=430)
         Option=["Male","Female","Other"]
-        Gender_Mune=ttk.Combobox(Frame_Input,value=Option,font='Arial 12',state='readonly')
+        Gender_Mune=ttk.Combobox(Frame_Input,value=Option,font='Roboto 12',state='readonly')
         Gender_Mune.current(0)
         Gender_Mune.place(x=412,y=432)
 
         global Address_Entry,addrs
         addrs=StringVar()
-        Address_Label=Label(Frame_Input,text="Address: ",font='Arial 12').place(x=46,y=460)
-        Address_Entry=Entry(Frame_Input,textvariable=addrs,width=38,borderwidth=3,font='Arial 12')
+        Address_Label=Label(Frame_Input,text="Address: ",font='Roboto 12').place(x=46,y=460)
+        Address_Entry=Entry(Frame_Input,textvariable=addrs,width=38,borderwidth=3,font='Roboto 12')
         Address_Entry.place(x=120,y=460)
 
 
         global Date_Entry
-        Date_Label=Label(Frame_Input,text="Date:",font="Arial 12").place(x=480,y=460)
-        Date_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W,state='readonly')
+        Date_Label=Label(Frame_Input,text="Date:",font="Roboto 12").place(x=480,y=460)
+        Date_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W,state='readonly')
         Date_Entry.place(x=525,y=460)
 
-        Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Arial 11',command=self.showCheckbox)
+        Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Roboto 11',command=self.showCheckbox)
         Submit_Input.place(x=540,y=530)
 
 
@@ -253,10 +255,10 @@ class Main:
             self.RecordBody= Frame(self.RecordPage)
             self.RecordBody.pack(expand=1,fill=BOTH)
 
-            Record_search_LB=Label(self.RecordBody,text="SEARCH: ",font='Arial 12 bold').place(x=10,y=100)
-            Record_search_EN=Entry(self.RecordBody,font='Arial 12',borderwidth=5)
+            Record_search_LB=Label(self.RecordBody,text="SEARCH: ",font='Roboto 12 bold').place(x=10,y=100)
+            Record_search_EN=Entry(self.RecordBody,font='Roboto 12',borderwidth=5)
             Record_search_EN.place(x=90,y=98,relwidth=0.6)
-            Record_search_BT=Button(self.RecordBody,text="Search",font='Arial 10',width=6,height=0,borderwidth=5)
+            Record_search_BT=Button(self.RecordBody,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5)
             Record_search_BT.place(x=365,y=94)
 
             RecordFrame=Frame(self.RecordBody,highlightbackground="black",highlightthickness=1)
@@ -285,12 +287,12 @@ class Main:
 
                     Number_BOX=Frame(Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
                     Number_BOX.place(x=10,y=10)
-                    Client_Number=Label(Number_BOX,text=records[i][0],font=("Arial",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
+                    Client_Number=Label(Number_BOX,text=records[i][0],font=("Roboto",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
 
-                    Client_Name=Label(Record_Page,text="NAME: "+records[i][1],font=("Arial",12,"bold")).place(x=85,y=10)
-                    Client_Test=Label(Record_Page,text="TEST: "+records[i][6],font=("Arial",8,"bold")).place(x=85,y=30)
+                    Client_Name=Label(Record_Page,text="NAME: "+records[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
+                    Client_Test=Label(Record_Page,text="TEST: "+records[i][6],font=("Roboto",8,"bold")).place(x=85,y=30)
 
-                    Take_Button=Button(Record_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5)
+                    Take_Button=Button(Record_Page,text="Take",font=("Roboto",8),width=6,height=0,borderwidth=5)
                     Take_Button.place(x=360,y=37)
             
             elif value == "X_RAY":
@@ -312,12 +314,12 @@ class Main:
 
                     XRAY_Number_BOX=Frame(X_RAY_Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
                     XRAY_Number_BOX.place(x=10,y=10)
-                    XRAY_Client_Number=Label(XRAY_Number_BOX,text=records[i][0],font=("Arial",25,"bold")).place(x=3,y=0)
+                    XRAY_Client_Number=Label(XRAY_Number_BOX,text=records[i][0],font=("Roboto",25,"bold")).place(x=3,y=0)
 
-                    XRAY_Client_Name=Label(X_RAY_Record_Page,text="NAME: "+records[i][1],font=("Arial",12,"bold")).place(x=85,y=10)
-                    XRAY_Client_Test=Label(X_RAY_Record_Page,text="TEST: XRAY TEST",font=("Arial",8,"bold")).place(x=85,y=30)
+                    XRAY_Client_Name=Label(X_RAY_Record_Page,text="NAME: "+records[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
+                    XRAY_Client_Test=Label(X_RAY_Record_Page,text="TEST: XRAY TEST",font=("Roboto",8,"bold")).place(x=85,y=30)
 
-                    XRAY_Take_Button=Button(X_RAY_Record_Page,text="Take",font=("Arial",8),width=6,height=0,borderwidth=5,command=lambda e= records[i][0]:take(e))
+                    XRAY_Take_Button=Button(X_RAY_Record_Page,text="Take",font=("Roboto",8),width=6,height=0,borderwidth=5,command=lambda e= records[i][0]:take(e))
                     XRAY_Take_Button.place(x=360,y=37)
             
             PageOpen += 1
@@ -343,9 +345,9 @@ class Main:
             IMG_HEADER_Lab=Label(Frame_Header,image=image4,bg='#BDFFC4',width=40,height=40)
             IMG_HEADER_Lab.image=image4
             IMG_HEADER_Lab.place(x=5,y=1)
-            HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Arial 25 bold').place(x=50,y=1)
+            HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').place(x=50,y=1)
 
-            HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Arial 20 ').place(x=1150,y=5)
+            HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ').place(x=1150,y=5)
             # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
             # IMG_USERNAME.place(x=1250,y=8)
 
@@ -354,20 +356,20 @@ class Main:
             Toggle_Button.menu=Menu(Toggle_Button)
             Toggle_Button["menu"]=Toggle_Button.menu
 
-            Toggle_Button.menu.add_command(label="Home",font='Arial 12',command=Home)
-            Toggle_Button.menu.add_command(label="Logout",font='Arial 12',command=lambda:self.logout())
+            Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=Home)
+            Toggle_Button.menu.add_command(label="Logout",font='Roboto 12',command=lambda:self.logout())
             #Header-------
             #BODY >> Laboratory
             Frame_Body=Frame(Page_Laboratory,width=1360,height=150,highlightbackground="black",highlightthickness=1)
             Frame_Body.pack()
 
-            Labo_Title=Label(Frame_Body,text="Laboratory Test!",font='Arial 20')
+            Labo_Title=Label(Frame_Body,text="Laboratory Test!",font='Roboto 20')
             Labo_Title.place(x=10,y=5)
-            Name_Label=Label(Frame_Body,text="Name: ",font='Arial 12').place(x=19,y=50)
-            # Name_Entry=Entry(Frame_Body,width=59,borderwidth=3,font='Arial 9')
+            Name_Label=Label(Frame_Body,text="Name: ",font='Roboto 12').place(x=19,y=50)
+            # Name_Entry=Entry(Frame_Body,width=59,borderwidth=3,font='Roboto 9')
             res=self.user.getClients_all()
             names=[x[1] for x in res]
-            Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Arial 12',state='readonly',width=40)
+            Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Roboto 12',state='readonly',width=40)
             Name_Entry.place(x=20,y=70)
 
             def setClient(event):
@@ -379,26 +381,26 @@ class Main:
 
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
 
-            AGE_Label=Label(Frame_Body,text="Age: ",font='Arial 12').place(x=400,y=50)
-            AGE_Entry=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3,state='disabled')
+            AGE_Label=Label(Frame_Body,text="Age: ",font='Roboto 12').place(x=400,y=50)
+            AGE_Entry=Entry(Frame_Body,width=8,font='Roboto 9',borderwidth=3,state='disabled')
             AGE_Entry.place(x=400,y=70)
 
-            ID_LABEL=Label(Frame_Body,text="ID: ",font='Arial 12').place(x=500,y=50)
-            ID_ENTRY=Entry(Frame_Body,width=8,font='Arial 9',borderwidth=3,state='disabled')
+            ID_LABEL=Label(Frame_Body,text="ID: ",font='Roboto 12').place(x=500,y=50)
+            ID_ENTRY=Entry(Frame_Body,width=8,font='Roboto 9',borderwidth=3,state='disabled')
             ID_ENTRY.place(x=500,y=70)
 
             # def Gender_Click(event):
-            #     Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Arial 12")
+            #     Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Roboto 12")
 
-            Gender_Label=Label(Frame_Body,text="Gender:",font='Arial 12').place(x=150,y=100)
+            Gender_Label=Label(Frame_Body,text="Gender:",font='Roboto 12').place(x=150,y=100)
             Option=["Male","Female","Other"]
-            Gender_Mune=ttk.Combobox(Frame_Body,value=Option,font='Arial 12',state='readonly')
+            Gender_Mune=ttk.Combobox(Frame_Body,value=Option,font='Roboto 12',state='readonly')
             Gender_Mune.set("Select Gender")
             # Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
             Gender_Mune.place(x=150,y=120)
 
-            Date_Label=Label(Frame_Body,text="Date:",font=("Arial 12")).place(x=20,y=100)
-            Date_Entry=DateEntry(Frame_Body,width=10,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
+            Date_Label=Label(Frame_Body,text="Date:",font=("Roboto 12")).place(x=20,y=100)
+            Date_Entry=DateEntry(Frame_Body,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
             Date_Entry.place(x=20,y=120)
             
             Testlist=Frame(Frame_Body,bg="blue",highlightbackground="black",highlightthickness=1)
@@ -448,14 +450,14 @@ class Main:
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
             Test_Table.bind("<Double-Button-1>",double_click)
 
-            Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
+            Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
             Record_Button.place(x=1200,y=100)
 
             #Frame for the Testing 
             Frame_Test=Frame(Page_Laboratory,highlightbackground="black",highlightthickness=1,bg="blue")
             Frame_Test.pack(expand=1,fill=BOTH)
 
-            Test_Label=Label(Frame_Test,text="Laboratory Test",width=123,font="Arial 15",anchor=W,highlightbackground="black",highlightthickness=1)
+            Test_Label=Label(Frame_Test,text="Laboratory Test",width=123,font="Roboto 15",anchor=W,highlightbackground="black",highlightthickness=1)
             Test_Label.place(x=0,y=0)
 
             Test=[  
@@ -473,37 +475,37 @@ class Main:
 
                     Serology_Page.pack(expand=1,fill=BOTH)
 
-                    Serology_Title = Label(Serology_Page,text=LabTest_Mune.get(),font=("Arial",20,"bold"))
+                    Serology_Title = Label(Serology_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
                     Serology_Title.place(x=570,y=30)
 
                     #RIGHT
                     ST_Box=Frame(Serology_Page,bg='white')
                     ST_Box.place(x=380,y=150)
-                    ST_BOX1_R= Label(ST_Box,text="",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
+                    ST_BOX1_R= Label(ST_Box,text="",font=("Roboto",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX1_R.grid(row=0,column=0)
-                    ST_BOX2_R= Label(ST_Box,text="BLOOD TYPE",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
+                    ST_BOX2_R= Label(ST_Box,text="BLOOD TYPE",font=("Roboto",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX2_R.grid(row=1,column=0)
-                    ST_BOX3_R= Label(ST_Box,text="HEPATITIS B SCREENING (HBsAg)",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
+                    ST_BOX3_R= Label(ST_Box,text="HEPATITIS B SCREENING (HBsAg)",font=("Roboto",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX3_R.grid(row=2,column=0)
-                    ST_BOX4_R= Label(ST_Box,text="ANTI-HAV SCREENING (HAV lgG/igM)",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
+                    ST_BOX4_R= Label(ST_Box,text="ANTI-HAV SCREENING (HAV lgG/igM)",font=("Roboto",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX4_R.grid(row=3,column=0)
-                    ST_BOX5_R= Label(ST_Box,text="SYPHILIS SCREENING",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
+                    ST_BOX5_R= Label(ST_Box,text="SYPHILIS SCREENING",font=("Roboto",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX5_R.grid(row=4,column=0)
-                    ST_BOX6_R= Label(ST_Box,text="DENGUE NS1 ANTIGEN TEST",font=("Arial",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
+                    ST_BOX6_R= Label(ST_Box,text="DENGUE NS1 ANTIGEN TEST",font=("Roboto",15,"bold"),width=35,anchor=W,highlightbackground="black",highlightthickness=1)
                     ST_BOX6_R.grid(row=5,column=0)
                     
                     #LEFT
-                    ST_BOX7_L= Label(ST_Box,text="RESULT",font=("Arial",15,"bold"),width=18,highlightbackground="black",highlightthickness=1)
+                    ST_BOX7_L= Label(ST_Box,text="RESULT",font=("Roboto",15,"bold"),width=18,highlightbackground="black",highlightthickness=1)
                     ST_BOX7_L.grid(row=0,column=1)
-                    ST_BOX8_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
+                    ST_BOX8_L= Entry(ST_Box,text="",font=("Roboto",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
                     ST_BOX8_L.grid(row=1,column=1)
-                    ST_BOX9_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
+                    ST_BOX9_L= Entry(ST_Box,text="",font=("Roboto",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
                     ST_BOX9_L.grid(row=2,column=1)
-                    ST_BOX10_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
+                    ST_BOX10_L= Entry(ST_Box,text="",font=("Roboto",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
                     ST_BOX10_L.grid(row=3,column=1)
-                    ST_BOX11_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
+                    ST_BOX11_L= Entry(ST_Box,text="",font=("Roboto",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
                     ST_BOX11_L.grid(row=4,column=1)
-                    ST_BOX12_L= Entry(ST_Box,text="",font=("Arial",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
+                    ST_BOX12_L= Entry(ST_Box,text="",font=("Roboto",15,"bold"),borderwidth=3,highlightbackground="black",highlightthickness=1)
                     ST_BOX12_L.grid(row=5,column=1)
 
                     def submit():
@@ -540,7 +542,7 @@ class Main:
                         test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                         self.user.markTest_as_done(test_id[0])
 
-                    ST_Button=Button(Serology_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
+                    ST_Button=Button(Serology_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
                     ST_Button.place(x=1200,y=430)
 
                 elif LabTest_Mune.get() == "Miscelaneous":
@@ -549,25 +551,25 @@ class Main:
                     CBC_Page.pack_forget()
 
                     Miscelaneous_Page.pack(expand=1,fill=BOTH)
-                    Miscelaneous_Title = Label(Miscelaneous_Page,text=LabTest_Mune.get(),font=("Arial",20,"bold"))
+                    Miscelaneous_Title = Label(Miscelaneous_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
                     Miscelaneous_Title.place(x=570,y=30)
 
                     PT_Box=Frame(Miscelaneous_Page,bg='white')
                     PT_Box.place(x=430,y=200)
-                    PT_BOX1= Label(PT_Box,text="TEST",width=20,anchor=W,font=("Arial",15,"bold"),highlightbackground="black",highlightthickness=1)
+                    PT_BOX1= Label(PT_Box,text="TEST",width=20,anchor=W,font=("Roboto",15,"bold"),highlightbackground="black",highlightthickness=1)
                     PT_BOX1.grid(row=0,column=0)
-                    # PT_BOX2= Label(PT_Box,text="PREGNANCY TEST",width=20,anchor=W,font=("Arial",15,"bold"))
+                    # PT_BOX2= Label(PT_Box,text="PREGNANCY TEST",width=20,anchor=W,font=("Roboto",15,"bold"))
                     res_test=self.user.getAllTest()
                     TEST=[x[0] for x in res_test]
-                    PT_BOX2= ttk.Combobox(PT_Box,value=TEST,font=("Arial",15),state='readonly')
+                    PT_BOX2= ttk.Combobox(PT_Box,value=TEST,font=("Roboto",15),state='readonly')
                     PT_BOX2.grid(row=0,column=1)
-                    PT_BOX3= Label(PT_Box,text="RESULT",width=20,anchor=W,font=("Arial",15,"bold"),highlightbackground="black",highlightthickness=1)
+                    PT_BOX3= Label(PT_Box,text="RESULT",width=20,anchor=W,font=("Roboto",15,"bold"),highlightbackground="black",highlightthickness=1)
                     PT_BOX3.grid(row=1,column=0)
 
                     # PT_Result=["POSITIVE","NEGATIVE"]
-                    # PT_BOX4=ttk.Combobox(PT_Box,value=PT_Result,font=("Arial",15),state='readonly')
+                    # PT_BOX4=ttk.Combobox(PT_Box,value=PT_Result,font=("Roboto",15),state='readonly')
                     # PT_BOX4.set("Select Result")
-                    PT_BOX4=Entry(PT_Box,font=("Arial",12),width=25,borderwidth=3,highlightbackground="black",highlightthickness=1)
+                    PT_BOX4=Entry(PT_Box,font=("Roboto",12),width=25,borderwidth=3,highlightbackground="black",highlightthickness=1)
                     PT_BOX4.grid(row=1,column=1)
 
                     def submit():
@@ -595,7 +597,7 @@ class Main:
                         self.user.markTest_as_done(test_id[0])
 
 
-                    PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
+                    PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
                     PT_Button.place(x=1200,y=430)
                 
                 elif LabTest_Mune.get() == "Urinalysis":
@@ -605,162 +607,162 @@ class Main:
 
                     Urinalysis_Page.pack(expand=1,fill=BOTH)
 
-                    Urinalysis_Title = Label(Urinalysis_Page,text=LabTest_Mune.get(),font=("Arial",20,"bold"))
+                    Urinalysis_Title = Label(Urinalysis_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
                     Urinalysis_Title.place(x=570,y=30)
 
                     UR_Box=Frame(Urinalysis_Page,bg='white')
                     UR_Box.place(x=130,y=90)
-                    UR_Column1_BOX= Label(UR_Box,text="TEST",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column1_BOX= Label(UR_Box,text="TEST",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column1_BOX.grid(row=0,column=0)
-                    UR_Column1_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column1_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column1_BOX1.grid(row=0,column=1,padx=1)
-                    UR_Column1_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column1_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column1_BOX2.grid(row=0,column=2)
 
-                    UR_Column2_BOX= Label(UR_Box,text="CLARITY",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column2_BOX= Label(UR_Box,text="CLARITY",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column2_BOX.grid(row=1,column=0)
-                    UR_Column2_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column2_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column2_BOX1.grid(row=1,column=1,padx=1)
-                    UR_Column2_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column2_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column2_BOX2.grid(row=1,column=2)
 
-                    UR_Column3_BOX= Label(UR_Box,text="BLOOD",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column3_BOX= Label(UR_Box,text="BLOOD",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column3_BOX.grid(row=2,column=0)
-                    UR_Column3_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column3_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column3_BOX1.grid(row=2,column=1,padx=1)
-                    UR_Column3_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column3_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column3_BOX2.grid(row=2,column=2)
 
-                    UR_Column4_BOX= Label(UR_Box,text="BILIRUBIN",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column4_BOX= Label(UR_Box,text="BILIRUBIN",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column4_BOX.grid(row=4,column=0)
-                    UR_Column4_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column4_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column4_BOX1.grid(row=4,column=1,padx=1)
-                    UR_Column4_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column4_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column4_BOX2.grid(row=4,column=2)
 
-                    UR_Column5_BOX= Label(UR_Box,text="LEUKOCYTE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column5_BOX= Label(UR_Box,text="LEUKOCYTE",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column5_BOX.grid(row=5,column=0)
-                    UR_Column5_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column5_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column5_BOX1.grid(row=5,column=1,padx=1)
-                    UR_Column5_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column5_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column5_BOX2.grid(row=5,column=2)
 
-                    UR_Column6_BOX= Label(UR_Box,text="KETONE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column6_BOX= Label(UR_Box,text="KETONE",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column6_BOX.grid(row=6,column=0)
-                    UR_Column6_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column6_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column6_BOX1.grid(row=6,column=1,padx=1)
-                    UR_Column6_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column6_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column6_BOX2.grid(row=6,column=2)
 
-                    UR_Column7_BOX= Label(UR_Box,text="NITRITE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column7_BOX= Label(UR_Box,text="NITRITE",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column7_BOX.grid(row=7,column=0)
-                    UR_Column7_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column7_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column7_BOX1.grid(row=7,column=1,padx=1)
-                    UR_Column7_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column7_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column7_BOX2.grid(row=7,column=2)
 
-                    UR_Column8_BOX= Label(UR_Box,text="PROTEIN",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column8_BOX= Label(UR_Box,text="PROTEIN",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column8_BOX.grid(row=8,column=0)
-                    UR_Column8_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column8_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column8_BOX1.grid(row=8,column=1,padx=1)
-                    UR_Column8_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column8_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column8_BOX2.grid(row=8,column=2)
 
-                    UR_Column9_BOX= Label(UR_Box,text="GLUCOSE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column9_BOX= Label(UR_Box,text="GLUCOSE",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column9_BOX.grid(row=9,column=0)
-                    UR_Column9_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column9_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column9_BOX1.grid(row=9,column=1,padx=1)
-                    UR_Column9_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column9_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column9_BOX2.grid(row=9,column=2)
 
-                    UR_Column10_BOX= Label(UR_Box,text="PH",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column10_BOX= Label(UR_Box,text="PH",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column10_BOX.grid(row=10,column=0)
-                    UR_Column10_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column10_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column10_BOX1.grid(row=10,column=1,padx=1)
-                    UR_Column10_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column10_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column10_BOX2.grid(row=10,column=2)
 
-                    UR_Column11_BOX= Label(UR_Box,text="SPECIFIC GRAVITY",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column11_BOX= Label(UR_Box,text="SPECIFIC GRAVITY",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column11_BOX.grid(row=11,column=0)
-                    UR_Column11_BOX1= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column11_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column11_BOX1.grid(row=11,column=1,padx=1)
-                    UR_Column11_BOX2= Entry(UR_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column11_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column11_BOX2.grid(row=11,column=2)
 
                     UR_Box_Side=Frame(Urinalysis_Page,bg='white')
                     UR_Box_Side.place(x=650,y=90)
 
-                    UR_Column12_BOX= Label(UR_Box_Side,text="MICROSCOPIC EXAMINATION",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column12_BOX= Label(UR_Box_Side,text="MICROSCOPIC EXAMINATION",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column12_BOX.grid(row=12,column=0)
-                    UR_Column12_BOX1= Label(UR_Box_Side,text="RESULT",width=18,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column12_BOX1= Label(UR_Box_Side,text="RESULT",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column12_BOX1.grid(row=12,column=1,padx=1)
-                    UR_Column12_BOX2= Label(UR_Box_Side,text="UNIT",width=18,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column12_BOX2= Label(UR_Box_Side,text="UNIT",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column12_BOX2.grid(row=12,column=2)
 
-                    UR_Column13_BOX= Label(UR_Box_Side,text="WBC",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column13_BOX= Label(UR_Box_Side,text="WBC",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column13_BOX.grid(row=13,column=0)
-                    UR_Column13_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column13_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column13_BOX1.grid(row=13,column=1,padx=1)
-                    UR_Column13_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column13_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column13_BOX2.grid(row=13,column=2)
 
-                    UR_Column14_BOX= Label(UR_Box_Side,text="RBC",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column14_BOX= Label(UR_Box_Side,text="RBC",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column14_BOX.grid(row=14,column=0)
-                    UR_Column14_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column14_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column14_BOX1.grid(row=14,column=1,padx=1)
-                    UR_Column14_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column14_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column14_BOX2.grid(row=14,column=2)
 
-                    UR_Column15_BOX= Label(UR_Box_Side,text="EPITHELIAL CELLS",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column15_BOX= Label(UR_Box_Side,text="EPITHELIAL CELLS",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column15_BOX.grid(row=15,column=0)
-                    UR_Column15_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column15_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column15_BOX1.grid(row=15,column=1,padx=1)
-                    UR_Column15_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column15_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column15_BOX2.grid(row=15,column=2)
 
-                    UR_Column16_BOX= Label(UR_Box_Side,text="MUCOUS THREADS",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column16_BOX= Label(UR_Box_Side,text="MUCOUS THREADS",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column16_BOX.grid(row=16,column=0)
-                    UR_Column16_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column16_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column16_BOX1.grid(row=16,column=1,padx=1)
-                    UR_Column16_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column16_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column16_BOX2.grid(row=16,column=2)
 
-                    UR_Column17_BOX= Label(UR_Box_Side,text="BACTERIA",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column17_BOX= Label(UR_Box_Side,text="BACTERIA",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column17_BOX.grid(row=17,column=0)
-                    UR_Column17_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column17_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column17_BOX1.grid(row=17,column=1,padx=1)
-                    UR_Column17_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column17_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column17_BOX2.grid(row=17,column=2)
 
-                    UR_Column18_BOX= Label(UR_Box_Side,text="A. URATES / PHOSPHATE",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column18_BOX= Label(UR_Box_Side,text="A. URATES / PHOSPHATE",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column18_BOX.grid(row=18,column=0)
-                    UR_Column18_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column18_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column18_BOX1.grid(row=18,column=1,padx=1)
-                    UR_Column18_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column18_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column18_BOX2.grid(row=18,column=2)
 
-                    UR_Column19_BOX= Label(UR_Box_Side,text="CASTS",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column19_BOX= Label(UR_Box_Side,text="CASTS",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column19_BOX.grid(row=19,column=0)
-                    UR_Column19_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column19_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column19_BOX1.grid(row=19,column=1,padx=1)
-                    UR_Column19_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column19_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column19_BOX2.grid(row=19,column=2)
 
-                    UR_Column20_BOX= Label(UR_Box_Side,text="CRYSTALS:",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column20_BOX= Label(UR_Box_Side,text="CRYSTALS:",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column20_BOX.grid(row=20,column=0)
-                    UR_Column20_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column20_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column20_BOX1.grid(row=20,column=1,padx=1)
-                    UR_Column20_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column20_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column20_BOX2.grid(row=20,column=2)
 
-                    UR_Column21_BOX= Label(UR_Box_Side,text="OTHERS",width=25,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column21_BOX= Label(UR_Box_Side,text="OTHERS",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column21_BOX.grid(row=21,column=0)
-                    UR_Column21_BOX1= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column21_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column21_BOX1.grid(row=21,column=1,padx=1)
-                    UR_Column21_BOX2= Entry(UR_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column21_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column21_BOX2.grid(row=21,column=2)
 
-                    UR_Button=Button(Urinalysis_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5)
+                    UR_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5)
                     UR_Button.place(x=1200,y=430)
 
                     def submit():
@@ -797,7 +799,7 @@ class Main:
                         test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                         self.user.markTest_as_done(test_id[0])
 
-                    ST_Button=Button(Serology_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
+                    ST_Button=Button(Serology_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
                     ST_Button.place(x=1200,y=430)
                 
                 elif LabTest_Mune.get() == "Complete Blood Count / Hematology":
@@ -806,147 +808,147 @@ class Main:
                     Urinalysis_Page.pack_forget()
 
                     CBC_Page.pack(expand=1,fill=BOTH)
-                    CBC_Title = Label(CBC_Page,text=LabTest_Mune.get(),font=("Arial",20,"bold"))
+                    CBC_Title = Label(CBC_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
                     CBC_Title.place(x=400,y=30)
 
                     CBC_Box=Frame(CBC_Page,bg='white')
                     CBC_Box.place(x=60,y=120)
-                    CBC_Column1_BOX= Label(CBC_Box,text="",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column1_BOX= Label(CBC_Box,text="",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column1_BOX.grid(row=0,column=0)
-                    CBC_Column1_BOX1= Label(CBC_Box,text="RESULT",width=18,anchor=CENTER,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column1_BOX1= Label(CBC_Box,text="RESULT",width=18,anchor=CENTER,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column1_BOX1.grid(row=0,column=1,padx=1)
-                    CBC_Column1_BOX2= Label(CBC_Box,text="NORMAL VALUES",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column1_BOX2= Label(CBC_Box,text="NORMAL VALUES",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column1_BOX2.grid(row=0,column=2)
 
-                    CBC_Column2_BOX= Label(CBC_Box,text="WBC",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column2_BOX= Label(CBC_Box,text="WBC",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column2_BOX.grid(row=1,column=0)
-                    CBC_Column2_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column2_BOX1= Entry(CBC_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBC_Column2_BOX1.grid(row=1,column=1,padx=1)
-                    CBC_Column2_BOX2= Label(CBC_Box,text="5,000 - 10,000 / CUMM",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column2_BOX2= Label(CBC_Box,text="5,000 - 10,000 / CUMM",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column2_BOX2.grid(row=1,column=2)
 
-                    CBC_Column3_BOX= Label(CBC_Box,text="RBC",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column3_BOX= Label(CBC_Box,text="RBC",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column3_BOX.grid(row=2,column=0)
-                    CBC_Column3_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column3_BOX1= Entry(CBC_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBC_Column3_BOX1.grid(row=2,column=1,padx=1)
-                    CBC_Column3_BOX2= Label(CBC_Box,text="F: 3.8 - 5.1 10^ uL ; M: 4.20 - 5.6 10^ uL",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column3_BOX2= Label(CBC_Box,text="F: 3.8 - 5.1 10^ uL ; M: 4.20 - 5.6 10^ uL",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column3_BOX2.grid(row=2,column=2)
 
-                    CBC_Column4_BOX= Label(CBC_Box,text="HEMOGLOBIN",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column4_BOX= Label(CBC_Box,text="HEMOGLOBIN",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column4_BOX.grid(row=4,column=0)
-                    CBC_Column4_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column4_BOX1= Entry(CBC_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBC_Column4_BOX1.grid(row=4,column=1,padx=1)
-                    CBC_Column4_BOX2= Label(CBC_Box,text="F: 11.70 - 14.5g/dL ; M: 13.7 - 16.7g/dL",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column4_BOX2= Label(CBC_Box,text="F: 11.70 - 14.5g/dL ; M: 13.7 - 16.7g/dL",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column4_BOX2.grid(row=4,column=2)
 
-                    CBC_Column5_BOX= Label(CBC_Box,text="HEMATOCRIT",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column5_BOX= Label(CBC_Box,text="HEMATOCRIT",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column5_BOX.grid(row=5,column=0)
-                    CBC_Column5_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column5_BOX1= Entry(CBC_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBC_Column5_BOX1.grid(row=5,column=1,padx=1)
-                    CBC_Column5_BOX2= Label(CBC_Box,text="F: 34.1  - 44.3vol% ; M: 13.7 - 49.7 vol%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column5_BOX2= Label(CBC_Box,text="F: 34.1  - 44.3vol% ; M: 13.7 - 49.7 vol%",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column5_BOX2.grid(row=5,column=2)
 
-                    CBC_Column6_BOX= Label(CBC_Box,text="MCV",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column6_BOX= Label(CBC_Box,text="MCV",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column6_BOX.grid(row=6,column=0)
-                    CBC_Column6_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column6_BOX1= Entry(CBC_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBC_Column6_BOX1.grid(row=6,column=1,padx=1)
-                    CBC_Column6_BOX2= Label(CBC_Box,text="80-100 El",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column6_BOX2= Label(CBC_Box,text="80-100 El",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column6_BOX2.grid(row=6,column=2)
 
-                    CBC_Column7_BOX= Label(CBC_Box,text="MCH",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column7_BOX= Label(CBC_Box,text="MCH",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column7_BOX.grid(row=7,column=0)
-                    CBC_Column7_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column7_BOX1= Entry(CBC_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBC_Column7_BOX1.grid(row=7,column=1,padx=1)
-                    CBC_Column7_BOX2= Label(CBC_Box,text="29 + 2 pg",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column7_BOX2= Label(CBC_Box,text="29 + 2 pg",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column7_BOX2.grid(row=7,column=2)
 
-                    CBC_Column8_BOX= Label(CBC_Box,text="MCHC",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column8_BOX= Label(CBC_Box,text="MCHC",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column8_BOX.grid(row=8,column=0)
-                    CBC_Column8_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column8_BOX1= Entry(CBC_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBC_Column8_BOX1.grid(row=8,column=1,padx=1)
-                    CBC_Column8_BOX2= Label(CBC_Box,text="33.4-35.5 g/dL",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column8_BOX2= Label(CBC_Box,text="33.4-35.5 g/dL",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column8_BOX2.grid(row=8,column=2)
 
-                    CBC_Column9_BOX= Label(CBC_Box,text="RDW",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column9_BOX= Label(CBC_Box,text="RDW",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column9_BOX.grid(row=9,column=0)
-                    CBC_Column9_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column9_BOX1= Entry(CBC_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBC_Column9_BOX1.grid(row=9,column=1,padx=1)
-                    CBC_Column9_BOX2= Label(CBC_Box,text="12% to 15%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column9_BOX2= Label(CBC_Box,text="12% to 15%",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column9_BOX2.grid(row=9,column=2)
 
-                    CBC_Column10_BOX= Label(CBC_Box,text="PLATELET",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column10_BOX= Label(CBC_Box,text="PLATELET",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column10_BOX.grid(row=10,column=0)
-                    CBC_Column10_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column10_BOX1= Entry(CBC_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBC_Column10_BOX1.grid(row=10,column=1,padx=1)
-                    CBC_Column10_BOX2= Label(CBC_Box,text="150,000 - 450,000 uL",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column10_BOX2= Label(CBC_Box,text="150,000 - 450,000 uL",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column10_BOX2.grid(row=10,column=2)
 
-                    CBC_Column11_BOX= Label(CBC_Box,text="MPV",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column11_BOX= Label(CBC_Box,text="MPV",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column11_BOX.grid(row=11,column=0)
-                    CBC_Column11_BOX1= Entry(CBC_Box,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBC_Column11_BOX1= Entry(CBC_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBC_Column11_BOX1.grid(row=11,column=1,padx=1)
-                    CBC_Column11_BOX2= Label(CBC_Box,text="8.9 - 11.8 fL",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBC_Column11_BOX2= Label(CBC_Box,text="8.9 - 11.8 fL",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBC_Column11_BOX2.grid(row=11,column=2)
 
 
                     #SIDE 
                     CBC_Box_Side=Frame(CBC_Page,bg='white')
                     CBC_Box_Side.place(x=700,y=120)
-                    CBCS_Column1_BOX= Label(CBC_Box_Side,text="DIFFERENTIAL COUNT",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column1_BOX= Label(CBC_Box_Side,text="DIFFERENTIAL COUNT",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column1_BOX.grid(row=0,column=0)
-                    CBCS_Column1_BOX1= Label(CBC_Box_Side,text="",width=18,anchor=CENTER,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column1_BOX1= Label(CBC_Box_Side,text="",width=18,anchor=CENTER,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column1_BOX1.grid(row=0,column=1,padx=1)
-                    CBCS_Column1_BOX2= Label(CBC_Box_Side,text="",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column1_BOX2= Label(CBC_Box_Side,text="",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column1_BOX2.grid(row=0,column=2)
 
-                    CBCS_Column2_BOX= Label(CBC_Box_Side,text="NEUTROPHIL",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column2_BOX= Label(CBC_Box_Side,text="NEUTROPHIL",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column2_BOX.grid(row=1,column=0)
-                    CBCS_Column2_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column2_BOX1= Entry(CBC_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBCS_Column2_BOX1.grid(row=1,column=1,padx=1)
-                    CBCS_Column2_BOX2= Label(CBC_Box_Side,text="45%"+" - "+"70%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column2_BOX2= Label(CBC_Box_Side,text="45%"+" - "+"70%",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column2_BOX2.grid(row=1,column=2)
 
-                    CBCS_Column3_BOX= Label(CBC_Box_Side,text="LYMPHOCYTE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column3_BOX= Label(CBC_Box_Side,text="LYMPHOCYTE",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column3_BOX.grid(row=2,column=0)
-                    CBCS_Column3_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column3_BOX1= Entry(CBC_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBCS_Column3_BOX1.grid(row=2,column=1,padx=1)
-                    CBCS_Column3_BOX2= Label(CBC_Box_Side,text="18%"+" - ""45%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column3_BOX2= Label(CBC_Box_Side,text="18%"+" - ""45%",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column3_BOX2.grid(row=2,column=2)
 
-                    CBCS_Column4_BOX= Label(CBC_Box_Side,text="MONOCYTE",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column4_BOX= Label(CBC_Box_Side,text="MONOCYTE",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column4_BOX.grid(row=4,column=0)
-                    CBCS_Column4_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column4_BOX1= Entry(CBC_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBCS_Column4_BOX1.grid(row=4,column=1,padx=1)
-                    CBCS_Column4_BOX2= Label(CBC_Box_Side,text="4% "+" - "+"8%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column4_BOX2= Label(CBC_Box_Side,text="4% "+" - "+"8%",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column4_BOX2.grid(row=4,column=2)
 
-                    CBCS_Column5_BOX= Label(CBC_Box_Side,text="EOSINOPHIL",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column5_BOX= Label(CBC_Box_Side,text="EOSINOPHIL",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column5_BOX.grid(row=5,column=0)
-                    CBCS_Column5_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column5_BOX1= Entry(CBC_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBCS_Column5_BOX1.grid(row=5,column=1,padx=1)
-                    CBCS_Column5_BOX2= Label(CBC_Box_Side,text="2% "+" - "+"3%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column5_BOX2= Label(CBC_Box_Side,text="2% "+" - "+"3%",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column5_BOX2.grid(row=5,column=2)
 
-                    CBCS_Column6_BOX= Label(CBC_Box_Side,text="EOSINOPHIL",width=20,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column6_BOX= Label(CBC_Box_Side,text="EOSINOPHIL",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column6_BOX.grid(row=6,column=0)
-                    CBCS_Column6_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column6_BOX1= Entry(CBC_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBCS_Column6_BOX1.grid(row=6,column=1,padx=1)
-                    CBCS_Column6_BOX2= Label(CBC_Box_Side,text="0% "+" - "+"2%",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column6_BOX2= Label(CBC_Box_Side,text="0% "+" - "+"2%",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column6_BOX2.grid(row=6,column=2)
 
-                    CBCS_Column7_BOX= Label(CBC_Box_Side,text="TOTAL:",width=20,anchor=E,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column7_BOX= Label(CBC_Box_Side,text="TOTAL:",width=20,anchor=E,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column7_BOX.grid(row=7,column=0)
-                    CBCS_Column7_BOX1= Entry(CBC_Box_Side,width=20,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    CBCS_Column7_BOX1= Entry(CBC_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBCS_Column7_BOX1.grid(row=7,column=1,padx=1)
-                    CBCS_Column7_BOX2= Label(CBC_Box_Side,text="",width=33,anchor=W,font=("Arial",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column7_BOX2= Label(CBC_Box_Side,text="",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column7_BOX2.grid(row=7,column=2)
 
-                    CBC_Button=Button(CBC_Page,text="Submit",font=("Arial",10,"bold"),width=10,height=1,borderwidth=5)
+                    CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5)
                     CBC_Button.place(x=1200,y=430)
 
 
-            Test_Label=Label(Frame_Test,text="TEST:",font='Arial 12 bold').place(x=1075,y=3)
-            LabTest_Mune=ttk.Combobox(Frame_Test,value=Test,font='Arial 12',state='readonly')
+            Test_Label=Label(Frame_Test,text="TEST:",font='Roboto 12 bold').place(x=1075,y=3)
+            LabTest_Mune=ttk.Combobox(Frame_Test,value=Test,font='Roboto 12',state='readonly')
             LabTest_Mune.set("Serology")
             LabTest_Mune.bind("<<ComboboxSelected>>",Option_TEST)
             LabTest_Mune.place(x=1130,y=3)
@@ -981,29 +983,29 @@ class Main:
 
             Plus_Body=Frame(self.Plus_Finding_Page)
             Plus_Body.pack(expand=1,fill=BOTH)
-            Plus_Title=Label(Plus_Body,text="ADD Finding",font=("Arial",35,"bold")).place(x=5,y=10)
+            Plus_Title=Label(Plus_Body,text="ADD Finding",font=("Roboto",35,"bold")).place(x=5,y=10)
 
-            Plus_Name=Label(Plus_Body,text="NAME:",font=("Arial",12,"bold")).place(x=5,y=140)
-            Plus_Name_Entry=Entry(Plus_Body,font=("Arail",12),borderwidth=5)
+            Plus_Name=Label(Plus_Body,text="NAME:",font=("Roboto",12,"bold")).place(x=5,y=140)
+            Plus_Name_Entry=Entry(Plus_Body,font=("Roboto",12),borderwidth=5)
             Plus_Name_Entry.place(x=65,y=137,relwidth=0.7)
 
-            Label_Plus_Body=Label(Plus_Body,text="FINDING BODY:",font=("Arial 15 bold"))
+            Label_Plus_Body=Label(Plus_Body,text="FINDING BODY:",font=("Roboto 15 bold"))
             Label_Plus_Body.place(x=5,y=170)
             Plus_Body_Text=Frame(Plus_Body,width=550,height=600,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
             Plus_Body_Text.place(x=0,y=200)
             Plus__scroll=Scrollbar(Plus_Body_Text,orient='vertical')
             Plus__scroll.pack(side=RIGHT,fill='y')
-            Plus__BOX = Text(Plus_Body_Text,width = 70,height = 19,borderwidth=5,font=("Arial 11 "),yscrollcommand=Plus__scroll.set)
+            Plus__BOX = Text(Plus_Body_Text,width = 70,height = 19,borderwidth=5,font=("Roboto 11 "),yscrollcommand=Plus__scroll.set)
             Plus__scroll.config(command=Plus__BOX.yview)
             Plus__BOX.pack()
 
             def addFinding():
                 self.user.addXrayFinding(Plus_Name_Entry.get(),Plus__BOX.get("1.0", "end-1c"))
 
-            Plus_ADD_button=Button(Plus_Body,text="ADD",font=("Arail 10"),width=5,borderwidth=5,command=addFinding)
+            Plus_ADD_button=Button(Plus_Body,text="ADD",font=("Roboto 10"),width=5,borderwidth=5,command=addFinding)
             Plus_ADD_button.place(x=450,y=560)
            
-            Plus_Cancel_button=Button(Plus_Body,text="Cancel",font=("Arail 10"),width=5,borderwidth=5,command=lambda:self.Plus_Finding_Page.destroy())
+            Plus_Cancel_button=Button(Plus_Body,text="Cancel",font=("Roboto 10"),width=5,borderwidth=5,command=lambda:self.Plus_Finding_Page.destroy())
             Plus_Cancel_button.place(x=520,y=560)
 
             PageOpen += 1
@@ -1029,9 +1031,9 @@ class Main:
             IMG_HEADER_Xray=Label(Frame_Header,image=image3,bg='#BDFFC4',width=40,height=40)
             IMG_HEADER_Xray.image=image3
             IMG_HEADER_Xray.place(x=3,y=1)
-            HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Arial 20 bold').place(x=50,y=8)
+            HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 20 bold').place(x=50,y=8)
 
-            HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Arial 20 ').place(x=1150,y=5)
+            HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ').place(x=1150,y=5)
             # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
             # IMG_USERNAME.place(x=1200,y=8)
 
@@ -1040,14 +1042,14 @@ class Main:
             Toggle_Button.menu=Menu(Toggle_Button)
             Toggle_Button["menu"]=Toggle_Button.menu
 
-            Toggle_Button.menu.add_command(label="Home",font='Arail 12',command=Home)
-            Toggle_Button.menu.add_command(label="Logout",font='Arail 12',command=lambda:self.logout())
+            Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=Home)
+            Toggle_Button.menu.add_command(label="Logout",font='Roboto 12',command=lambda:self.logout())
             #Header-------
             #BODY >> Laboratory
             Detail_Body=Frame(Page_XRAY,width=300)
             Detail_Body.pack(expand=1,fill=BOTH,side=LEFT)
             
-            XRAY_Title=Label(Detail_Body,text="X-Ray Laboratory Test",font='Arial 40 bold')
+            XRAY_Title=Label(Detail_Body,text="X-Ray Laboratory Test",font='Roboto 40 bold')
             XRAY_Title.place(x=10,y=15) 
 
             def setValue(event):
@@ -1062,56 +1064,56 @@ class Main:
 
 
             name=StringVar()
-            Label(Detail_Body,text="Name: ",font='Arial 12').place(x=100,y=130)
-            # Name_Entry=Entry(Detail_Body,width=50,textvariable=name,borderwidth=3,font='Arial 9')
-            Name_Entry=ttk.Combobox(Detail_Body,textvariable=name,font='Arial 9',width=48,state='readonly')
+            Label(Detail_Body,text="Name: ",font='Roboto 12').place(x=100,y=130)
+            # Name_Entry=Entry(Detail_Body,width=50,textvariable=name,borderwidth=3,font='Roboto 9')
+            Name_Entry=ttk.Combobox(Detail_Body,textvariable=name,font='Roboto 9',width=48,state='readonly')
             result=self.user.getClients_Xray()
             n=1
             Name_Entry['values']=[x[n] for x in result]
             Name_Entry.place(x=160,y=130)
             Name_Entry.bind('<<ComboboxSelected>>', setValue)
 
-            Birth_Label=Label(Detail_Body,text="Birthdate:",font="Arial 12").place(x=100,y=160)
-            Birth_Entry=DateEntry(Detail_Body,width=36,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
+            Birth_Label=Label(Detail_Body,text="Birthdate:",font="Roboto 12").place(x=100,y=160)
+            Birth_Entry=DateEntry(Detail_Body,width=36,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
             Birth_Entry.place(x=170,y=160)
 
             age=StringVar()
-            AGE_Label=Label(Detail_Body,text="Age: ",font='Arial 12').place(x=100,y=190)
-            AGE_Entry=Entry(Detail_Body,width=50,textvariable=age,font='Arial 9',borderwidth=3)
+            AGE_Label=Label(Detail_Body,text="Age: ",font='Roboto 12').place(x=100,y=190)
+            AGE_Entry=Entry(Detail_Body,width=50,textvariable=age,font='Roboto 9',borderwidth=3)
             AGE_Entry.place(x=160,y=190)
 
             def Gender_Click():
-                Genderlabel=Label(Detail_Body,Gender_Mune.get(),font="Arial 12 bold")
+                Genderlabel=Label(Detail_Body,Gender_Mune.get(),font="Roboto 12 bold")
 
-            Gender_Label=Label(Detail_Body,text="Gender:",font='Arial 12 ').place(x=100,y=220)
+            Gender_Label=Label(Detail_Body,text="Gender:",font='Roboto 12 ').place(x=100,y=220)
             Option=["Male","Female","Other"]
-            Gender_Mune=ttk.Combobox(Detail_Body,value=Option,font='Arial 12',width=37,state='readonly')
+            Gender_Mune=ttk.Combobox(Detail_Body,value=Option,font='Roboto 12',width=37,state='readonly')
             Gender_Mune.set("Select Gender")
             Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
             Gender_Mune.place(x=160,y=220)
 
-            # Date_Label=Label(Detail_Body,text="Date:",font="Arial 12").place(x=100,y=250)
-            # Date_Entry=DateEntry(Detail_Body,width=37,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,archor=W)
+            # Date_Label=Label(Detail_Body,text="Date:",font="Roboto 12").place(x=100,y=250)
+            # Date_Entry=DateEntry(Detail_Body,width=37,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
             # Date_Entry.place(x=160,y=250)
 
-            Label_Finding=Label(Detail_Body,text="Finding:",font=("Arial 20 bold"))
+            Label_Finding=Label(Detail_Body,text="Finding:",font=("Roboto 20 bold"))
             Label_Finding.place(x=60,y=305)
 
             FindBody=Frame(Detail_Body,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
             FindBody.place(x=60,y=340)
             Find_scroll=Scrollbar(FindBody,orient='vertical')
             Find_scroll.pack(side=RIGHT,fill='y')
-            Finding_BOX = Text(FindBody, height = 9, width = 70,borderwidth=5,font=("Arial 11 "),yscrollcommand=Find_scroll.set)
+            Finding_BOX = Text(FindBody, height = 9, width = 70,borderwidth=5,font=("Roboto 11 "),yscrollcommand=Find_scroll.set)
             Find_scroll.config(command=Finding_BOX.yview)
             Finding_BOX.pack()
 
-            Label_IMPRESSIONSBody=Label(Detail_Body,text="Impression:",font=("Arial 20 bold"))
+            Label_IMPRESSIONSBody=Label(Detail_Body,text="Impression:",font=("Roboto 20 bold"))
             Label_IMPRESSIONSBody.place(x=60,y=530)
             IMPRESSIONSBody=Frame(Detail_Body,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
             IMPRESSIONSBody.place(x=60,y=570)
             IMPRESSIONS_scroll=Scrollbar(IMPRESSIONSBody,orient='vertical')
             IMPRESSIONS_scroll.pack(side=RIGHT,fill='y')
-            IMPRESSIONS_BOX = Text(IMPRESSIONSBody, height = 5, width = 70,borderwidth=5,font=("Arial 11 "),yscrollcommand=IMPRESSIONS_scroll.set)
+            IMPRESSIONS_BOX = Text(IMPRESSIONSBody, height = 5, width = 70,borderwidth=5,font=("Roboto 11 "),yscrollcommand=IMPRESSIONS_scroll.set)
             IMPRESSIONS_scroll.config(command=IMPRESSIONS_BOX.yview)
             IMPRESSIONS_BOX.pack()
 
@@ -1128,12 +1130,12 @@ class Main:
             if opts is not None:
                 Option=[x[n] for x in opts]
             # Option=["Normal","Chest PA"]
-            FINDING_Mune=ttk.Combobox(Detail_Body,value=Option,font='Arial 12',width=20)
+            FINDING_Mune=ttk.Combobox(Detail_Body,value=Option,font='Roboto 12',width=20)
             FINDING_Mune.set("Select FINDING")
             FINDING_Mune.bind("<<ComboboxSelected>>",FIND_Click)
             FINDING_Mune.place(x=449,y=310)
 
-            Find_ADD=Button(Detail_Body,text="+",font='Arial 10 bold',width=2,height=1,command=self.Plus_Finding)
+            Find_ADD=Button(Detail_Body,text="+",font='Roboto 10 bold',width=2,height=1,command=self.Plus_Finding)
             Find_ADD.place(x=420,y=309)
 
             Img_Body=Frame(Page_XRAY,width=300)
@@ -1200,8 +1202,8 @@ class Main:
                         self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                         self.user.markTest_as_done(test_id[0])
                         
-            Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Arial 11',borderwidth=2,command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
-            Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Arial 11',borderwidth=2,command=lambda: submit()).place(x=520,y=630)
+            Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Roboto 11',borderwidth=2,command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
+            Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Roboto 11',borderwidth=2,command=lambda: submit()).place(x=520,y=630)
 
 #X_Ray Laboratory  END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -1220,9 +1222,9 @@ class Main:
         IMG_HEADER_SUM=Label(Frame_Header,image=image2,bg='#BDFFC4',width=40,height=40)
         IMG_HEADER_SUM.image=image2
         IMG_HEADER_SUM.place(x=5,y=1)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Arial 25 bold').place(x=50,y=1)
+        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').place(x=50,y=1)
 
-        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),font='Arial 20 ',bg='#BDFFC4').place(x=1150,y=5)
+        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),font='Roboto 20 ',bg='#BDFFC4').place(x=1150,y=5)
         # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
         # IMG_USERNAME.place(x=1200,y=8)
 
@@ -1231,8 +1233,8 @@ class Main:
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="Home",font='Arial 12 ',command=Home)
-        Toggle_Button.menu.add_command(label="Logout",font='Arial 12 ',command=lambda:self.logout())
+        Toggle_Button.menu.add_command(label="Home",font='Roboto 12 ',command=Home)
+        Toggle_Button.menu.add_command(label="Logout",font='Roboto 12 ',command=lambda:self.logout())
         #Header-------
         #BODY >> Summary
 
@@ -1254,8 +1256,8 @@ class Main:
         Sum_Test=[x[0] for x in res]
         Sum_Test.insert(0,'All')
 
-        Label(Frame_FilterBody,text="Laboratory Test:",font='Arial 11',).place(x=200,y=12)
-        LabTest_Test=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Arial 10',state='readonly',width=30)
+        Label(Frame_FilterBody,text="Laboratory Test:",font='Roboto 11',).place(x=200,y=12)
+        LabTest_Test=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Roboto 10',state='readonly',width=30)
         LabTest_Test.set("All")
         LabTest_Test.place(x=310,y=14)
 
@@ -1263,34 +1265,34 @@ class Main:
         emp_choices=[x[1]+' '+x[2] for x in emp]
         emp_choices.insert(0,'All')
 
-        Label(Frame_FilterBody,text="Medical Technologist",font='Arial 11',).place(x=200,y=40)
-        MidTech_Emp=ttk.Combobox(Frame_FilterBody,value=emp_choices,font='Arial 10',state='readonly',width=45)
+        Label(Frame_FilterBody,text="Medical Technologist",font='Roboto 11',).place(x=200,y=40)
+        MidTech_Emp=ttk.Combobox(Frame_FilterBody,value=emp_choices,font='Roboto 10',state='readonly',width=45)
         MidTech_Emp.set("All")
         MidTech_Emp.place(x=203,y=60)
 
         filter_options=["Monthly","Yearly","1st Semi Annual","2nd Semi Annual","1st Quarter","2nd Quarter","3rd Quarter","4th Quarter"]
-        Label(Frame_FilterBody,text="Filter By:",font='Arial 11',).place(x=560,y=12)
-        MidTech_Filter=ttk.Combobox(Frame_FilterBody,value=filter_options,font='Arial 10',state='readonly',width=20)
+        Label(Frame_FilterBody,text="Filter By:",font='Roboto 11',).place(x=560,y=12)
+        MidTech_Filter=ttk.Combobox(Frame_FilterBody,value=filter_options,font='Roboto 10',state='readonly',width=20)
         MidTech_Filter.set("Select Filter Option")
         MidTech_Filter.place(x=620,y=14)
 
         global Valuebox, Monthly_year
 
         Valuebox_V=list(calendar.month_name)
-        Valuebox_label=Label(Frame_FilterBody,text="Choose Month:",font='Arial 11',)
+        Valuebox_label=Label(Frame_FilterBody,text="Choose Month:",font='Roboto 11',)
 
-        Valuebox=ttk.Combobox(Frame_FilterBody,value=Valuebox_V,font='Arial 10',state='readonly',width=20)
+        Valuebox=ttk.Combobox(Frame_FilterBody,value=Valuebox_V,font='Roboto 10',state='readonly',width=20)
         Valuebox.set("Select Month")
 
         Monthly_yearr=datetime.today().year
         Monthly_years=[Monthly_yearr - i for i in range (6)]
-        Monthly_Lyears=Label(Frame_FilterBody,text="Choose Year :",font='Arial 11')
-        Monthly_year=ttk.Combobox(Frame_FilterBody,value=Monthly_years,font='Arial 10',state='readonly',width=20)
+        Monthly_Lyears=Label(Frame_FilterBody,text="Choose Year :",font='Roboto 11')
+        Monthly_year=ttk.Combobox(Frame_FilterBody,value=Monthly_years,font='Roboto 10',state='readonly',width=20)
         Monthly_year.set("Select Year")
 
-        Graph_Label=Label(Frame_FilterBody,text="Graph Model:",font='Arial 11').place(x=850,y=14)
+        Graph_Label=Label(Frame_FilterBody,text="Graph Model:",font='Roboto 11').place(x=850,y=14)
         Graph_Value=["GRAPH BAR","GRAPH PIE"]        
-        Graph_Selection=ttk.Combobox(Frame_FilterBody,value=Graph_Value,font='Arial 10',state='readonly',width=20)
+        Graph_Selection=ttk.Combobox(Frame_FilterBody,value=Graph_Value,font='Roboto 10',state='readonly',width=20)
         Graph_Selection.set("Select Graph Model")
         Graph_Selection.place(x=940,y=14)
 
@@ -1322,7 +1324,7 @@ class Main:
             else:
                 messagebox.showerror("Access Denied","Please Select A Graph Model to Use For Data Analyst")
 
-        Graph_button = Button(Frame_FilterBody,text="Create Graph",font='Arial 7',borderwidth=3,command=Graph_create)
+        Graph_button = Button(Frame_FilterBody,text="Create Graph",font='Roboto 7',borderwidth=3,command=Graph_create)
         Graph_button.place(x=1100,y=12)
 
         global name_Choice,test_choice, filter_choice,filter_date_from,filter_date_to
@@ -1332,10 +1334,9 @@ class Main:
         filter_choice=None
         filter_date_from=None
         filter_date_to=None
-        year=None
 
         def filter_Option(event):
-            global filter_choice, Yearly_years
+            global filter_choice
             filter_choice=event.widget.get()
             if event.widget.get()=="Monthly":
                 Monthly_months=list(calendar.month_name)
@@ -1436,14 +1437,12 @@ class Main:
         style=ttk.Style()
         style.theme_use("default")
         style.configure("Treeview")
-        Summary_Table['column']=("ID","NAME","GENDER","TEST",'AGE',"DATE STARTED","DATE FINISHED","MEDTECH")
+        Summary_Table['column']=("ID","NAME","TEST","DATE STARTED","DATE FINISHED","MEDTECH")
         #Column
         Summary_Table.column("#0",width=0,stretch=NO)
         Summary_Table.column("ID",width=50,stretch=NO,anchor=CENTER)
-        Summary_Table.column("NAME")
-        Summary_Table.column("GENDER")
+        Summary_Table.column("NAME",)
         Summary_Table.column("TEST",width=200,stretch=NO)
-        Summary_Table.column("AGE")
         Summary_Table.column("DATE STARTED",width=100,stretch=NO,anchor=CENTER)
         Summary_Table.column("DATE FINISHED",width=100,stretch=NO,anchor=CENTER)
         Summary_Table.column("MEDTECH")
@@ -1451,9 +1450,7 @@ class Main:
         Summary_Table.heading("#0")
         Summary_Table.heading("ID",text="No")
         Summary_Table.heading("NAME",text="NAME",anchor=W)
-        Summary_Table.heading("GENDER",text="Gender",anchor=W)
         Summary_Table.heading("TEST",text="TEST")
-        Summary_Table.heading("AGE",text="Age",anchor=W)
         Summary_Table.heading("DATE STARTED",text="DATE STARTED",anchor=W)
         Summary_Table.heading("DATE FINISHED",text="DATE FINISHED",anchor=W)
         Summary_Table.heading("MEDTECH",text="Medical Technologists",anchor=W)
@@ -1466,7 +1463,7 @@ class Main:
         count=0
         number=1
         for item in range(len(res)):
-            Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5],res[item][6],res[item][7]))
+            Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
             count+=1
             number+=1
 
@@ -1483,12 +1480,11 @@ class Main:
         MidTech_Emp.bind("<<ComboboxSelected>>",nameCallback)
 
         def ApplyFilter():
-            months=['January','February',"March","April","May","June","July","August","September","October","November","December"]
             global name_Choice,test_choice,filter_date_from,filter_date_to,filter_choice
-            if filter_choice=="Monthly":
+            if filter_choice is not None:
                 if Valuebox.get()=="Select Month" or Monthly_year.get()=="Select Year":
                     messagebox.showerror("No Value Selected", "Month and/or Year is Empty.")
-                elif Valuebox.get()!="Select Month" and Valuebox.get() in months:
+                else:
                     if Valuebox.get()=="January":
                         month_num=1
                     elif Valuebox.get()=="February":
@@ -1522,236 +1518,25 @@ class Main:
                     filter_date_to=date(int(Monthly_year.get()),month_num,day)
                     filter_date_to=filter_date_to.strftime("%Y-%m-%d")
 
-            elif filter_choice=="Yearly":
-                if Valuebox.get()=="Select Year":
-                    messagebox.showerror("No Value Selected", "Year is Empty.")
-                elif Valuebox.get()!="Select Year":
-                    year=Valuebox.get()
-            elif filter_choice=="1st Semi Annual": 
-                if Valuebox.get()=="Select Year":
-                    messagebox.showerror("No Value Selected", "Year is Empty.")
-                elif Valuebox.get()!="Select Year":
-                    year=Valuebox.get()
-
-                    filter_date_from_dateObj=date(int(year),1,1)
-                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
-
-                    res=calendar.monthrange(int(year), 6)
-                    day=res[1]
-                    filter_date_to=date(int(year),6,day)
-                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
-
-            elif filter_choice=="2nd Semi Annual": 
-                if Valuebox.get()=="Select Year":
-                    messagebox.showerror("No Value Selected", "Year is Empty.")
-                elif Valuebox.get()!="Select Year":
-                    year=Valuebox.get()
-
-                    filter_date_from_dateObj=date(int(year),7,1)
-                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
-
-                    res=calendar.monthrange(int(year), 12)
-                    day=res[1]
-                    filter_date_to=date(int(year),12,day)
-                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
-
-            elif filter_choice=="1st Quarter":
-                if Valuebox.get()=="Select Year":
-                    messagebox.showerror("No Value Selected", "Year is Empty.")
-                elif Valuebox.get()!="Select Year":
-                    year=Valuebox.get()
-
-                    filter_date_from_dateObj=date(int(year),1,1)
-                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
-
-                    res=calendar.monthrange(int(year), 3)
-                    day=res[1]
-                    filter_date_to=date(int(year),3,day)
-                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
-
-            elif filter_choice=="2nd Quarter":
-                if Valuebox.get()=="Select Year":
-                    messagebox.showerror("No Value Selected", "Year is Empty.")
-                elif Valuebox.get()!="Select Year":
-                    year=Valuebox.get()
-
-                    filter_date_from_dateObj=date(int(year),4,1)
-                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
-
-                    res=calendar.monthrange(int(year), 6)
-                    day=res[1]
-                    filter_date_to=date(int(year),6,day)
-                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
-
-            elif filter_choice=="3rd Quarter":
-                if Valuebox.get()=="Select Year":
-                    messagebox.showerror("No Value Selected", "Year is Empty.")
-                elif Valuebox.get()!="Select Year":
-                    year=Valuebox.get()
-
-                    filter_date_from_dateObj=date(int(year),7,1)
-                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
-
-                    res=calendar.monthrange(int(year), 9)
-                    day=res[1]
-                    filter_date_to=date(int(year),9,day)
-                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
-
-            elif filter_choice=="4th Quarter":
-                if Valuebox.get()=="Select Year":
-                    messagebox.showerror("No Value Selected", "Year is Empty.")
-                elif Valuebox.get()!="Select Year":
-                    year=Valuebox.get()
-
-                    filter_date_from_dateObj=date(int(year),10,1)
-                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
-
-                    res=calendar.monthrange(int(year), 12)
-                    day=res[1]
-                    filter_date_to=date(int(year),12,day)
-                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
-
             if name_Choice is None:
                 name_Choice="All"
             if test_choice is None:
                 test_choice="All"
             sum=summary_filter.Summary()
-            if filter_choice=="Select Filter Option" and  name_Choice!="All" and test_choice=="All" or filter_choice=="Select Filter Option" and name_Choice=="All" and test_choice!="All":
-                res=sum.filterOut(name_Choice,test_choice)
-
-            elif filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
+            if filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
                 res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice=="Monthly" and name_Choice!="All" and test_choice=="All" or filter_choice=="Monthly" and name_Choice=="All" and test_choice!="All":
+            elif filter_choice=="Monthly" and name_Choice!="All" or test_choice!="All":
                 res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)
-
-            elif filter_choice=="Yearly" and name_Choice!="All" and test_choice=="All" or filter_choice=="Yearly" and name_Choice!="All" and test_choice!="All":
-                res=sum.filterYearlyTest(year,name_Choice,test_choice)
-            elif filter_choice=="Yearly" and name_Choice=="All" and test_choice=="All":
-                res=sum.filterYearly(year)
-
-            elif filter_choice=='1st Semi Annual' and name_Choice=="All" and test_choice=="All" or filter_choice=='2nd Semi Annual' and name_Choice=="All" and test_choice=="All":
-                res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All":
-                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice) 
-
-            elif filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All":
-                res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice == '1st Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '1st Quarter' and name_Choice!="All" or test_choice!="All":
-                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
-
-            elif filter_choice=='2nd Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='2nd Quarter' and name_Choice=="All" and test_choice=="All":
-                res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice == '2nd Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Quarter' and name_Choice!="All" or test_choice!="All":
-                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
-
-            elif filter_choice=='3rd Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='3rd Quarter' and name_Choice=="All" and test_choice=="All":
-                res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice == '3rd Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '3rd Quarter' and name_Choice!="All" or test_choice!="All":
-                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
-
-            elif filter_choice=='4th Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='4th Quarter' and name_Choice=="All" and test_choice=="All":
-                res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice == '4th Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '4th Quarter' and name_Choice!="All" or test_choice!="All":
-                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice) 
-
             count=0
             number=1
             Summary_Table.delete(*Summary_Table.get_children())
             for item in range(len(res)):
-                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5],res[item][6],res[item][7]))
+                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
                 count+=1
                 number+=1
                 
         def PrintResults():
             all_items=Summary_Table.get_children()
-            tests={}
-            Gender={}
-            age={}
-            testXMale={}
-            testXFemale={}
-            testXOther={}
-            TestXAge={}
-
-            for item in Summary_Table.get_children():
-                itemValues=Summary_Table.item(item)['values']
-                
-                if itemValues[3] not in tests.keys():
-                    tests[itemValues[3]]=1
-                elif itemValues[3] in tests.keys():
-                    tests[itemValues[3]]+=1
-
-                if itemValues[2] not in tests.keys():
-                    Gender[itemValues[2]]=1
-                else:
-                    Gender[itemValues[2]]+=1
-
-                if itemValues[4] not in age.keys():
-                    age[itemValues[4]]=1
-                else:
-                    age[itemValues[4]]+=1
-
-                if itemValues[3] not in testXMale.keys():
-                    if itemValues[2]=="Male":
-                        testXMale[itemValues[3]]=1
-                else:
-                    testXMale[itemValues[3]]+=1
-                
-                if itemValues[3] not in testXFemale.keys():
-                    if itemValues[2]=="Female":
-                        testXFemale[itemValues[3]]=1
-                else:
-                    testXFemale[itemValues[3]]+=1
-
-                if itemValues[3] not in testXOther.keys():
-                    if itemValues[2]=="Other":
-                        testXOther[itemValues[3]]=1 
-                else:
-                    testXOther[itemValues[3]]+=1
-
-                # TestXAge[1]=itemValues[0]
-                # TestXAge['test']=itemValues[3]
-                # TestXAge['age']=itemValues[4]
-
-
-            fig, ax = plt.subplots()
-            ax.bar(tests.keys(), tests.values())
-            plt.xlabel("Number of Clients in Each Test")
-            plt.savefig('tests.png', dpi=300)
-
-            fig, ax = plt.subplots()
-            # ax.bar(Gender.keys(), Gender.values())
-            ax.pie(Gender.values(), labels=Gender.keys(), autopct='%1.0f%%')
-            plt.xlabel("Gender")
-            plt.savefig('gender.png', dpi=300)
-
-            fig, ax = plt.subplots()
-            ax.pie(age.values(), labels=age.keys(), autopct='%1.0f%%')
-            plt.xlabel("Age")
-            plt.savefig('age.png', dpi=300)
-
-            fig, ax = plt.subplots()
-            ax.bar(testXMale.keys(),testXMale.values())
-            plt.xlabel("Test")
-            plt.ylabel("Number of Males")
-            plt.savefig('testXMale.png', dpi=300)
-
-            fig, ax = plt.subplots()
-            ax.bar(testXFemale.keys(),testXFemale.values())
-            plt.xlabel("Test")
-            plt.ylabel("Number of Females")
-            plt.savefig('testXFemale.png', dpi=300)
-
-            fig, ax = plt.subplots()
-            ax.bar(testXOther.keys(),testXOther.values())
-            plt.xlabel("Test")
-            plt.ylabel("Number of 'Other'")
-            plt.savefig('testXOther.png', dpi=300)
-            # print(TestXAge)
-
-            # test_age=[t["age"] for t in TestXAge]
-            # test_name=[t["test"] for t in TestXAge]
-            
-            # print(test_age,test_name)
 
             doc = docx.Document("SUMMARY_REPORT_TEMPLATE.docx")
             data=[]
@@ -1759,35 +1544,23 @@ class Main:
                 itemVal=Summary_Table.item(i, "values")
                 data.append(itemVal)
 
-            menuTable = doc.add_table(rows=1,cols=8)
+            menuTable = doc.add_table(rows=1,cols=6)
             hdr_Cells = menuTable.rows[0].cells
             hdr_Cells[0].text="No"
             hdr_Cells[1].text="Name"
-            hdr_Cells[2].text="Gender"
-            hdr_Cells[3].text="Test"
-            hdr_Cells[4].text="Age"
-            hdr_Cells[5].text="Date Started"
-            hdr_Cells[6].text="Date Finished"
-            hdr_Cells[7].text="Medical Technologist"
+            hdr_Cells[2].text="Test"
+            hdr_Cells[3].text="Date Started"
+            hdr_Cells[4].text="Date Finished"
+            hdr_Cells[5].text="Medical Technologist"
 
-            for no, name,gender,test,age, dateStart,dateFin,medTech in data:
+            for no, name,test, dateStart,dateFin,medTech in data:
                 row_cell=menuTable.add_row().cells
                 row_cell[0].text=str(no)
                 row_cell[1].text=name
-                row_cell[2].text=gender
-                row_cell[3].text=test
-                row_cell[4].text=age
-                row_cell[5].text=dateStart
-                row_cell[6].text=dateFin
-                row_cell[7].text=medTech
-
-            doc.add_picture('tests.png')
-            doc.add_picture('gender.png')
-            doc.add_picture('age.png')
-            doc.add_picture('testXMale.png')
-            doc.add_picture('testXFemale.png')
-            doc.add_picture('testXOther.png')
-
+                row_cell[2].text=test
+                row_cell[3].text=dateStart
+                row_cell[4].text=dateFin
+                row_cell[5].text=medTech
 
             doc.save("new_document.docx")
             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"new_document.docx"), None, ".", 0)
@@ -1803,16 +1576,16 @@ class Main:
         height=self.Dashboard_GUI.winfo_screenheight()
         self.Dashboard_GUI.geometry("%dx%d"%(width,height))
 
-        self.Page_Dashboard=Frame(self.Dashboard_GUI,bg="green")
+        self.Page_Dashboard=Frame(self.Dashboard_GUI)
         self.Page_Dashboard.pack(expand=1, fill=BOTH)
         Frame_Header=Frame(self.Page_Dashboard,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
         Frame_Header.pack()
         image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
         IMG_HEADER_MD=Label(Frame_Header,image=image,bg='#BDFFC4',width=40,height=40)
         IMG_HEADER_MD.place(x=3,y=1)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Arial 25 bold').place(x=50,y=1)
+        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').place(x=50,y=1)
 
-        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Arial 20').place(x=1150,y=3)
+        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20').place(x=1150,y=3)
         # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
         # IMG_USERNAME.place(x=1200,y=8)
 
@@ -1820,20 +1593,20 @@ class Main:
         Toggle_Button.place(x=1290,y=10)
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
-        Toggle_Button.menu.add_command(label="LOGOUT",font='Arial 12 bold',command=lambda:self.logout())
+        Toggle_Button.menu.add_command(label="LOGOUT",font='Roboto 12 bold',command=lambda:self.logout())
         #Header END------------
 
         #Message
         Frame_Center=Frame(self.Page_Dashboard,width=1360,height=413,highlightbackground="black",highlightthickness=1)
         Frame_Center.pack()
-        VISION=Label(Frame_Center,text="VISSION:",font=("Arail",20,'bold')).place(x=440,y=20)
-        VISION_BODY=Label(Frame_Center,text="CAGAYAN DE ORO CITY HEALTH OFFICE - \nThe nations ideal public health care service provider to ensure healthy and empowered \nCagay-anons",justify=LEFT,font=("Arail",13)).place(x=480,y=50)
-        MISSION=Label(Frame_Center,text="MISSION",justify=LEFT,font=("Arail",20,'bold')).place(x=440,y=150)
-        MISSION_BODY=Label(Frame_Center,text="We, the Health care managers and providers pledge to deliver quality health care through \nregulative, preventive, curative and rehabilitative services. To attain our mission, \nwe subscribed to the following \nValues: \n• Equality / Liberty \n• Knowledge / Insight \n• Self-actualization \n• Service / vocation",justify=LEFT,font=("Arail",13)).place(x=480,y=180)
+        VISION=Label(Frame_Center,text="VISSION:",font=("Roboto",20,'bold')).place(x=440,y=20)
+        VISION_BODY=Label(Frame_Center,text="CAGAYAN DE ORO CITY HEALTH OFFICE - \nThe nations ideal public health care service provider to ensure healthy and empowered \nCagay-anons",justify=LEFT,font=("Roboto",13)).place(x=480,y=56)
+        MISSION=Label(Frame_Center,text="MISSION",justify=LEFT,font=("Roboto",20,'bold')).place(x=440,y=150)
+        MISSION_BODY=Label(Frame_Center,text="We, the Health care managers and providers pledge to deliver quality health care through \nregulative, preventive, curative and rehabilitative services. To attain our mission, \nwe subscribed to the following \nValues: \n• Equality / Liberty \n• Knowledge / Insight \n• Self-actualization \n• Service / vocation",justify=LEFT,font=("Roboto",13)).place(x=480,y=186)
 
         CDOH_LOGO = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
         CDOH_Label=Label(Frame_Center,image=CDOH_LOGO)
-        CDOH_Label.place(x=100,y=50,width=300, height=300)
+        CDOH_Label.place(x=80,y=50,width=300, height=300)
 
         #FrontDesk
         Frame_Laboratory=Frame(self.Page_Dashboard,width=1360,height=290,highlightbackground="black",highlightthickness=1)
@@ -1841,26 +1614,38 @@ class Main:
 
         Frame_FrontDesk=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
         Frame_FrontDesk.place(x=0,y=0)
-        FrontDesk_label=Label(Frame_FrontDesk,text="FRONT DESK",font=("Arail",35,"bold")).place(x=20,y=40)
-        Button_FronDesk=Button(Frame_FrontDesk,text="ENTER",width=8,height=1,bg="green",borderwidth=4,command=self.FrontDesk).place(x=120,y=200)
+        CHO_F= ImageTk.PhotoImage(Image.open("CHO_Front.jpg").resize((140, 150)))
+        CHO_FL=Label(Frame_FrontDesk,image=CHO_F,highlightbackground="black",highlightthickness=1)
+        CHO_FL.place(x=80,y=70,width=140, height=150)
+        FrontDesk_label=Label(Frame_FrontDesk,text="FRONT DESK",font=("Roboto",30,"bold")).place(x=20,y=10)
+        Button_FronDesk=Button(Frame_FrontDesk,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
 
         #Lab-list
         Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
         Frame_LabTest.place(x=350,y=0)
         Frame_LabCH=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
         Frame_LabCH.place(x=0,y=0)
-        Laboratory_label=Label(Frame_LabCH,text="LABORATORY TEST",font=("Arail",35,"bold")).place(x=10,y=50)
-        Button_LabCH=Button(Frame_LabCH,text="ENTER",width=8,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=50)
+        CHO_L= ImageTk.PhotoImage(Image.open("CHO_Lab.jpg").resize((140, 140)))
+        CHO_LL=Label(Frame_LabTest,image=CHO_L,highlightbackground="black",highlightthickness=1)
+        CHO_LL.place(x=2,y=2,width=140, height=140)
+        Laboratory_label=Label(Frame_LabCH,text="LABORATORY TEST",font=("Roboto",30,"bold")).place(x=147,y=5)
+        Button_LabCH=Button(Frame_LabCH,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=100)
 
         Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
         Frame_XRay.place(x=0,y=145)
-        Xray_label=Label(Frame_XRay,text="X-RAY LABORATORY",font=("Arail",35,"bold")).place(x=20,y=40)
-        Button_XRay=Button(Frame_XRay,text="ENTER",width=8,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=50)
+        CHO_X= ImageTk.PhotoImage(Image.open("CHO_Xray.jpg").resize((138, 138)))
+        CHO_XL=Label(Frame_XRay,image=CHO_X,highlightbackground="black",highlightthickness=1)
+        CHO_XL.place(x=2,y=2,width=138, height=138)
+        Xray_label=Label(Frame_XRay,text="X-RAY LABORATORY",font=("Roboto",30,"bold")).place(x=147,y=5)
+        Button_XRay=Button(Frame_XRay,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=100)
 
         Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
         Frame_Summary.place(x=1009,y=0)
-        Summary_label=Label(Frame_Summary,text="SUMMARY",font=("Arail",35,"bold")).place(x=30,y=50)
-        Button_Summary=Button(Frame_Summary,text="ENTER",width=8,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=140,y=200)
+        CHO_S= ImageTk.PhotoImage(Image.open("CHO_Summary.jpg").resize((200, 150)))
+        CHO_SL=Label(Frame_Summary,image=CHO_S,highlightbackground="black",highlightthickness=1)
+        CHO_SL.place(x=60,y=70,width=200, height=150)
+        Summary_label=Label(Frame_Summary,text="SUMMARY",font=("Roboto",30,"bold")).place(x=40,y=10)
+        Button_Summary=Button(Frame_Summary,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=118,y=230)
 
         self.Dashboard_GUI.mainloop()
     
