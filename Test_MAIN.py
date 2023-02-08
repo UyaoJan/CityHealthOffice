@@ -1333,10 +1333,10 @@ class Main:
         MidTech_Emp.set("All")
         MidTech_Emp.place(x=203,y=60)
 
-        filter_options=["Monthly","Yearly","1st Semi Annual","2nd Semi Annual","1st Quarter","2nd Quarter","3rd Quarter","4th Quarter"]
+        filter_options=["No Filter","Monthly","Yearly","1st Semi Annual","2nd Semi Annual","1st Quarter","2nd Quarter","3rd Quarter","4th Quarter"]
         Label(Frame_FilterBody,text="Filter By:",font='Roboto 11',).place(x=560,y=12)
         MidTech_Filter=ttk.Combobox(Frame_FilterBody,value=filter_options,font='Roboto 10',state='readonly',width=20)
-        MidTech_Filter.set("Select Filter Option")
+        MidTech_Filter.set("No Filter")
         MidTech_Filter.place(x=620,y=14)
 
         global Valuebox, Monthly_year
@@ -1401,7 +1401,9 @@ class Main:
         def filter_Option(event):
             global filter_choice
             filter_choice=event.widget.get()
-            if event.widget.get()=="Monthly":
+            if event.widget.get() == "No Filter":
+                filter_choice=None
+            elif event.widget.get()=="Monthly":
                 Monthly_months=list(calendar.month_name)
                 Valuebox_label.config(text="Choose Month:")
                 Valuebox.config(values=Monthly_months)
@@ -1679,22 +1681,22 @@ class Main:
             if test_choice is None:
                 test_choice="All"
             sum=summary_filter.Summary()
-            if filter_choice=="Select Filter Option" and  name_Choice!="All" or test_choice!="All":
+            if filter_choice is None and name_Choice!="All" and test_choice!="All" or  filter_choice is None and  name_Choice=="All" and test_choice=="All" or  filter_choice is None and name_Choice=="All" and test_choice!="All" or  filter_choice is None and name_Choice!="All" and test_choice=="All":
                 res=sum.filterOut(name_Choice,test_choice)
 
             elif filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
                 res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice=="Monthly" and name_Choice!="All" or test_choice!="All":
+            elif filter_choice=="Monthly" and name_Choice!="All" and test_choice=="All" or filter_choice=="Monthly" and name_Choice=="All" and test_choice!="All":
                 res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)
 
-            elif filter_choice=="Yearly" and name_Choice!="All" or test_choice!="All":
+            elif filter_choice=="Yearly" and name_Choice!="All" and test_choice=="All" or filter_choice=="Yearly" and name_Choice!="All" and test_choice!="All":
                 res=sum.filterYearlyTest(year,name_Choice,test_choice)
             elif filter_choice=="Yearly" and name_Choice=="All" and test_choice=="All":
                 res=sum.filterYearly(year)
 
             elif filter_choice=='1st Semi Annual' and name_Choice=="All" and test_choice=="All" or filter_choice=='2nd Semi Annual' and name_Choice=="All" and test_choice=="All":
                 res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice == '1st Semi Annual' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All":
+            elif filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All":
                 res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice) 
 
             elif filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All":
