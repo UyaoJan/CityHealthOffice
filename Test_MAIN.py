@@ -780,13 +780,7 @@ class Main:
                     UR_Button.place(x=1200,y=430)
 
                     def submit():
-                        blood_type=ST_BOX8_L.get()
-                        hepatitis_b_Screening=ST_BOX9_L.get()
-                        anti_hav_screening=ST_BOX10_L.get()
-                        syphilis_screen=ST_BOX11_L.get()
-                        dengue_ns1_antigen_test=ST_BOX12_L.get()
-
-                        document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
+                        document=Path(__file__).parent / "HEMATOLOGY COMPLETE BLOOD COUNT.docx"
                         doc=DocxTemplate(document)
                             
                         context={
@@ -794,18 +788,15 @@ class Main:
                             "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
                             "DATE":self.test_date,
                             "OR_NO":self.user.generateClient_ORNumber(),
-                            "BLOODTYPE": blood_type,
-                            "HEPA_B_SCREEN": hepatitis_b_Screening,
-                            "ANTI_HAV_SCREEN": anti_hav_screening,
-                            "SYPHILIS_SCREEN": syphilis_screen,
-                            "DENGUE_ANTIGEN_TEST": dengue_ns1_antigen_test,
+                            
                             "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                            "LICENSE_NO":"Sample License No",
                             "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
                         }
                         doc.render(context)
                         doc.save(Path(__file__).parent/"newDoc.docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
-                        serviceid=self.user.get_test_id("Serology")
+                        serviceid=self.user.get_test_id("Complete Blood Count")
                         client_id=self.user.getClient_name(Name_Entry.get())
                         total=self.user.get_test_price(serviceid[0])
                         id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
