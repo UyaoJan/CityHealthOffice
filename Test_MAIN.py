@@ -20,6 +20,11 @@ import win32api, os, time
 import win32print
 import summary_filter
 
+from ctypes import windll
+
+# get the handle to the taskbar
+h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
+
 
 class Main:
     def __init__(self,init):
@@ -31,7 +36,8 @@ class Main:
         global PageOpen
         PageOpen = 1
         self.Value_Laboratory = ["Laboratory","X_RAY"]
-
+        
+        windll.user32.ShowWindow(h, 0)
 
         self.test_date=date.today()
     
