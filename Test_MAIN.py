@@ -150,30 +150,33 @@ class Main:
             Test.set(0)
             self.services.append(Test)
 
-        def check(i):
-            if i == self.services(i):
-                print("if it working")
-                i.set(0)
-            else:
-                print("else it working")
-                i.set(1)
+        # def check(i,index):
+        #     print(self.services[index].get())
+        #     if self.services[index].get()==1:
+        #         print("if it working")
+        #         i.set(0)
+        #         print(i.get())
+        #     else:
+        #         print("else it working")
+        #         i.set(0)
+        #         print(i.get())
             
-        Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Roboto 12 ',command=lambda i=self.services[0]:check(i)).place(x=30,y=50)
-        Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Roboto 12 ',command=lambda i=self.services[1]:check(i)).place(x=30,y=75)
-        Checkbutton(self.Box,text="Stool Exam",variable=self.services[2],font='Roboto 12 ',command=lambda i=self.services[2]:check(i)).place(x=30,y=100)
-        Checkbutton(self.Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Roboto 12 ',command=lambda i=self.services[3]:check(i)).place(x=30,y=125)
-        Checkbutton(self.Box,text="Syphilis Rapid Test",variable=self.services[4],font='Roboto 12 ',command=lambda i=self.services[4]:check(i)).place(x=30,y=150)
-        Checkbutton(self.Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Roboto 12 ',command=lambda i=self.services[5]:check(i)).place(x=30,y=175)
-        Checkbutton(self.Box,text="Anti-HAV Test",variable=self.services[6],font='Roboto 12 ',command=lambda i=self.services[6]:check(i)).place(x=30,y=200)
-        Checkbutton(self.Box,text="Drug Test",variable=self.services[7],font='Roboto 12 ',command=lambda i=self.services[7]:check(i)).place(x=30,y=222)
-        Checkbutton(self.Box,text="Pregnancy Test",variable=self.services[8],font='Roboto 12 ',command=lambda i=self.services[8]:check(i)).place(x=30,y=245)
-        Checkbutton(self.Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Roboto 12 ',command=lambda i=self.services[9]:check(i)).place(x=280,y=50)
-        Checkbutton(self.Box,text="Blood Uric Acid Test",variable=self.services[10],font='Roboto 12 ',command=lambda i=self.services[10]:check(i)).place(x=280,y=75)
-        Checkbutton(self.Box,text="Blood Cholesterol Test",variable=self.services[11],font='Roboto 12 ',command=lambda i=self.services[11]:check(i)).place(x=280,y=100)
-        Checkbutton(self.Box,text="Blood Creatinine Test",variable=self.services[12],font='Roboto 12 ',command=lambda i=self.services[12]:check(i)).place(x=280,y=125)
-        Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Roboto 12 ',command=lambda i=self.services[13]:check(i)).place(x=280,y=150)
-        Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Roboto 12 ',command=lambda i=self.services[14]:check(i)).place(x=280,y=175)
-        Checkbutton(self.Box,text="Serology",variable=self.services[15],font='Roboto 12 ',command=lambda i=self.services[15]:check(i)).place(x=280,y=200)
+        Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Roboto 12 ').place(x=30,y=50)
+        Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Roboto 12 ').place(x=30,y=75)
+        Checkbutton(self.Box,text="Stool Exam",variable=self.services[2],font='Roboto 12 ').place(x=30,y=100)
+        Checkbutton(self.Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Roboto 12 ').place(x=30,y=125)
+        Checkbutton(self.Box,text="Syphilis Rapid Test",variable=self.services[4],font='Roboto 12 ').place(x=30,y=150)
+        Checkbutton(self.Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Roboto 12 ').place(x=30,y=175)
+        Checkbutton(self.Box,text="Anti-HAV Test",variable=self.services[6],font='Roboto 12 ').place(x=30,y=200)
+        Checkbutton(self.Box,text="Drug Test",variable=self.services[7],font='Roboto 12 ').place(x=30,y=222)
+        Checkbutton(self.Box,text="Pregnancy Test",variable=self.services[8],font='Roboto 12 ').place(x=30,y=245)
+        Checkbutton(self.Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Roboto 12 ').place(x=280,y=50)
+        Checkbutton(self.Box,text="Blood Uric Acid Test",variable=self.services[10],font='Roboto 12 ').place(x=280,y=75)
+        Checkbutton(self.Box,text="Blood Cholesterol Test",variable=self.services[11],font='Roboto 12 ').place(x=280,y=100)
+        Checkbutton(self.Box,text="Blood Creatinine Test",variable=self.services[12],font='Roboto 12 ').place(x=280,y=125)
+        Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Roboto 12 ').place(x=280,y=150)
+        Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Roboto 12 ').place(x=280,y=175)
+        Checkbutton(self.Box,text="Serology",variable=self.services[15],font='Roboto 12 ').place(x=280,y=200)
 
         #Body-------
 
