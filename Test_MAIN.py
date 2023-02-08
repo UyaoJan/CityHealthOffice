@@ -776,11 +776,8 @@ class Main:
                     UR_Column21_BOX2= Label(UR_Box_Side,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column21_BOX2.grid(row=21,column=2)
 
-                    UR_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5)
-                    UR_Button.place(x=1200,y=430)
-
                     def submit():
-                        document=Path(__file__).parent / "HEMATOLOGY COMPLETE BLOOD COUNT.docx"
+                        document=Path(__file__).parent / "URINALYSIS_TEMPLATE.docx"
                         doc=DocxTemplate(document)
                             
                         context={
@@ -788,15 +785,35 @@ class Main:
                             "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
                             "DATE":self.test_date,
                             "OR_NO":self.user.generateClient_ORNumber(),
+
+                            "COLOR":UR_Column1_BOX1.get(),
+                            "CLARITY":UR_Column2_BOX1.get(),
+                            "BLOOD":UR_Column3_BOX1.get(),
+                            "BILIRUBIN":UR_Column4_BOX1.get(),
+                            "LEUKOCYTE":UR_Column5_BOX1.get(),
+                            "KETONE":UR_Column6_BOX1.get(),
+                            "NITRITE":UR_Column7_BOX1.get(),
+                            "PROTEIN":UR_Column8_BOX1.get(),
+                            "GLUCOSE":UR_Column9_BOX1.get(),
+                            "PH":UR_Column10_BOX1.get(),
+                            "SPECIFIC_GRAVITY":UR_Column11_BOX1.get(),
+                            "WBC":UR_Column13_BOX1.get(),
+                            "RBC":UR_Column14_BOX1.get(),
+                            "EPITHERIAL_CELLS":UR_Column15_BOX1.get(),
+                            "MUCOUS_THREADS":UR_Column16_BOX1.get(),
+                            "BACTERIA":UR_Column17_BOX1.get(),
+                            "PHOSPHATE":UR_Column18_BOX1.get(),
+                            "CASTS":UR_Column19_BOX1.get(),
+                            "CRYSTALS":UR_Column20_BOX1.get(),
+                            "OTHERS":UR_Column21_BOX1.get(),
                             
                             "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                            "LICENSE_NO":"Sample License No",
                             "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
                         }
                         doc.render(context)
                         doc.save(Path(__file__).parent/"newDoc.docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
-                        serviceid=self.user.get_test_id("Complete Blood Count")
+                        serviceid=self.user.get_test_id("Urinalysis (Urine Test)")
                         client_id=self.user.getClient_name(Name_Entry.get())
                         total=self.user.get_test_price(serviceid[0])
                         id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
@@ -804,7 +821,7 @@ class Main:
                         test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                         self.user.markTest_as_done(test_id[0])
 
-                    ST_Button=Button(Serology_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
+                    ST_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     ST_Button.place(x=1200,y=430)
                 
                 elif LabTest_Mune.get() == "Complete Blood Count / Hematology":
