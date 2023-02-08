@@ -1577,6 +1577,10 @@ class Main:
         Button(Frame_FilterBody,text="Apply Filter",command=lambda: ApplyFilter()).place(x=1000,y=50)
         Button(Frame_FilterBody,text="Print Out Results",command=lambda: PrintResults()).place(x=1100,y=50)
 
+    def onClose(self):
+        windll.user32.ShowWindow(h, 9)
+        self.Dashboard_GUI.destroy()
+
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
         self.Dashboard_GUI=Tk()
@@ -1584,6 +1588,7 @@ class Main:
         width= self.Dashboard_GUI.winfo_screenwidth()
         height=self.Dashboard_GUI.winfo_screenheight()
         self.Dashboard_GUI.geometry("%dx%d"%(width,height))
+        self.Dashboard_GUI.protocol("WM_DELETE_WINDOW", self.onClose)
 
         self.Page_Dashboard=Frame(self.Dashboard_GUI)
         self.Page_Dashboard.pack(expand=1, fill=BOTH)
