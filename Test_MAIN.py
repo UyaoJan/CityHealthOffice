@@ -943,7 +943,7 @@ class Main:
                     CBCS_Column5_BOX2= Label(CBC_Box_Side,text="2% "+" - "+"3%",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column5_BOX2.grid(row=5,column=2)
 
-                    CBCS_Column6_BOX= Label(CBC_Box_Side,text="EOSINOPHIL",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column6_BOX= Label(CBC_Box_Side,text="BASOPHIL",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column6_BOX.grid(row=6,column=0)
                     CBCS_Column6_BOX1= Entry(CBC_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBCS_Column6_BOX1.grid(row=6,column=1,padx=1)
@@ -957,7 +957,48 @@ class Main:
                     CBCS_Column7_BOX2= Label(CBC_Box_Side,text="",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column7_BOX2.grid(row=7,column=2)
 
-                    CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5)
+                    def submit():
+                        document=Path(__file__).parent / "HEMATOLOGY COMPLETE BLOOD COUNT.docx"
+                        doc=DocxTemplate(document)
+                            
+                        context={
+                            "NAME":Name_Entry.get(),
+                            "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                            "DATE":self.test_date,
+                            "OR_NUM":self.user.generateClient_ORNumber(),
+                            "WBC":CBC_Column2_BOX1.get(),
+                            "RBC":CBC_Column3_BOX1.get(),
+                            "HEMOGLOBIN":CBC_Column4_BOX1.get(),
+                            "HEMATOCRIT":CBC_Column5_BOX1.get(),
+                            "MCV":CBC_Column6_BOX1.get(),
+                            "MCH":CBC_Column7_BOX1.get(),
+                            "MCHC":CBC_Column8_BOX1.get(),
+                            "RDW":CBC_Column9_BOX1.get(),
+                            "PLATELET":CBC_Column10_BOX1.get(),
+                            "MPV":CBC_Column11_BOX1.get(),
+                            "NEUTROPHIL":CBCS_Column2_BOX1.get(),
+                            "LYMPHOCYTE":CBCS_Column3_BOX1.get(),
+                            "MONOCYTE":CBCS_Column4_BOX1.get(),
+                            "EOSINOPHIL":CBCS_Column5_BOX1.get(),
+                            "BASOPHIL":CBCS_Column6_BOX1.get(),
+                            "TOTAL":CBCS_Column7_BOX1.get(),
+                            "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                            "LICENSE_NO":"Sample License No",
+                            "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                        }
+                        doc.render(context)
+                        doc.save(Path(__file__).parent/"newDoc.docx")
+                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                        serviceid=self.user.get_test_id("Complete Blood Count")
+                        client_id=self.user.getClient_name(Name_Entry.get())
+                        total=self.user.get_test_price(serviceid[0])
+                        id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                        self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                        test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                        self.user.markTest_as_done(test_id[0])
+
+
+                    CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     CBC_Button.place(x=1200,y=430)
 
 
