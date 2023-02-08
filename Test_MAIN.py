@@ -152,11 +152,12 @@ class Main:
                     "Blood Creatinine Test",
                     "Acid Fast Staining",
                     "X-Ray Test",
-                    "Serology"
+                    "Serology",
+                    "Medical Certificate"
                     ]
         
         self.services=[]
-        for i in range (16):
+        for i in range (17):
             Test=IntVar()
             Test.set(0)
             self.services.append(Test)
@@ -188,6 +189,7 @@ class Main:
         Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Roboto 12 ').place(x=280,y=150)
         Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Roboto 12 ').place(x=280,y=175)
         Checkbutton(self.Box,text="Serology",variable=self.services[15],font='Roboto 12 ').place(x=280,y=200)
+        Checkbutton(self.Box,text="Medical Certificate",variable=self.services[16],font='Roboto 12 ').place(x=280,y=220)
 
         #Body-------
 
@@ -1936,10 +1938,46 @@ class Main:
         windll.user32.ShowWindow(h, 9)
         self.Dashboard_GUI.destroy()
 
-    def onClose(self):
-        windll.user32.ShowWindow(h, 9)
-        self.Dashboard_GUI.destroy()
+    def Cer_onClose(self):
+        global PageOpen
+        if messagebox.askokcancel('Close', 'Are you sure you want to close the View Page all the data will not be Save?'):
+            PageOpen=1
+            self.Dashboard_GUI.grab_release()
+            self.Certificate.destroy()
 
+    def Certificate_Page(self):
+        global PageOpen
+        if PageOpen < 2:
+            self.Certificate = Toplevel(self.Dashboard_GUI)
+            self.Certificate.title("Medical Certificate")
+            Record_width=400
+            Record_height=400
+            self.Certificate.geometry(f'{Record_width}x{Record_height}+{480}+{100}')
+            self.Certificate.resizable(False,False)
+            self.Certificate.protocol("WM_DELETE_WINDOW", self.Cer_onClose)
+            self.Certificate.grab_set()
+
+            Certificate_title=Label(self.Certificate,text="Medical Certificate!",font='Roboto 25 bold').place(x=5,y=5)
+
+            Patent_Label=Label(self.Certificate,text="Patents",font='Roboto 11').place(x=50,y=150)
+            Patent_Value=["GRAPH BAR","GRAPH PIE"]        
+            Patent_Selection=ttk.Combobox(self.Certificate,value=Patent_Value,font='Roboto 10',state='readonly',width=40)
+            Patent_Selection.set("Select Patents")
+            Patent_Selection.place(x=50,y=170)
+
+            Ptest_Label=Label(self.Certificate,text="Graph Model:",font='Roboto 11').place(x=50,y=210)
+            Ptest_Value=["GRAPH BAR","GRAPH PIE"]        
+            Ptest_Selection=ttk.Combobox(self.Certificate,value=Ptest_Value,font='Roboto 10',state='readonly',width=40)
+            Ptest_Selection.set("Select Test")
+            Ptest_Selection.place(x=50,y=230)
+
+            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5).place(x=280,y=300)
+
+            PageOpen += 1
+
+        else:
+            messagebox.showinfo("Error","The Window is already Open!")
+            
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
         self.Dashboard_GUI=Tk()
@@ -1947,7 +1985,6 @@ class Main:
         width= self.Dashboard_GUI.winfo_screenwidth()
         height=self.Dashboard_GUI.winfo_screenheight()
         self.Dashboard_GUI.geometry("%dx%d"%(width,height))
-        self.Dashboard_GUI.protocol("WM_DELETE_WINDOW", self.onClose)
         self.Dashboard_GUI.protocol("WM_DELETE_WINDOW", self.onClose)
 
         self.Page_Dashboard=Frame(self.Dashboard_GUI)
@@ -1981,6 +2018,9 @@ class Main:
         CDOH_LOGO = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
         CDOH_Label=Label(Frame_Center,image=CDOH_LOGO)
         CDOH_Label.place(x=80,y=50,width=300, height=300)
+
+        
+        Certificate=Button(Frame_Center,text="Certificate",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Certificate_Page).place(x=1240,y=370)
 
         #FrontDesk
         Frame_Laboratory=Frame(self.Page_Dashboard,width=1360,height=290,highlightbackground="black",highlightthickness=1)
