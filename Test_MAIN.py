@@ -20,6 +20,11 @@ import win32api, os, time
 import win32print
 import summary_filter
 
+from ctypes import windll
+
+# get the handle to the taskbar
+h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
+
 
 class Main:
     def __init__(self,init):
@@ -31,7 +36,8 @@ class Main:
         global PageOpen
         PageOpen = 1
         self.Value_Laboratory = ["Laboratory","X_RAY"]
-
+        
+        windll.user32.ShowWindow(h, 0)
 
         self.test_date=date.today()
     
@@ -203,15 +209,20 @@ class Main:
         AGE_Entry=Entry(Frame_Input,width=5,font='Roboto 12',borderwidth=3)
         AGE_Entry.place(x=100,y=430)
 
-        def calculate_age(birthdate):
+        def calculate_age(event):
+            birthdate=event.widget.get_date()
             today = date.today()
             age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
-            return age
+            AGE_Entry.delete(0,END)
+            AGE_Entry.insert(0,age)
+            # return age
 
         global Birth_Entry
         Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=160,y=430)
         Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
         Birth_Entry.place(x=230,y=430)
+
+        Birth_Entry.bind("<<DateEntrySelected>>",calculate_age)
 
         global Gender_Mune
         Gender_Label=Label(Frame_Input,text="Gender:",font='Roboto 12').place(x=350,y=430)
@@ -615,81 +626,81 @@ class Main:
 
                     UR_Box=Frame(Urinalysis_Page,bg='white')
                     UR_Box.place(x=130,y=90)
-                    UR_Column1_BOX= Label(UR_Box,text="TEST",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    UR_Column1_BOX= Label(UR_Box,text="COLOR",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column1_BOX.grid(row=0,column=0)
                     UR_Column1_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column1_BOX1.grid(row=0,column=1,padx=1)
-                    UR_Column1_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column1_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column1_BOX2.grid(row=0,column=2)
 
                     UR_Column2_BOX= Label(UR_Box,text="CLARITY",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column2_BOX.grid(row=1,column=0)
                     UR_Column2_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column2_BOX1.grid(row=1,column=1,padx=1)
-                    UR_Column2_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column2_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column2_BOX2.grid(row=1,column=2)
 
                     UR_Column3_BOX= Label(UR_Box,text="BLOOD",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column3_BOX.grid(row=2,column=0)
                     UR_Column3_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column3_BOX1.grid(row=2,column=1,padx=1)
-                    UR_Column3_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column3_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column3_BOX2.grid(row=2,column=2)
 
                     UR_Column4_BOX= Label(UR_Box,text="BILIRUBIN",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column4_BOX.grid(row=4,column=0)
                     UR_Column4_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column4_BOX1.grid(row=4,column=1,padx=1)
-                    UR_Column4_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column4_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column4_BOX2.grid(row=4,column=2)
 
                     UR_Column5_BOX= Label(UR_Box,text="LEUKOCYTE",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column5_BOX.grid(row=5,column=0)
                     UR_Column5_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column5_BOX1.grid(row=5,column=1,padx=1)
-                    UR_Column5_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column5_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column5_BOX2.grid(row=5,column=2)
 
                     UR_Column6_BOX= Label(UR_Box,text="KETONE",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column6_BOX.grid(row=6,column=0)
                     UR_Column6_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column6_BOX1.grid(row=6,column=1,padx=1)
-                    UR_Column6_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column6_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column6_BOX2.grid(row=6,column=2)
 
                     UR_Column7_BOX= Label(UR_Box,text="NITRITE",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column7_BOX.grid(row=7,column=0)
                     UR_Column7_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column7_BOX1.grid(row=7,column=1,padx=1)
-                    UR_Column7_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column7_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column7_BOX2.grid(row=7,column=2)
 
                     UR_Column8_BOX= Label(UR_Box,text="PROTEIN",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column8_BOX.grid(row=8,column=0)
                     UR_Column8_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column8_BOX1.grid(row=8,column=1,padx=1)
-                    UR_Column8_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column8_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column8_BOX2.grid(row=8,column=2)
 
                     UR_Column9_BOX= Label(UR_Box,text="GLUCOSE",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column9_BOX.grid(row=9,column=0)
                     UR_Column9_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column9_BOX1.grid(row=9,column=1,padx=1)
-                    UR_Column9_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column9_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column9_BOX2.grid(row=9,column=2)
 
                     UR_Column10_BOX= Label(UR_Box,text="PH",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column10_BOX.grid(row=10,column=0)
                     UR_Column10_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column10_BOX1.grid(row=10,column=1,padx=1)
-                    UR_Column10_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column10_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column10_BOX2.grid(row=10,column=2)
 
                     UR_Column11_BOX= Label(UR_Box,text="SPECIFIC GRAVITY",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column11_BOX.grid(row=11,column=0)
                     UR_Column11_BOX1= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column11_BOX1.grid(row=11,column=1,padx=1)
-                    UR_Column11_BOX2= Entry(UR_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column11_BOX2= Label(UR_Box,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column11_BOX2.grid(row=11,column=2)
 
                     UR_Box_Side=Frame(Urinalysis_Page,bg='white')
@@ -706,76 +717,67 @@ class Main:
                     UR_Column13_BOX.grid(row=13,column=0)
                     UR_Column13_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column13_BOX1.grid(row=13,column=1,padx=1)
-                    UR_Column13_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column13_BOX2= Label(UR_Box_Side,text="/HPF",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column13_BOX2.grid(row=13,column=2)
 
                     UR_Column14_BOX= Label(UR_Box_Side,text="RBC",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column14_BOX.grid(row=14,column=0)
                     UR_Column14_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column14_BOX1.grid(row=14,column=1,padx=1)
-                    UR_Column14_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column14_BOX2= Label(UR_Box_Side,text="/HPF",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column14_BOX2.grid(row=14,column=2)
 
                     UR_Column15_BOX= Label(UR_Box_Side,text="EPITHELIAL CELLS",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column15_BOX.grid(row=15,column=0)
                     UR_Column15_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column15_BOX1.grid(row=15,column=1,padx=1)
-                    UR_Column15_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column15_BOX2= Label(UR_Box_Side,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column15_BOX2.grid(row=15,column=2)
 
                     UR_Column16_BOX= Label(UR_Box_Side,text="MUCOUS THREADS",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column16_BOX.grid(row=16,column=0)
                     UR_Column16_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column16_BOX1.grid(row=16,column=1,padx=1)
-                    UR_Column16_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column16_BOX2= Label(UR_Box_Side,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column16_BOX2.grid(row=16,column=2)
 
                     UR_Column17_BOX= Label(UR_Box_Side,text="BACTERIA",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column17_BOX.grid(row=17,column=0)
                     UR_Column17_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column17_BOX1.grid(row=17,column=1,padx=1)
-                    UR_Column17_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column17_BOX2= Label(UR_Box_Side,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column17_BOX2.grid(row=17,column=2)
 
                     UR_Column18_BOX= Label(UR_Box_Side,text="A. URATES / PHOSPHATE",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column18_BOX.grid(row=18,column=0)
                     UR_Column18_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column18_BOX1.grid(row=18,column=1,padx=1)
-                    UR_Column18_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column18_BOX2= Label(UR_Box_Side,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column18_BOX2.grid(row=18,column=2)
 
                     UR_Column19_BOX= Label(UR_Box_Side,text="CASTS",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column19_BOX.grid(row=19,column=0)
                     UR_Column19_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column19_BOX1.grid(row=19,column=1,padx=1)
-                    UR_Column19_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column19_BOX2= Label(UR_Box_Side,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column19_BOX2.grid(row=19,column=2)
 
                     UR_Column20_BOX= Label(UR_Box_Side,text="CRYSTALS:",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column20_BOX.grid(row=20,column=0)
                     UR_Column20_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column20_BOX1.grid(row=20,column=1,padx=1)
-                    UR_Column20_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column20_BOX2= Label(UR_Box_Side,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column20_BOX2.grid(row=20,column=2)
 
                     UR_Column21_BOX= Label(UR_Box_Side,text="OTHERS",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column21_BOX.grid(row=21,column=0)
                     UR_Column21_BOX1= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     UR_Column21_BOX1.grid(row=21,column=1,padx=1)
-                    UR_Column21_BOX2= Entry(UR_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    UR_Column21_BOX2= Label(UR_Box_Side,text=" ",width=18,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     UR_Column21_BOX2.grid(row=21,column=2)
 
-                    UR_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5)
-                    UR_Button.place(x=1200,y=430)
-
                     def submit():
-                        blood_type=ST_BOX8_L.get()
-                        hepatitis_b_Screening=ST_BOX9_L.get()
-                        anti_hav_screening=ST_BOX10_L.get()
-                        syphilis_screen=ST_BOX11_L.get()
-                        dengue_ns1_antigen_test=ST_BOX12_L.get()
-
-                        document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
+                        document=Path(__file__).parent / "URINALYSIS_TEMPLATE.docx"
                         doc=DocxTemplate(document)
                             
                         context={
@@ -783,18 +785,35 @@ class Main:
                             "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
                             "DATE":self.test_date,
                             "OR_NO":self.user.generateClient_ORNumber(),
-                            "BLOODTYPE": blood_type,
-                            "HEPA_B_SCREEN": hepatitis_b_Screening,
-                            "ANTI_HAV_SCREEN": anti_hav_screening,
-                            "SYPHILIS_SCREEN": syphilis_screen,
-                            "DENGUE_ANTIGEN_TEST": dengue_ns1_antigen_test,
+
+                            "COLOR":UR_Column1_BOX1.get(),
+                            "CLARITY":UR_Column2_BOX1.get(),
+                            "BLOOD":UR_Column3_BOX1.get(),
+                            "BILIRUBIN":UR_Column4_BOX1.get(),
+                            "LEUKOCYTE":UR_Column5_BOX1.get(),
+                            "KETONE":UR_Column6_BOX1.get(),
+                            "NITRITE":UR_Column7_BOX1.get(),
+                            "PROTEIN":UR_Column8_BOX1.get(),
+                            "GLUCOSE":UR_Column9_BOX1.get(),
+                            "PH":UR_Column10_BOX1.get(),
+                            "SPECIFIC_GRAVITY":UR_Column11_BOX1.get(),
+                            "WBC":UR_Column13_BOX1.get(),
+                            "RBC":UR_Column14_BOX1.get(),
+                            "EPITHERIAL_CELLS":UR_Column15_BOX1.get(),
+                            "MUCOUS_THREADS":UR_Column16_BOX1.get(),
+                            "BACTERIA":UR_Column17_BOX1.get(),
+                            "PHOSPHATE":UR_Column18_BOX1.get(),
+                            "CASTS":UR_Column19_BOX1.get(),
+                            "CRYSTALS":UR_Column20_BOX1.get(),
+                            "OTHERS":UR_Column21_BOX1.get(),
+                            
                             "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
                             "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
                         }
                         doc.render(context)
                         doc.save(Path(__file__).parent/"newDoc.docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
-                        serviceid=self.user.get_test_id("Serology")
+                        serviceid=self.user.get_test_id("Urinalysis (Urine Test)")
                         client_id=self.user.getClient_name(Name_Entry.get())
                         total=self.user.get_test_price(serviceid[0])
                         id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
@@ -802,7 +821,7 @@ class Main:
                         test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                         self.user.markTest_as_done(test_id[0])
 
-                    ST_Button=Button(Serology_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
+                    ST_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     ST_Button.place(x=1200,y=430)
                 
                 elif LabTest_Mune.get() == "Complete Blood Count / Hematology":
@@ -932,7 +951,7 @@ class Main:
                     CBCS_Column5_BOX2= Label(CBC_Box_Side,text="2% "+" - "+"3%",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column5_BOX2.grid(row=5,column=2)
 
-                    CBCS_Column6_BOX= Label(CBC_Box_Side,text="EOSINOPHIL",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    CBCS_Column6_BOX= Label(CBC_Box_Side,text="BASOPHIL",width=20,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column6_BOX.grid(row=6,column=0)
                     CBCS_Column6_BOX1= Entry(CBC_Box_Side,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     CBCS_Column6_BOX1.grid(row=6,column=1,padx=1)
@@ -946,7 +965,48 @@ class Main:
                     CBCS_Column7_BOX2= Label(CBC_Box_Side,text="",width=33,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
                     CBCS_Column7_BOX2.grid(row=7,column=2)
 
-                    CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5)
+                    def submit():
+                        document=Path(__file__).parent / "HEMATOLOGY COMPLETE BLOOD COUNT.docx"
+                        doc=DocxTemplate(document)
+                            
+                        context={
+                            "NAME":Name_Entry.get(),
+                            "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                            "DATE":self.test_date,
+                            "OR_NUM":self.user.generateClient_ORNumber(),
+                            "WBC":CBC_Column2_BOX1.get(),
+                            "RBC":CBC_Column3_BOX1.get(),
+                            "HEMOGLOBIN":CBC_Column4_BOX1.get(),
+                            "HEMATOCRIT":CBC_Column5_BOX1.get(),
+                            "MCV":CBC_Column6_BOX1.get(),
+                            "MCH":CBC_Column7_BOX1.get(),
+                            "MCHC":CBC_Column8_BOX1.get(),
+                            "RDW":CBC_Column9_BOX1.get(),
+                            "PLATELET":CBC_Column10_BOX1.get(),
+                            "MPV":CBC_Column11_BOX1.get(),
+                            "NEUTROPHIL":CBCS_Column2_BOX1.get(),
+                            "LYMPHOCYTE":CBCS_Column3_BOX1.get(),
+                            "MONOCYTE":CBCS_Column4_BOX1.get(),
+                            "EOSINOPHIL":CBCS_Column5_BOX1.get(),
+                            "BASOPHIL":CBCS_Column6_BOX1.get(),
+                            "TOTAL":CBCS_Column7_BOX1.get(),
+                            "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                            "LICENSE_NO":"Sample License No",
+                            "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                        }
+                        doc.render(context)
+                        doc.save(Path(__file__).parent/"newDoc.docx")
+                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                        serviceid=self.user.get_test_id("Complete Blood Count")
+                        client_id=self.user.getClient_name(Name_Entry.get())
+                        total=self.user.get_test_price(serviceid[0])
+                        id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                        self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                        test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                        self.user.markTest_as_done(test_id[0])
+
+
+                    CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     CBC_Button.place(x=1200,y=430)
 
 
@@ -1541,6 +1601,103 @@ class Main:
         def PrintResults():
             all_items=Summary_Table.get_children()
 
+            tests={}
+            Gender={}
+            age={}
+            testXMale={}
+            testXFemale={}
+            testXOther={}
+            TestXAge={}
+
+            for item in Summary_Table.get_children():
+                itemValues=Summary_Table.item(item)['values']
+                
+                if itemValues[3] not in tests.keys():
+                    tests[itemValues[3]]=1
+                elif itemValues[3] in tests.keys():
+                    tests[itemValues[3]]+=1
+
+                if itemValues[2] not in tests.keys():
+                    Gender[itemValues[2]]=1
+                else:
+                    Gender[itemValues[2]]+=1
+
+                if itemValues[4] not in age.keys():
+                    age[itemValues[4]]=1
+                else:
+                    age[itemValues[4]]+=1
+
+                if itemValues[3] not in testXMale.keys():
+                    if itemValues[2]=="Male":
+                        testXMale[itemValues[3]]=1
+                else:
+                    testXMale[itemValues[3]]+=1
+                
+                if itemValues[3] not in testXFemale.keys():
+                    if itemValues[2]=="Female":
+                        testXFemale[itemValues[3]]=1
+                else:
+                    testXFemale[itemValues[3]]+=1
+
+                if itemValues[3] not in testXOther.keys():
+                    if itemValues[2]=="Other":
+                        testXOther[itemValues[3]]=1 
+                else:
+                    testXOther[itemValues[3]]+=1
+
+                # TestXAge[1]=itemValues[0]
+                # TestXAge['test']=itemValues[3]
+                # TestXAge['age']=itemValues[4]
+
+
+            fig, ax = plt.subplots()
+            ax.bar(tests.keys(), tests.values())
+            plt.xlabel("Number of Clients in Each Test")
+            xticks = ax.get_xticks()
+            ax.set_xticklabels(tests.keys(), fontsize=5)
+            plt.savefig('tests.png', dpi=300)
+
+            fig, ax = plt.subplots()
+            # ax.bar(Gender.keys(), Gender.values())
+            ax.pie(Gender.values(), labels=Gender.keys(), autopct='%1.0f%%')
+            plt.xlabel("Gender")
+            plt.savefig('gender.png', dpi=300)
+
+            fig, ax = plt.subplots()
+            ax.pie(age.values(), labels=age.keys(), autopct='%1.0f%%')
+            plt.xlabel("Age")
+            plt.savefig('age.png', dpi=300)
+
+            fig, ax = plt.subplots()
+            ax.bar(testXMale.keys(),testXMale.values())
+            plt.xlabel("Test")
+            plt.ylabel("Number of Males")
+            xticks = ax.get_xticks()
+            ax.set_xticklabels(testXMale.keys(), fontsize=5)
+            plt.savefig('testXMale.png', dpi=300)
+
+            fig, ax = plt.subplots()
+            ax.bar(testXFemale.keys(),testXFemale.values())
+            plt.xlabel("Test")
+            plt.ylabel("Number of Females")
+            xticks = ax.get_xticks()
+            ax.set_xticklabels(testXFemale.keys(), fontsize=5)
+            plt.savefig('testXFemale.png', dpi=300)
+
+            fig, ax = plt.subplots()
+            ax.bar(testXOther.keys(),testXOther.values())
+            plt.xlabel("Test")
+            plt.ylabel("Number of 'Other'")
+            xticks = ax.get_xticks()
+            ax.set_xticklabels(testXOther.keys(), fontsize=5)
+            plt.savefig('testXOther.png', dpi=300)
+            # print(TestXAge)
+
+            # test_age=[t["age"] for t in TestXAge]
+            # test_name=[t["test"] for t in TestXAge]
+            
+            # print(test_age,test_name)
+
             doc = docx.Document("SUMMARY_REPORT_TEMPLATE.docx")
             data=[]
             for i in all_items:
@@ -1565,11 +1722,22 @@ class Main:
                 row_cell[4].text=dateFin
                 row_cell[5].text=medTech
 
+            doc.add_picture('tests.png')
+            doc.add_picture('gender.png')
+            doc.add_picture('age.png')
+            doc.add_picture('testXMale.png')
+            doc.add_picture('testXFemale.png')
+            doc.add_picture('testXOther.png')
+
             doc.save("new_document.docx")
             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"new_document.docx"), None, ".", 0)
 
         Button(Frame_FilterBody,text="Apply Filter",command=lambda: ApplyFilter()).place(x=1000,y=50)
         Button(Frame_FilterBody,text="Print Out Results",command=lambda: PrintResults()).place(x=1100,y=50)
+
+    def onClose(self):
+        windll.user32.ShowWindow(h, 9)
+        self.Dashboard_GUI.destroy()
 
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
@@ -1578,6 +1746,7 @@ class Main:
         width= self.Dashboard_GUI.winfo_screenwidth()
         height=self.Dashboard_GUI.winfo_screenheight()
         self.Dashboard_GUI.geometry("%dx%d"%(width,height))
+        self.Dashboard_GUI.protocol("WM_DELETE_WINDOW", self.onClose)
 
         self.Page_Dashboard=Frame(self.Dashboard_GUI)
         self.Page_Dashboard.pack(expand=1, fill=BOTH)
@@ -1621,7 +1790,7 @@ class Main:
         CHO_FL=Label(Frame_FrontDesk,image=CHO_F,highlightbackground="black",highlightthickness=1)
         CHO_FL.place(x=80,y=70,width=140, height=150)
         FrontDesk_label=Label(Frame_FrontDesk,text="FRONT DESK",font=("Roboto",30,"bold")).place(x=20,y=10)
-        Button_FronDesk=Button(Frame_FrontDesk,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
+        Button_FronDesk=Button(Frame_FrontDesk,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
 
         #Lab-list
         Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
@@ -1632,7 +1801,7 @@ class Main:
         CHO_LL=Label(Frame_LabTest,image=CHO_L,highlightbackground="black",highlightthickness=1)
         CHO_LL.place(x=2,y=2,width=140, height=140)
         Laboratory_label=Label(Frame_LabCH,text="LABORATORY TEST",font=("Roboto",30,"bold")).place(x=147,y=5)
-        Button_LabCH=Button(Frame_LabCH,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=100)
+        Button_LabCH=Button(Frame_LabCH,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=100)
 
         Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
         Frame_XRay.place(x=0,y=145)
@@ -1640,7 +1809,7 @@ class Main:
         CHO_XL=Label(Frame_XRay,image=CHO_X,highlightbackground="black",highlightthickness=1)
         CHO_XL.place(x=2,y=2,width=138, height=138)
         Xray_label=Label(Frame_XRay,text="X-RAY LABORATORY",font=("Roboto",30,"bold")).place(x=147,y=5)
-        Button_XRay=Button(Frame_XRay,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=100)
+        Button_XRay=Button(Frame_XRay,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=100)
 
         Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
         Frame_Summary.place(x=1009,y=0)
@@ -1648,7 +1817,7 @@ class Main:
         CHO_SL=Label(Frame_Summary,image=CHO_S,highlightbackground="black",highlightthickness=1)
         CHO_SL.place(x=60,y=70,width=200, height=150)
         Summary_label=Label(Frame_Summary,text="SUMMARY",font=("Roboto",30,"bold")).place(x=40,y=10)
-        Button_Summary=Button(Frame_Summary,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=118,y=230)
+        Button_Summary=Button(Frame_Summary,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=118,y=230)
 
         self.Dashboard_GUI.mainloop()
     
