@@ -1601,6 +1601,103 @@ class Main:
         def PrintResults():
             all_items=Summary_Table.get_children()
 
+            tests={}
+            Gender={}
+            age={}
+            testXMale={}
+            testXFemale={}
+            testXOther={}
+            TestXAge={}
+
+            for item in Summary_Table.get_children():
+                itemValues=Summary_Table.item(item)['values']
+                
+                if itemValues[3] not in tests.keys():
+                    tests[itemValues[3]]=1
+                elif itemValues[3] in tests.keys():
+                    tests[itemValues[3]]+=1
+
+                if itemValues[2] not in tests.keys():
+                    Gender[itemValues[2]]=1
+                else:
+                    Gender[itemValues[2]]+=1
+
+                if itemValues[4] not in age.keys():
+                    age[itemValues[4]]=1
+                else:
+                    age[itemValues[4]]+=1
+
+                if itemValues[3] not in testXMale.keys():
+                    if itemValues[2]=="Male":
+                        testXMale[itemValues[3]]=1
+                else:
+                    testXMale[itemValues[3]]+=1
+                
+                if itemValues[3] not in testXFemale.keys():
+                    if itemValues[2]=="Female":
+                        testXFemale[itemValues[3]]=1
+                else:
+                    testXFemale[itemValues[3]]+=1
+
+                if itemValues[3] not in testXOther.keys():
+                    if itemValues[2]=="Other":
+                        testXOther[itemValues[3]]=1 
+                else:
+                    testXOther[itemValues[3]]+=1
+
+                # TestXAge[1]=itemValues[0]
+                # TestXAge['test']=itemValues[3]
+                # TestXAge['age']=itemValues[4]
+
+
+            fig, ax = plt.subplots()
+            ax.bar(tests.keys(), tests.values())
+            plt.xlabel("Number of Clients in Each Test")
+            xticks = ax.get_xticks()
+            ax.set_xticklabels(tests.keys(), fontsize=5)
+            plt.savefig('tests.png', dpi=300)
+
+            fig, ax = plt.subplots()
+            # ax.bar(Gender.keys(), Gender.values())
+            ax.pie(Gender.values(), labels=Gender.keys(), autopct='%1.0f%%')
+            plt.xlabel("Gender")
+            plt.savefig('gender.png', dpi=300)
+
+            fig, ax = plt.subplots()
+            ax.pie(age.values(), labels=age.keys(), autopct='%1.0f%%')
+            plt.xlabel("Age")
+            plt.savefig('age.png', dpi=300)
+
+            fig, ax = plt.subplots()
+            ax.bar(testXMale.keys(),testXMale.values())
+            plt.xlabel("Test")
+            plt.ylabel("Number of Males")
+            xticks = ax.get_xticks()
+            ax.set_xticklabels(testXMale.keys(), fontsize=5)
+            plt.savefig('testXMale.png', dpi=300)
+
+            fig, ax = plt.subplots()
+            ax.bar(testXFemale.keys(),testXFemale.values())
+            plt.xlabel("Test")
+            plt.ylabel("Number of Females")
+            xticks = ax.get_xticks()
+            ax.set_xticklabels(testXFemale.keys(), fontsize=5)
+            plt.savefig('testXFemale.png', dpi=300)
+
+            fig, ax = plt.subplots()
+            ax.bar(testXOther.keys(),testXOther.values())
+            plt.xlabel("Test")
+            plt.ylabel("Number of 'Other'")
+            xticks = ax.get_xticks()
+            ax.set_xticklabels(testXOther.keys(), fontsize=5)
+            plt.savefig('testXOther.png', dpi=300)
+            # print(TestXAge)
+
+            # test_age=[t["age"] for t in TestXAge]
+            # test_name=[t["test"] for t in TestXAge]
+            
+            # print(test_age,test_name)
+
             doc = docx.Document("SUMMARY_REPORT_TEMPLATE.docx")
             data=[]
             for i in all_items:
@@ -1624,6 +1721,13 @@ class Main:
                 row_cell[3].text=dateStart
                 row_cell[4].text=dateFin
                 row_cell[5].text=medTech
+
+            doc.add_picture('tests.png')
+            doc.add_picture('gender.png')
+            doc.add_picture('age.png')
+            doc.add_picture('testXMale.png')
+            doc.add_picture('testXFemale.png')
+            doc.add_picture('testXOther.png')
 
             doc.save("new_document.docx")
             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"new_document.docx"), None, ".", 0)
