@@ -817,7 +817,6 @@ class Main:
                             "OTHERS":UR_Column21_BOX1.get(),
                             
                             "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                            "LICENSE_NO":"Sample License No",
                             "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
                         }
                         doc.render(context)
