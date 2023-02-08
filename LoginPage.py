@@ -2,8 +2,6 @@ from tkinter import *
 from tkinter import messagebox
 import Test_MAIN, employee, Test_Admin
 from PIL import Image, ImageTk
-from ctypes import windll
-h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
 
 # Admin Username and Password
 global admin_uname,admin_pass
@@ -13,7 +11,7 @@ admin_pass="admin123"
 class Loginpage():
     def __init__(self):
         self.LoginGUI=Tk()
-        windll.user32.ShowWindow(h, 9)
+
 
     def loginLogic(self):
         uname=username.get()
