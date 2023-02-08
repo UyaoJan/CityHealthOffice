@@ -1691,10 +1691,59 @@ class Main:
             plt.savefig('testXOther.png', dpi=300)
             # print(TestXAge)
 
-            # test_age=[t["age"] for t in TestXAge]
-            # test_name=[t["test"] for t in TestXAge]
-            
-            # print(test_age,test_name)
+            if name_Choice is None:
+                name_Choice="All"
+            if test_choice is None:
+                test_choice="All"
+            sum=summary_filter.Summary()
+            if filter_choice=="Select Filter Option" and  name_Choice!="All" or test_choice!="All":
+                res=sum.filterOut(name_Choice,test_choice)
+
+            elif filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice=="Monthly" and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)
+
+            elif filter_choice=="Yearly" and name_Choice!="All" or test_choice!="All":
+                res=sum.filterYearlyTest(year,name_Choice,test_choice)
+            elif filter_choice=="Yearly" and name_Choice=="All" and test_choice=="All":
+                res=sum.filterYearly(year)
+
+            elif filter_choice=='1st Semi Annual' and name_Choice=="All" and test_choice=="All" or filter_choice=='2nd Semi Annual' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '1st Semi Annual' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice) 
+
+            elif filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '1st Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '1st Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
+
+            elif filter_choice=='2nd Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='2nd Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '2nd Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
+
+            elif filter_choice=='3rd Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='3rd Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '3rd Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '3rd Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
+
+            elif filter_choice=='4th Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='4th Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '4th Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '4th Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice) 
+
+            count=0
+            number=1
+            Summary_Table.delete(*Summary_Table.get_children())
+            for item in range(len(res)):
+                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
+                count+=1
+                number+=1
+                
+        def PrintResults():
+            all_items=Summary_Table.get_children()
 
             doc = docx.Document("SUMMARY_REPORT_TEMPLATE.docx")
             data=[]
