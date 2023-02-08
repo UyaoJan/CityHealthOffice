@@ -209,15 +209,20 @@ class Main:
         AGE_Entry=Entry(Frame_Input,width=5,font='Roboto 12',borderwidth=3)
         AGE_Entry.place(x=100,y=430)
 
-        def calculate_age(birthdate):
+        def calculate_age(event):
+            birthdate=event.widget.get_date()
             today = date.today()
             age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
-            return age
+            AGE_Entry.delete(0,END)
+            AGE_Entry.insert(0,age)
+            # return age
 
         global Birth_Entry
         Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=160,y=430)
         Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
         Birth_Entry.place(x=230,y=430)
+
+        Birth_Entry.bind("<<DateEntrySelected>>",calculate_age)
 
         global Gender_Mune
         Gender_Label=Label(Frame_Input,text="Gender:",font='Roboto 12').place(x=350,y=430)
@@ -1632,7 +1637,7 @@ class Main:
         CHO_FL=Label(Frame_FrontDesk,image=CHO_F,highlightbackground="black",highlightthickness=1)
         CHO_FL.place(x=80,y=70,width=140, height=150)
         FrontDesk_label=Label(Frame_FrontDesk,text="FRONT DESK",font=("Roboto",30,"bold")).place(x=20,y=10)
-        Button_FronDesk=Button(Frame_FrontDesk,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
+        Button_FronDesk=Button(Frame_FrontDesk,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
 
         #Lab-list
         Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
@@ -1643,7 +1648,7 @@ class Main:
         CHO_LL=Label(Frame_LabTest,image=CHO_L,highlightbackground="black",highlightthickness=1)
         CHO_LL.place(x=2,y=2,width=140, height=140)
         Laboratory_label=Label(Frame_LabCH,text="LABORATORY TEST",font=("Roboto",30,"bold")).place(x=147,y=5)
-        Button_LabCH=Button(Frame_LabCH,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=100)
+        Button_LabCH=Button(Frame_LabCH,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=100)
 
         Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
         Frame_XRay.place(x=0,y=145)
@@ -1651,7 +1656,7 @@ class Main:
         CHO_XL=Label(Frame_XRay,image=CHO_X,highlightbackground="black",highlightthickness=1)
         CHO_XL.place(x=2,y=2,width=138, height=138)
         Xray_label=Label(Frame_XRay,text="X-RAY LABORATORY",font=("Roboto",30,"bold")).place(x=147,y=5)
-        Button_XRay=Button(Frame_XRay,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=100)
+        Button_XRay=Button(Frame_XRay,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=100)
 
         Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
         Frame_Summary.place(x=1009,y=0)
@@ -1659,7 +1664,7 @@ class Main:
         CHO_SL=Label(Frame_Summary,image=CHO_S,highlightbackground="black",highlightthickness=1)
         CHO_SL.place(x=60,y=70,width=200, height=150)
         Summary_label=Label(Frame_Summary,text="SUMMARY",font=("Roboto",30,"bold")).place(x=40,y=10)
-        Button_Summary=Button(Frame_Summary,text="CHICK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=118,y=230)
+        Button_Summary=Button(Frame_Summary,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=118,y=230)
 
         self.Dashboard_GUI.mainloop()
     
