@@ -1660,12 +1660,10 @@ class Main:
             fig, ax = plt.subplots()
             # ax.bar(Gender.keys(), Gender.values())
             ax.pie(Gender.values(), labels=Gender.keys(), autopct='%1.0f%%')
-            plt.xlabel("Gender")
             plt.savefig('gender.png', dpi=300)
 
             fig, ax = plt.subplots()
             ax.pie(age.values(), labels=age.keys(), autopct='%1.0f%%')
-            plt.xlabel("Age")
             plt.savefig('age.png', dpi=300)
 
             fig, ax = plt.subplots()
