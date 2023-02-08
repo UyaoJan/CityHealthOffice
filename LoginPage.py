@@ -11,10 +11,15 @@ admin_pass="admin123"
 from ctypes import windll
 h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
 
+from ctypes import windll
+h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
+
 class Loginpage():
     def __init__(self):
         self.LoginGUI=Tk()
         windll.user32.ShowWindow(h, 9)
+        windll.user32.ShowWindow(h, 9)
+
 
     def loginLogic(self):
         uname=username.get()

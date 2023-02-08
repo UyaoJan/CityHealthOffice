@@ -30,7 +30,6 @@ class Admin:
                 age.set("")
                 address.set("")
                 profession.set("")
-
                 self.Registration_Page.destroy()
 
     def Regist(self):
