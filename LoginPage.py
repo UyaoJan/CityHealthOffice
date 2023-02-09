@@ -11,6 +11,9 @@ admin_pass="admin123"
 from ctypes import windll
 h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
 
+from ctypes import windll
+h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
+
 class Loginpage():
     def __init__(self):
         self.LoginGUI=Tk()

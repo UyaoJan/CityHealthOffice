@@ -147,25 +147,18 @@ class Main:
                     "Blood Creatinine Test",
                     "Acid Fast Staining",
                     "X-Ray Test",
-                    "Serology"
+                    "Serology",
+                    "Medical Certificate",
+                    "Fecalysis"
                     ]
         
         self.services=[]
-        for i in range (16):
+        for i in range (len(self.Value)):
             Test=IntVar()
             Test.set(0)
             self.services.append(Test)
 
-        # def check(i,index):
-        #     print(self.services[index].get())
-        #     if self.services[index].get()==1:
-        #         print("if it working")
-        #         i.set(0)
-        #         print(i.get())
-        #     else:
-        #         print("else it working")
-        #         i.set(0)
-        #         print(i.get())
+
             
         Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Roboto 12 ').place(x=30,y=50)
         Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Roboto 12 ').place(x=30,y=75)
@@ -183,6 +176,8 @@ class Main:
         Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Roboto 12 ').place(x=280,y=150)
         Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Roboto 12 ').place(x=280,y=175)
         Checkbutton(self.Box,text="Serology",variable=self.services[15],font='Roboto 12 ').place(x=280,y=200)
+        Checkbutton(self.Box,text="Medical Certificate",variable=self.services[16],font='Roboto 12 ').place(x=280,y=220)
+        Checkbutton(self.Box,text="Fecalysis",variable=self.services[17],font='Roboto 12 ').place(x=280,y=240)
 
         #Body-------
 
@@ -479,6 +474,7 @@ class Main:
                     "Urinalysis",
                     "Serology",
                     "Miscelaneous",
+                    "FECALYSIS"
                 ]
 
             def Option_TEST(event):
@@ -486,6 +482,7 @@ class Main:
                     Miscelaneous_Page.pack_forget()
                     Urinalysis_Page.pack_forget()
                     CBC_Page.pack_forget()
+                    FE_Page.pack_forget()
 
                     Serology_Page.pack(expand=1,fill=BOTH)
 
@@ -523,38 +520,42 @@ class Main:
                     ST_BOX12_L.grid(row=5,column=1)
 
                     def submit():
-                        blood_type=ST_BOX8_L.get()
-                        hepatitis_b_Screening=ST_BOX9_L.get()
-                        anti_hav_screening=ST_BOX10_L.get()
-                        syphilis_screen=ST_BOX11_L.get()
-                        dengue_ns1_antigen_test=ST_BOX12_L.get()
-
-                        document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
-                        doc=DocxTemplate(document)
-                            
-                        context={
-                            "NAME":Name_Entry.get(),
-                            "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
-                            "DATE":self.test_date,
-                            "OR_NO":self.user.generateClient_ORNumber(),
-                            "BLOODTYPE": blood_type,
-                            "HEPA_B_SCREEN": hepatitis_b_Screening,
-                            "ANTI_HAV_SCREEN": anti_hav_screening,
-                            "SYPHILIS_SCREEN": syphilis_screen,
-                            "DENGUE_ANTIGEN_TEST": dengue_ns1_antigen_test,
-                            "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                            "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
-                        }
-                        doc.render(context)
-                        doc.save(Path(__file__).parent/"newDoc.docx")
-                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                         serviceid=self.user.get_test_id("Serology")
                         client_id=self.user.getClient_name(Name_Entry.get())
-                        total=self.user.get_test_price(serviceid[0])
-                        id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
-                        self.user.update_summaryID_test(id,client_id[0],serviceid[0])
-                        test_id=self.user.get_tests_id(client_id[0],serviceid[0])
-                        self.user.markTest_as_done(test_id[0])
+                        services=self.user.getClientTestRequests(client_id,serviceid)
+                        if services is None:
+                            messagebox.showerror("Error","This Test was not Requested by the Client")
+                        else: 
+                            blood_type=ST_BOX8_L.get()
+                            hepatitis_b_Screening=ST_BOX9_L.get()
+                            anti_hav_screening=ST_BOX10_L.get()
+                            syphilis_screen=ST_BOX11_L.get()
+                            dengue_ns1_antigen_test=ST_BOX12_L.get()
+                            document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
+                            doc=DocxTemplate(document)
+                                
+                            context={
+                                "NAME":Name_Entry.get(),
+                                "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                                "DATE":self.test_date,
+                                "OR_NO":self.user.generateClient_ORNumber(),
+                                "BLOODTYPE": blood_type,
+                                "HEPA_B_SCREEN": hepatitis_b_Screening,
+                                "ANTI_HAV_SCREEN": anti_hav_screening,
+                                "SYPHILIS_SCREEN": syphilis_screen,
+                                "DENGUE_ANTIGEN_TEST": dengue_ns1_antigen_test,
+                                "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                                "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                            }
+                            doc.render(context)
+                            doc.save(Path(__file__).parent/"newDoc.docx")
+                            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                            serviceid=self.user.get_test_id("Serology")
+                            total=self.user.get_test_price(serviceid[0])
+                            id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                            self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                            test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                            self.user.markTest_as_done(test_id[0])
 
                     ST_Button=Button(Serology_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
                     ST_Button.place(x=1200,y=430)
@@ -563,6 +564,7 @@ class Main:
                     Serology_Page.pack_forget()
                     Urinalysis_Page.pack_forget()
                     CBC_Page.pack_forget()
+                    FE_Page.pack_forget()
 
                     Miscelaneous_Page.pack(expand=1,fill=BOTH)
                     Miscelaneous_Title = Label(Miscelaneous_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
@@ -587,29 +589,32 @@ class Main:
                     PT_BOX4.grid(row=1,column=1)
 
                     def submit():
-                        document=Path(__file__).parent / "MISCELLANEOUS_TEMPLATE.docx"
-                        doc=DocxTemplate(document)
-
-                        context={
-                            "NAME":Name_Entry.get(),
-                            "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
-                            "DATE":self.test_date,
-                            "OR_NO":self.user.generateClient_ORNumber(),
-                            "TEST":PT_BOX2.get(),
-                            "RESULT":PT_BOX4.get(),
-                            "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                            "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
-                        }
-                        doc.render(context)
-                        doc.save(Path(__file__).parent/"newDoc.docx")
-                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                         serviceid=self.user.get_test_id(PT_BOX2.get())
-                        total=self.user.get_test_price(serviceid[0])
-                        id=self.user.save_to_summary(total[0],serviceid[0],res[0][0])
-                        self.user.update_summaryID_test(id,res[0][0],serviceid[0])
-                        test_id=self.user.get_tests_id(res[0][0],serviceid[0])
-                        self.user.markTest_as_done(test_id[0])
+                        services=self.user.getClientTestRequests(res[0][0],serviceid)
+                        if services is None:
+                            messagebox.showerror("Error","This Test was not Requested by the Client")
+                        else: 
+                            document=Path(__file__).parent / "MISCELLANEOUS_TEMPLATE.docx"
+                            doc=DocxTemplate(document)
 
+                            context={
+                                "NAME":Name_Entry.get(),
+                                "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                                "DATE":self.test_date,
+                                "OR_NO":self.user.generateClient_ORNumber(),
+                                "TEST":PT_BOX2.get(),
+                                "RESULT":PT_BOX4.get(),
+                                "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                                "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                            }
+                            doc.render(context)
+                            doc.save(Path(__file__).parent/"newDoc.docx")
+                            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                            total=self.user.get_test_price(serviceid[0])
+                            id=self.user.save_to_summary(total[0],serviceid[0],res[0][0])
+                            self.user.update_summaryID_test(id,res[0][0],serviceid[0])
+                            test_id=self.user.get_tests_id(res[0][0],serviceid[0])
+                            self.user.markTest_as_done(test_id[0])
 
                     PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
                     PT_Button.place(x=1200,y=430)
@@ -618,6 +623,7 @@ class Main:
                     Serology_Page.pack_forget()
                     Miscelaneous_Page.pack_forget()
                     CBC_Page.pack_forget()
+                    FE_Page.pack_forget()
 
                     Urinalysis_Page.pack(expand=1,fill=BOTH)
 
@@ -777,49 +783,53 @@ class Main:
                     UR_Column21_BOX2.grid(row=21,column=2)
 
                     def submit():
-                        document=Path(__file__).parent / "URINALYSIS_TEMPLATE.docx"
-                        doc=DocxTemplate(document)
-                            
-                        context={
-                            "NAME":Name_Entry.get(),
-                            "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
-                            "DATE":self.test_date,
-                            "OR_NO":self.user.generateClient_ORNumber(),
-
-                            "COLOR":UR_Column1_BOX1.get(),
-                            "CLARITY":UR_Column2_BOX1.get(),
-                            "BLOOD":UR_Column3_BOX1.get(),
-                            "BILIRUBIN":UR_Column4_BOX1.get(),
-                            "LEUKOCYTE":UR_Column5_BOX1.get(),
-                            "KETONE":UR_Column6_BOX1.get(),
-                            "NITRITE":UR_Column7_BOX1.get(),
-                            "PROTEIN":UR_Column8_BOX1.get(),
-                            "GLUCOSE":UR_Column9_BOX1.get(),
-                            "PH":UR_Column10_BOX1.get(),
-                            "SPECIFIC_GRAVITY":UR_Column11_BOX1.get(),
-                            "WBC":UR_Column13_BOX1.get(),
-                            "RBC":UR_Column14_BOX1.get(),
-                            "EPITHERIAL_CELLS":UR_Column15_BOX1.get(),
-                            "MUCOUS_THREADS":UR_Column16_BOX1.get(),
-                            "BACTERIA":UR_Column17_BOX1.get(),
-                            "PHOSPHATE":UR_Column18_BOX1.get(),
-                            "CASTS":UR_Column19_BOX1.get(),
-                            "CRYSTALS":UR_Column20_BOX1.get(),
-                            "OTHERS":UR_Column21_BOX1.get(),
-                            
-                            "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                            "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
-                        }
-                        doc.render(context)
-                        doc.save(Path(__file__).parent/"newDoc.docx")
-                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
-                        serviceid=self.user.get_test_id("Urinalysis (Urine Test)")
                         client_id=self.user.getClient_name(Name_Entry.get())
-                        total=self.user.get_test_price(serviceid[0])
-                        id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
-                        self.user.update_summaryID_test(id,client_id[0],serviceid[0])
-                        test_id=self.user.get_tests_id(client_id[0],serviceid[0])
-                        self.user.markTest_as_done(test_id[0])
+                        serviceid=self.user.get_test_id("Urinalysis (Urine Test)")
+                        services=self.user.getClientTestRequests(client_id,serviceid)
+                        if services is None:
+                            messagebox.showerror("Error","This Test was not Requested by the Client")
+                        else: 
+                            document=Path(__file__).parent / "URINALYSIS_TEMPLATE.docx"
+                            doc=DocxTemplate(document)
+                                
+                            context={
+                                "NAME":Name_Entry.get(),
+                                "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                                "DATE":self.test_date,
+                                "OR_NO":self.user.generateClient_ORNumber(),
+
+                                "COLOR":UR_Column1_BOX1.get(),
+                                "CLARITY":UR_Column2_BOX1.get(),
+                                "BLOOD":UR_Column3_BOX1.get(),
+                                "BILIRUBIN":UR_Column4_BOX1.get(),
+                                "LEUKOCYTE":UR_Column5_BOX1.get(),
+                                "KETONE":UR_Column6_BOX1.get(),
+                                "NITRITE":UR_Column7_BOX1.get(),
+                                "PROTEIN":UR_Column8_BOX1.get(),
+                                "GLUCOSE":UR_Column9_BOX1.get(),
+                                "PH":UR_Column10_BOX1.get(),
+                                "SPECIFIC_GRAVITY":UR_Column11_BOX1.get(),
+                                "WBC":UR_Column13_BOX1.get(),
+                                "RBC":UR_Column14_BOX1.get(),
+                                "EPITHERIAL_CELLS":UR_Column15_BOX1.get(),
+                                "MUCOUS_THREADS":UR_Column16_BOX1.get(),
+                                "BACTERIA":UR_Column17_BOX1.get(),
+                                "PHOSPHATE":UR_Column18_BOX1.get(),
+                                "CASTS":UR_Column19_BOX1.get(),
+                                "CRYSTALS":UR_Column20_BOX1.get(),
+                                "OTHERS":UR_Column21_BOX1.get(),
+                                
+                                "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                                "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                            }
+                            doc.render(context)
+                            doc.save(Path(__file__).parent/"newDoc.docx")
+                            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                            total=self.user.get_test_price(serviceid[0])
+                            id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                            self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                            test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                            self.user.markTest_as_done(test_id[0])
 
                     ST_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     ST_Button.place(x=1200,y=430)
@@ -828,6 +838,7 @@ class Main:
                     Serology_Page.pack_forget()
                     Miscelaneous_Page.pack_forget()
                     Urinalysis_Page.pack_forget()
+                    FE_Page.pack_forget()
 
                     CBC_Page.pack(expand=1,fill=BOTH)
                     CBC_Title = Label(CBC_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
@@ -966,53 +977,159 @@ class Main:
                     CBCS_Column7_BOX2.grid(row=7,column=2)
 
                     def submit():
-                        document=Path(__file__).parent / "HEMATOLOGY COMPLETE BLOOD COUNT.docx"
-                        doc=DocxTemplate(document)
-                            
-                        context={
-                            "NAME":Name_Entry.get(),
-                            "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
-                            "DATE":self.test_date,
-                            "OR_NUM":self.user.generateClient_ORNumber(),
-                            "WBC":CBC_Column2_BOX1.get(),
-                            "RBC":CBC_Column3_BOX1.get(),
-                            "HEMOGLOBIN":CBC_Column4_BOX1.get(),
-                            "HEMATOCRIT":CBC_Column5_BOX1.get(),
-                            "MCV":CBC_Column6_BOX1.get(),
-                            "MCH":CBC_Column7_BOX1.get(),
-                            "MCHC":CBC_Column8_BOX1.get(),
-                            "RDW":CBC_Column9_BOX1.get(),
-                            "PLATELET":CBC_Column10_BOX1.get(),
-                            "MPV":CBC_Column11_BOX1.get(),
-                            "NEUTROPHIL":CBCS_Column2_BOX1.get(),
-                            "LYMPHOCYTE":CBCS_Column3_BOX1.get(),
-                            "MONOCYTE":CBCS_Column4_BOX1.get(),
-                            "EOSINOPHIL":CBCS_Column5_BOX1.get(),
-                            "BASOPHIL":CBCS_Column6_BOX1.get(),
-                            "TOTAL":CBCS_Column7_BOX1.get(),
-                            "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                            "LICENSE_NO":"Sample License No",
-                            "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
-                        }
-                        doc.render(context)
-                        doc.save(Path(__file__).parent/"newDoc.docx")
-                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                         serviceid=self.user.get_test_id("Complete Blood Count")
                         client_id=self.user.getClient_name(Name_Entry.get())
-                        total=self.user.get_test_price(serviceid[0])
-                        id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
-                        self.user.update_summaryID_test(id,client_id[0],serviceid[0])
-                        test_id=self.user.get_tests_id(client_id[0],serviceid[0])
-                        self.user.markTest_as_done(test_id[0])
-
+                        services=self.user.getClientTestRequests(client_id,serviceid)
+                        if services is None:
+                            messagebox.showerror("Error","This Test was not Requested by the Client")
+                        else: 
+                            document=Path(__file__).parent / "HEMATOLOGY COMPLETE BLOOD COUNT.docx"
+                            doc=DocxTemplate(document)
+                                
+                            context={
+                                "NAME":Name_Entry.get(),
+                                "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                                "DATE":self.test_date,
+                                "OR_NUM":self.user.generateClient_ORNumber(),
+                                "WBC":CBC_Column2_BOX1.get(),
+                                "RBC":CBC_Column3_BOX1.get(),
+                                "HEMOGLOBIN":CBC_Column4_BOX1.get(),
+                                "HEMATOCRIT":CBC_Column5_BOX1.get(),
+                                "MCV":CBC_Column6_BOX1.get(),
+                                "MCH":CBC_Column7_BOX1.get(),
+                                "MCHC":CBC_Column8_BOX1.get(),
+                                "RDW":CBC_Column9_BOX1.get(),
+                                "PLATELET":CBC_Column10_BOX1.get(),
+                                "MPV":CBC_Column11_BOX1.get(),
+                                "NEUTROPHIL":CBCS_Column2_BOX1.get(),
+                                "LYMPHOCYTE":CBCS_Column3_BOX1.get(),
+                                "MONOCYTE":CBCS_Column4_BOX1.get(),
+                                "EOSINOPHIL":CBCS_Column5_BOX1.get(),
+                                "BASOPHIL":CBCS_Column6_BOX1.get(),
+                                "TOTAL":CBCS_Column7_BOX1.get(),
+                                "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
+                                "LICENSE_NO":"Sample License No",
+                                "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                            }
+                            doc.render(context)
+                            doc.save(Path(__file__).parent/"newDoc.docx")
+                            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                            total=self.user.get_test_price(serviceid[0])
+                            id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                            self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                            test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                            self.user.markTest_as_done(test_id[0])
 
                     CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     CBC_Button.place(x=1200,y=430)
+                
+                elif LabTest_Mune.get() == "FECALYSIS":
+                    Serology_Page.pack_forget()
+                    Miscelaneous_Page.pack_forget()
+                    Urinalysis_Page.pack_forget()
+
+                    FE_Page.pack(expand=1,fill=BOTH)
+                    FE_Title = Label(FE_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
+                    FE_Title.place(x=550,y=30)
+
+                    FE_Box=Frame(FE_Page,bg='white')
+                    FE_Box.place(x=450,y=100)
+                    FE_Column1_BOX= Label(FE_Box,text="COLOR",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column1_BOX.grid(row=0,column=0)
+                    FE_Column1_BOX1=Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column1_BOX1.grid(row=0,column=1,padx=1)
+
+                    FE_Column2_BOX= Label(FE_Box,text="CONSISTENCY",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column2_BOX.grid(row=1,column=0)
+                    FE_Column2_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column2_BOX1.grid(row=1,column=1,padx=1)
+
+                    FE_Column3_BOX= Label(FE_Box,text="MICROSCOPIC EXAMINATION",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column3_BOX.grid(row=2,column=0)
+                    FE_Column3_BOX1= Label(FE_Box,text="RESULT",width=18,anchor=CENTER,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column3_BOX1.grid(row=2,column=1,padx=1)
+
+                    FE_Column4_BOX= Label(FE_Box,text="WBC",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column4_BOX.grid(row=4,column=0)
+                    FE_Column4_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column4_BOX1.grid(row=4,column=1,padx=1)
+
+                    FE_Column5_BOX= Label(FE_Box,text="RBC",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column5_BOX.grid(row=5,column=0)
+                    FE_Column5_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column5_BOX1.grid(row=5,column=1,padx=1)
+
+                    FE_Column6_BOX= Label(FE_Box,text="BACTERIA",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column6_BOX.grid(row=6,column=0)
+                    FE_Column6_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column6_BOX1.grid(row=6,column=1,padx=1)
+
+                    FE_Column7_BOX= Label(FE_Box,text="FAT GLOBULES",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column7_BOX.grid(row=7,column=0)
+                    FE_Column7_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column7_BOX1.grid(row=7,column=1,padx=1)
+
+                    FE_Column8_BOX= Label(FE_Box,text="OVA OR PARASITE",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column8_BOX.grid(row=8,column=0)
+                    FE_Column8_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column8_BOX1.grid(row=8,column=1,padx=1)
+
+                    FE_Column9_BOX= Label(FE_Box,text="E. Histolytica CYST",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column9_BOX.grid(row=9,column=0)
+                    FE_Column9_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column9_BOX1.grid(row=9,column=1,padx=1)
+
+                    FE_Column10_BOX= Label(FE_Box,text="E. coli CYST",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column10_BOX.grid(row=10,column=0)
+                    FE_Column10_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column10_BOX1.grid(row=10,column=1,padx=1)
+
+                    def submit():
+                        serviceid=self.user.get_test_id("Fecalysis")
+                        client_id=self.user.getClient_name(Name_Entry.get())
+                        services=self.user.getClientTestRequests(client_id,serviceid)
+                        if services is None:
+                            messagebox.showerror("Error","This Test was not Requested by the Client")
+                        else: 
+                            document=Path(__file__).parent / "FECALYSIS.docx"
+                            doc=DocxTemplate(document)
+                                
+                            context={
+                                "NAME":Name_Entry.get(),
+                                "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                                "DATE":self.test_date,
+                                "OR_NO":self.user.generateClient_ORNumber(),
+
+                                "COLOR":FE_Column1_BOX1.get(),
+                                "CONSISTENCY":FE_Column2_BOX1.get(),
+                                "WBC": FE_Column4_BOX1.get(),
+                                "RBC":FE_Column5_BOX1.get(),
+                                "BACTERIA":FE_Column6_BOX1.get(),
+                                "FAT_GLOBULES":FE_Column7_BOX1.get(),
+                                "OVA_PARASITE":FE_Column8_BOX1.get(),
+                                "E_HISTOLYTICA":FE_Column9_BOX1.get(),
+                                "E_COLI":FE_Column10_BOX1.get(),
+
+                                "MEDTECH":self.user.fname+" "+self.user.lname,
+                                "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                            }
+                            doc.render(context)
+                            doc.save(Path(__file__).parent/"newDoc.docx")
+                            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                            total=self.user.get_test_price(serviceid[0])
+                            id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                            self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                            test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                            self.user.markTest_as_done(test_id[0])
+
+                    FE_Button=Button(FE_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=submit)
+                    FE_Button.place(x=1200,y=430)
+
 
 
             Test_Label=Label(Frame_Test,text="TEST:",font='Roboto 12 bold').place(x=1075,y=3)
             LabTest_Mune=ttk.Combobox(Frame_Test,value=Test,font='Roboto 12',state='readonly')
-            LabTest_Mune.set("Serology")
+            # LabTest_Mune.set("Serology")
             LabTest_Mune.bind("<<ComboboxSelected>>",Option_TEST)
             LabTest_Mune.place(x=1130,y=3)
 
@@ -1025,6 +1142,7 @@ class Main:
             Miscelaneous_Page = Frame(Contener)
             Urinalysis_Page= Frame(Contener)
             CBC_Page= Frame(Contener)
+            FE_Page = Frame(Contener)
 
 #Laboratory-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Close_Plus_Finding(self):
@@ -1860,6 +1978,98 @@ class Main:
         windll.user32.ShowWindow(h, 9)
         self.Dashboard_GUI.destroy()
 
+    def Cer_onClose(self):
+        global PageOpen
+        if messagebox.askokcancel('Close', 'Are you sure you want to close the View Page all the data will not be Save?'):
+            PageOpen=1
+            self.Dashboard_GUI.grab_release()
+            self.Certificate.destroy()
+
+    def Certificate_Page(self):
+        global PageOpen
+        if PageOpen < 2:
+            self.Certificate = Toplevel(self.Dashboard_GUI)
+            self.Certificate.title("Medical Certificate")
+            Record_width=400
+            Record_height=400
+            self.Certificate.geometry(f'{Record_width}x{Record_height}+{480}+{100}')
+            self.Certificate.resizable(False,False)
+            self.Certificate.protocol("WM_DELETE_WINDOW", self.Cer_onClose)
+            self.Certificate.grab_set()
+
+            Certificate_title=Label(self.Certificate,text="Medical Certificate",font='Roboto 25 bold').place(x=5,y=5)
+            res=self.user.getClientsMedCert()
+            Patent_Label=Label(self.Certificate,text="Patients",font='Roboto 11').place(x=50,y=90)
+            Patent_Value=[x[1] for x in res]        
+            Patent_Selection=ttk.Combobox(self.Certificate,value=Patent_Value,font='Roboto 10',state='readonly',width=40)
+            Patent_Selection.set("Select Patients")
+            Patent_Selection.place(x=50,y=110)
+
+            def setClient(event):
+                res=self.user.getClient_name(Patent_Selection.get())
+                global name, age, address
+                name = res[1]
+                age = res[2]
+                address = res[5]
+
+            Patent_Selection.bind("<<ComboboxSelected>>",setClient)
+
+
+            PURPOSE_lABEL=Label(self.Certificate,text="Purpose",font='Roboto 11').place(x=50,y=130)
+            PURPOSE_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
+            PURPOSE_ENTRY.place(x=50,y=150)
+
+            REMARKS_lABEL=Label(self.Certificate,text="Remarks",font='Roboto 11').place(x=50,y=170)
+            REMARKS_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
+            REMARKS_ENTRY.place(x=50,y=190)
+
+
+            VALID_FROM_LABEL=Label(self.Certificate,text="Valid Until:",font='Roboto 11').place(x=50,y=210)
+            VALID_FROM=DateEntry(self.Certificate,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
+            VALID_FROM.place(x=50, y=240)
+
+
+
+            def submit():
+                serviceid=self.user.get_test_id("Medical Certificate")
+                client_id=self.user.getClient_name(name)
+                amount=self.user.getTestAmount(serviceid)
+
+                document=Path(__file__).parent / "MEDICAL_CERTIFICATE_TEMPLATE.docx"
+                doc=DocxTemplate(document)
+                                
+                context={
+                    "DATE_TODAY":self.test_date,
+                    "CLIENT_NAME":name,
+                    "AGE":age,
+                    "CLIENT_ADDRESS":address,
+                    "PURPOSE": PURPOSE_ENTRY.get(),
+                    "REMARKS": REMARKS_ENTRY.get(),
+                    "VALID_UNTIL": str(self.test_date)+'-'+str(VALID_FROM.get_date()),
+                    "OR_NUM": self.user.generateClient_ORNumber(),
+                    "AMOUNT": amount[0],
+        
+                    "NAME_OF_DOCTOR":self.user.fname+" "+self.user.lname,
+                    "POSITION":"Sample Position",
+                    "LICENSE_NO": "Sample License No"
+                }
+                doc.render(context)
+                doc.save(Path(__file__).parent/"newDoc.docx")
+                win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+
+                total=self.user.get_test_price(serviceid[0])
+                id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                self.user.markTest_as_done(test_id[0])
+
+            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5,command=submit).place(x=280,y=300)
+
+            PageOpen += 1
+
+        else:
+            messagebox.showinfo("Error","The Window is already Open!")
+            
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
         self.Dashboard_GUI=Tk()
@@ -1900,6 +2110,9 @@ class Main:
         CDOH_LOGO = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
         CDOH_Label=Label(Frame_Center,image=CDOH_LOGO)
         CDOH_Label.place(x=80,y=50,width=300, height=300)
+
+        
+        Certificate=Button(Frame_Center,text="Certificate",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Certificate_Page).place(x=1240,y=370)
 
         #FrontDesk
         Frame_Laboratory=Frame(self.Page_Dashboard,width=1360,height=290,highlightbackground="black",highlightthickness=1)

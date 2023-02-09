@@ -51,7 +51,21 @@ class Employee:
         cursor.execute(query,(client,service))
         result=cursor.fetchone()
         return result
-        
+
+    def getClientTestRequests(self,clientID, testID):
+        cursor=self.Cursor
+        query="SELECT ServiceID FROM tests WHERE ServiceID=%s and ClientID=%s;"
+        if isinstance(clientID, int):
+            cursor.execute(query,(testID[0],clientID))
+        elif isinstance(clientID, tuple):
+            cursor.execute(query,(testID[0],clientID[0]))
+        result=cursor.fetchall()
+        rows=len(result)
+        if rows ==0:
+            return None
+        else:
+            return result
+
 
     def save_to_summary(self,total,idd,clientID):
         id=random.randint(0,999)
@@ -167,11 +181,26 @@ class Employee:
         result=cursor.fetchall()
         return result
 
+    def getClientsMedCert(self): 
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.ServiceID=19;"
+        cursor=self.Cursor
+        cursor.execute(query)
+        result=cursor.fetchall()
+        return result
+
+
     def getClients_Xray(self):
         query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName, tests.id FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.ServiceID=15;"
         cursor=self.Cursor
         cursor.execute(query)
         result=cursor.fetchall()
+        return result
+
+    def getTestAmount(self,serviceID):
+        query="SELECT Cost FROM services WHERE services.ServiceID=%s"
+        cursor=self.Cursor
+        cursor.execute(query,(serviceID[0],))
+        result=cursor.fetchone()
         return result
 
     def generateClient_ORNumber(self):
