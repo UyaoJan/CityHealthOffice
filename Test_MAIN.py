@@ -1997,13 +1997,13 @@ class Main:
             self.Certificate.protocol("WM_DELETE_WINDOW", self.Cer_onClose)
             self.Certificate.grab_set()
 
-            Certificate_title=Label(self.Certificate,text="Medical Certificate",font='Roboto 25 bold').place(x=5,y=5)
+            Certificate_title=Label(self.Certificate,text="Medical Certificate",font='Roboto 30 bold').place(x=7,y=7)
             res=self.user.getClientsMedCert()
-            Patent_Label=Label(self.Certificate,text="Patients",font='Roboto 11').place(x=50,y=90)
+            Patent_Label=Label(self.Certificate,text="Patients",font='Roboto 11').place(x=48,y=130)
             Patent_Value=[x[1] for x in res]        
             Patent_Selection=ttk.Combobox(self.Certificate,value=Patent_Value,font='Roboto 10',state='readonly',width=40)
             Patent_Selection.set("Select Patients")
-            Patent_Selection.place(x=50,y=110)
+            Patent_Selection.place(x=50,y=150)
 
             def setClient(event):
                 res=self.user.getClient_name(Patent_Selection.get())
@@ -2014,21 +2014,19 @@ class Main:
 
             Patent_Selection.bind("<<ComboboxSelected>>",setClient)
 
+            P_lABEL=Label(self.Certificate,text="Please Select the Patients and Purpose \nof the Patients and Valid Date!",font='Roboto 13').place(x=50,y=70)
 
-            PURPOSE_lABEL=Label(self.Certificate,text="Purpose",font='Roboto 11').place(x=50,y=130)
+            PURPOSE_lABEL=Label(self.Certificate,text="Purpose",font='Roboto 11').place(x=48,y=180)
             PURPOSE_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
-            PURPOSE_ENTRY.place(x=50,y=150)
+            PURPOSE_ENTRY.place(x=50,y=200)
 
-            REMARKS_lABEL=Label(self.Certificate,text="Remarks",font='Roboto 11').place(x=50,y=170)
+            REMARKS_lABEL=Label(self.Certificate,text="Remarks",font='Roboto 11').place(x=48,y=230)
             REMARKS_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
-            REMARKS_ENTRY.place(x=50,y=190)
+            REMARKS_ENTRY.place(x=50,y=250)
 
-
-            VALID_FROM_LABEL=Label(self.Certificate,text="Valid Until:",font='Roboto 11').place(x=50,y=210)
+            VALID_FROM_LABEL=Label(self.Certificate,text="Valid Until:",font='Roboto 11').place(x=48,y=280)
             VALID_FROM=DateEntry(self.Certificate,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
-            VALID_FROM.place(x=50, y=240)
-
-
+            VALID_FROM.place(x=50, y=300)
 
             def submit():
                 serviceid=self.user.get_test_id("Medical Certificate")
@@ -2063,7 +2061,7 @@ class Main:
                 test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                 self.user.markTest_as_done(test_id[0])
 
-            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5,command=submit).place(x=280,y=300)
+            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5,command=submit).place(x=260,y=350)
 
             PageOpen += 1
 
