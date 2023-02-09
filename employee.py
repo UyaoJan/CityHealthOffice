@@ -3,7 +3,7 @@ import random
 import dbConnection,random
 from datetime import date
 class Employee:
-    def __init__(self,id,username,password,fname,lname,age,address,role,dept,url):
+    def __init__(self,id,username,password,fname,lname,age,address,role,license_no,dept,url):
         self.Db=dbConnection.get_connection()
         self.Cursor=dbConnection.get_cursor(self.Db)
 
@@ -22,6 +22,7 @@ class Employee:
         self.age=age
         self.address=address
         self.role=role
+        self.license_no=license_no
         self.dept=dept
         self.url=url
 
@@ -100,8 +101,8 @@ class Employee:
         return result
 
     def register(self):
-        query="INSERT INTO medtechs VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        values=(self.id,self.fname,self.lname,self.role,self.dept,self.age,self.address,self.username,self.password,self.url)
+        query="INSERT INTO medtechs VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        values=(self.id,self.fname,self.lname,self.role,self.license_no,self.dept,self.age,self.address,self.username,self.password,self.url)
         self.Cursor.execute(query,values)
         self.Db.commit()
 
@@ -240,7 +241,7 @@ class Employee:
         cursor.execute(query_find,(uname,passwd))
         acc = cursor.fetchone()
         if acc:
-            return Employee(acc[0],uname,passwd,acc[1],acc[2],acc[5],acc[6],acc[3],acc[4],None)
+            return Employee(acc[0],uname,passwd,acc[1],acc[2],acc[5],acc[6],acc[3],acc[4],acc[5],None)
         
         else: 
             return 0
@@ -249,9 +250,9 @@ class Employee:
     def editAccount(account):
         conn=dbConnection.get_connection()
         cursor=dbConnection.get_cursor(conn)
-        query="UPDATE medtechs SET FirstName=%s,LastName=%s,Role=%s,department=%s,age=%s,address=%s,username=%s,password=%s WHERE id=%s"
+        query="UPDATE medtechs SET FirstName=%s,LastName=%s,Role=%s,License_No=%s,department=%s,age=%s,address=%s,username=%s,password=%s WHERE id=%s"
 
-        values=(account[1],account[2],account[3],account[4],account[5],account[6],account[7],account[8],account[0])
+        values=(account[1],account[2],account[3],account[4],account[5],account[6],account[7],account[8],account[9],account[0])
         cursor.execute(query,values)
         conn.commit()
 

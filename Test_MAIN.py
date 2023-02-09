@@ -1008,7 +1008,7 @@ class Main:
                                 "BASOPHIL":CBCS_Column6_BOX1.get(),
                                 "TOTAL":CBCS_Column7_BOX1.get(),
                                 "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                                "LICENSE_NO":"Sample License No",
+                                "LICENSE_NO":self.user.license_no,
                                 "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
                             }
                             doc.render(context)
@@ -2050,8 +2050,8 @@ class Main:
                     "AMOUNT": amount[0],
         
                     "NAME_OF_DOCTOR":self.user.fname+" "+self.user.lname,
-                    "POSITION":"Sample Position",
-                    "LICENSE_NO": "Sample License No"
+                    "POSITION":self.user.role,
+                    "LICENSE_NO": self.user.license_no
                 }
                 doc.render(context)
                 doc.save(Path(__file__).parent/"newDoc.docx")
