@@ -43,16 +43,9 @@ class Admin:
             how_muchyour_age=Entry_Age.get()
             addrss=Entry_Address.get()
             role=Entry_Pro.get()
-        def submit():
-            uname=Entry_Username.get()
-            passwd=Entry_Password.get()
-            fname=Entry_FName.get()
-            lname=Entry_LName.get()
-            how_muchyour_age=Entry_Age.get()
-            addrss=Entry_Address.get()
-            role=Entry_Pro.get()
+            license=LicensePRO.get()
 
-            NewEmp=employee.Employee(None,uname,passwd,fname,lname,how_muchyour_age,addrss,role,Entry_Dept.get(),filepath)
+            NewEmp=employee.Employee(None,uname,passwd,fname,lname,how_muchyour_age,addrss,role,license,Entry_Dept.get(),None)
             NewEmp.register()
 
             messagebox.showinfo("Account Added Successfully","Added Succesfully")
@@ -61,7 +54,7 @@ class Admin:
             self.Registration_Page=Toplevel()
             self.Registration_Page.title("Registration")
             Rig_width=400
-            Rig_height=520
+            Rig_height=560
             self.Registration_Page.geometry(f'{Rig_width}x{Rig_height}+{480}+{100}')
             self.Registration_Page.resizable(False,False)
 
@@ -70,7 +63,7 @@ class Admin:
             Regist_Body=Frame(self.Registration_Page)
             Regist_Body.pack(expand=1,fill=BOTH)
 
-            Registration_Title=Label(Regist_Body,text="Registation",font=("Arial",35,"bold")).place(x=15,y=10)
+            Registration_Title=Label(Regist_Body,text="Registration",font=("Arial",35,"bold")).place(x=15,y=10)
 
             Image_Box=Frame(Regist_Body,width=124,height=120,bg="green",highlightbackground="black",highlightthickness=2)
             Image_Box.place(x=25,y=90)
@@ -100,6 +93,7 @@ class Admin:
             age=StringVar()
             address=StringVar()
             profession=StringVar()
+            license_no=IntVar()
 
 
             global Entry_Username, Entry_Password, Entry_FName, Entry_LName, Entry_Age, Entry_Birthdate, Entry_Address, Entry_Pro
@@ -132,18 +126,22 @@ class Admin:
             Entry_Address.place(x=15,y=340)
 
             Label_Pro=Label(Regist_Body,text="Profession:",font=("Arial",10,"bold")).place(x=15,y=370)
-            Entry_Pro=Entry(Regist_Body,text="Profession:",textvariable=profession,font=("Arial",10,"bold"),width=50,borderwidth=3)
+            Entry_Pro=Entry(Regist_Body,textvariable=profession,font=("Arial",10,"bold"),width=50,borderwidth=3)
             Entry_Pro.place(x=15,y=390)
 
-            Label(Regist_Body,text="Department",font=("Arial",10,"bold")).place(x=15,y=420)
-            Entry_Dept=ttk.Combobox(Regist_Body,value=['Laboratory Department', 'Imaging Center'],font='Arial 12',width=37,state='readonly')
-            Entry_Dept.place(x=15,y=440)
+            Label_Pro=Label(Regist_Body,text="License No:",font=("Arial",10,"bold")).place(x=15,y=420)
+            LicensePRO=Entry(Regist_Body,textvariable=license_no,font=("Arial",10,"bold"),width=50,borderwidth=3)
+            LicensePRO.place(x=15,y=440)
+
+            Label(Regist_Body,text="Department",font=("Arial",10,"bold")).place(x=15,y=460)
+            Entry_Dept=ttk.Combobox(Regist_Body,value=["None",'Laboratory Department', 'Imaging Center'],font='Arial 12',width=37,state='readonly')
+            Entry_Dept.place(x=15,y=490)
 
             Reg_Submit=Button(Regist_Body,text="Submit",width=5,height=1,font=("Arail",8,"bold"),borderwidth=3,command=submit)
-            Reg_Submit.place(x=270,y=480)
+            Reg_Submit.place(x=270,y=520)
             
             Reg_Cancel=Button(Regist_Body,text="Cancel",width=5,height=1,font=("Arail",8,"bold"),borderwidth=3,command=self.Rig_close)
-            Reg_Cancel.place(x=320,y=480)
+            Reg_Cancel.place(x=320,y=520)
 
             PageOpen +=1
         else:
@@ -177,19 +175,25 @@ class Admin:
                 global username2,password2,firstname2,lastname2,age2,address2,profession2
 
                 username2=StringVar()
-                username2.set(res[7])
+                username2.set(res[8])
                 password2=StringVar()
-                password2.set(res[8])
+                password2.set(res[9])
                 firstname2=StringVar()
                 firstname2.set(res[1])
                 lastname2=StringVar()
                 lastname2.set(res[2])
                 age2=IntVar()
-                age2.set(str(res[5]))
+                age2.set(str(res[6]))
                 address2=StringVar()
-                address2.set(res[6])
+                address2.set(res[7])
                 profession2=StringVar()
                 profession2.set(res[3])
+
+                license=IntVar()
+                license.set(res[4])
+
+                dept=StringVar()
+                dept.set(5)
 
                 state=0
                 print(state)
@@ -202,7 +206,6 @@ class Admin:
                 def editAccount2(id,state):
                     if state==0:
                         state=1
-                        print(state)
                         self.Entry_View_Username.config(state='normal')
                         self.Entry_View_Password.config(state='normal')
                         self.Entry_View_FName.config(state='normal')
@@ -211,7 +214,11 @@ class Admin:
                         self.Entry_Birthdate.config(state='readonly')
                         self.Entry_View_Address.config(state='normal')
                         self.Entry_View_Pro.config(state='readonly')
+                        self.EntryLicense.config(state='normal')
                         self.Entry_Pro.config(state='readonly')
+
+                        View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id,state))
+                        View_EDIT.place(x=510,y=270)
                         
                     elif state==1:
                         Account=(
@@ -219,9 +226,11 @@ class Admin:
                         firstname2.get(),
                         lastname2.get(),
                         profession2.get(),
+                        license.get(),
+                        dept.get(),
+
                         age2.get(),
                         address2.get(),
-                        
                         username2.get(),
                         password2.get(),)
                         
@@ -253,6 +262,7 @@ class Admin:
                             self.Entry_Birthdate.config(state='disabled')
                             self.Entry_View_Address.config(state='disabled')
                             self.Entry_View_Pro.config(state='disabled')
+                            self.EntryLicense.config(state='disabled')
                             Entry_Pro.config(state='disabled')
 
                 print(state)
@@ -293,9 +303,14 @@ class Admin:
                 self.Entry_View_Pro=Entry(self.View_Body,text="Profession:",textvariable=profession2,font=("Arial",10,"bold"),width=50,borderwidth=3,state='disabled')
                 self.Entry_View_Pro.place(x=10,y=300)
 
+                Label_View_Pro=Label(self.View_Body,text="License No:",font=("Arial",10,"bold")).place(x=10,y=280)
+                self.EntryLicense=Entry(self.View_Body,textvariable=license,font=("Arial",10,"bold"),width=50,borderwidth=3,state='disabled')
+                self.EntryLicense.place(x=10,y=300)
+
                 Label_Pro=Label(self.View_Body,text="Department",font=("Arial",10,"bold")).place(x=10,y=330)
-                self.Entry_Pro=ttk.Combobox(self.View_Body,value=['Laboratory Department', 'Imaging Center'],font='Arial 12',width=37,state='disabled')
-                self.Entry_Pro.current(self.Entry_Pro['values'].index(res[4]))
+                self.Entry_Pro=ttk.Combobox(self.View_Body,value=['None','Laboratory Department', 'Imaging Center'],textvariable=dept,font='Arial 12',width=37,state='disabled')
+                print(res)
+                self.Entry_Pro.current(self.Entry_Pro['values'].index(res[5]))
                 self.Entry_Pro.place(x=10,y=350)
                 
                 View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id,state))
