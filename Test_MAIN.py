@@ -1997,21 +1997,73 @@ class Main:
             self.Certificate.protocol("WM_DELETE_WINDOW", self.Cer_onClose)
             self.Certificate.grab_set()
 
-            Certificate_title=Label(self.Certificate,text="Medical Certificate!",font='Roboto 25 bold').place(x=5,y=5)
-
-            Patent_Label=Label(self.Certificate,text="Patents",font='Roboto 11').place(x=50,y=150)
-            Patent_Value=["GRAPH BAR","GRAPH PIE"]        
+            Certificate_title=Label(self.Certificate,text="Medical Certificate",font='Roboto 25 bold').place(x=5,y=5)
+            res=self.user.getClientsMedCert()
+            Patent_Label=Label(self.Certificate,text="Patients",font='Roboto 11').place(x=50,y=90)
+            Patent_Value=[x[1] for x in res]        
             Patent_Selection=ttk.Combobox(self.Certificate,value=Patent_Value,font='Roboto 10',state='readonly',width=40)
-            Patent_Selection.set("Select Patents")
-            Patent_Selection.place(x=50,y=170)
+            Patent_Selection.set("Select Patients")
+            Patent_Selection.place(x=50,y=110)
 
-            Ptest_Label=Label(self.Certificate,text="Graph Model:",font='Roboto 11').place(x=50,y=210)
-            Ptest_Value=["GRAPH BAR","GRAPH PIE"]        
-            Ptest_Selection=ttk.Combobox(self.Certificate,value=Ptest_Value,font='Roboto 10',state='readonly',width=40)
-            Ptest_Selection.set("Select Test")
-            Ptest_Selection.place(x=50,y=230)
+            def setClient(event):
+                res=self.user.getClient_name(Patent_Selection.get())
+                global name, age, address
+                name = res[1]
+                age = res[2]
+                address = res[5]
 
-            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5).place(x=280,y=300)
+            Patent_Selection.bind("<<ComboboxSelected>>",setClient)
+
+
+            PURPOSE_lABEL=Label(self.Certificate,text="Purpose",font='Roboto 11').place(x=50,y=130)
+            PURPOSE_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
+            PURPOSE_ENTRY.place(x=50,y=150)
+
+            REMARKS_lABEL=Label(self.Certificate,text="Remarks",font='Roboto 11').place(x=50,y=170)
+            REMARKS_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
+            REMARKS_ENTRY.place(x=50,y=190)
+
+
+            VALID_FROM_LABEL=Label(self.Certificate,text="Valid Until:",font='Roboto 11').place(x=50,y=210)
+            VALID_FROM=DateEntry(self.Certificate,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
+            VALID_FROM.place(x=50, y=240)
+
+
+
+            def submit():
+                serviceid=self.user.get_test_id("Medical Certificate")
+                client_id=self.user.getClient_name(name)
+                amount=self.user.getTestAmount(serviceid)
+
+                document=Path(__file__).parent / "MEDICAL_CERTIFICATE_TEMPLATE.docx"
+                doc=DocxTemplate(document)
+                                
+                context={
+                    "DATE_TODAY":self.test_date,
+                    "CLIENT_NAME":name,
+                    "AGE":age,
+                    "CLIENT_ADDRESS":address,
+                    "PURPOSE": PURPOSE_ENTRY.get(),
+                    "REMARKS": REMARKS_ENTRY.get(),
+                    "VALID_UNTIL": str(self.test_date)+'-'+str(VALID_FROM.get_date()),
+                    "OR_NUM": self.user.generateClient_ORNumber(),
+                    "AMOUNT": amount[0],
+        
+                    "NAME_OF_DOCTOR":self.user.fname+" "+self.user.lname,
+                    "POSITION":"Sample Position",
+                    "LICENSE_NO": "Sample License No"
+                }
+                doc.render(context)
+                doc.save(Path(__file__).parent/"newDoc.docx")
+                win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+
+                total=self.user.get_test_price(serviceid[0])
+                id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                self.user.markTest_as_done(test_id[0])
+
+            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5,command=submit).place(x=280,y=300)
 
             PageOpen += 1
 
