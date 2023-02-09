@@ -51,7 +51,21 @@ class Employee:
         cursor.execute(query,(client,service))
         result=cursor.fetchone()
         return result
-        
+
+    def getClientTestRequests(self,clientID, testID):
+        cursor=self.Cursor
+        query="SELECT ServiceID FROM tests WHERE ServiceID=%s and ClientID=%s;"
+        if isinstance(clientID, int):
+            cursor.execute(query,(testID[0],clientID))
+        elif isinstance(clientID, tuple):
+            cursor.execute(query,(testID[0],clientID[0]))
+        result=cursor.fetchall()
+        rows=len(result)
+        if rows ==0:
+            return None
+        else:
+            return result
+
 
     def save_to_summary(self,total,idd,clientID):
         id=random.randint(0,999)
