@@ -25,11 +25,6 @@ from ctypes import windll
 # get the handle to the taskbar
 h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
 
-from ctypes import windll
-
-# get the handle to the taskbar
-h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
-
 
 class Main:
     def __init__(self,init):
@@ -153,25 +148,17 @@ class Main:
                     "Acid Fast Staining",
                     "X-Ray Test",
                     "Serology",
-                    "Medical Certificate"
+                    "Medical Certificate",
+                    "Fecalysis"
                     ]
         
         self.services=[]
-        for i in range (17):
+        for i in range (len(self.Value)):
             Test=IntVar()
             Test.set(0)
             self.services.append(Test)
 
-        # def check(i,index):
-        #     print(self.services[index].get())
-        #     if self.services[index].get()==1:
-        #         print("if it working")
-        #         i.set(0)
-        #         print(i.get())
-        #     else:
-        #         print("else it working")
-        #         i.set(0)
-        #         print(i.get())
+
             
         Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Roboto 12 ').place(x=30,y=50)
         Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Roboto 12 ').place(x=30,y=75)
@@ -190,6 +177,7 @@ class Main:
         Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Roboto 12 ').place(x=280,y=175)
         Checkbutton(self.Box,text="Serology",variable=self.services[15],font='Roboto 12 ').place(x=280,y=200)
         Checkbutton(self.Box,text="Medical Certificate",variable=self.services[16],font='Roboto 12 ').place(x=280,y=220)
+        Checkbutton(self.Box,text="Fecalysis",variable=self.services[17],font='Roboto 12 ').place(x=280,y=240)
 
         #Body-------
 
@@ -1082,8 +1070,42 @@ class Main:
                     FE_Column10_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
                     FE_Column10_BOX1.grid(row=10,column=1,padx=1)
 
-                    FE_Button=Button(FE_Box,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
-                    FE_Button.place(x=1200,y=43)
+                    def submit():
+                        document=Path(__file__).parent / "FECALYSIS.docx"
+                        doc=DocxTemplate(document)
+                            
+                        context={
+                            "NAME":Name_Entry.get(),
+                            "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
+                            "DATE":self.test_date,
+                            "OR_NO":self.user.generateClient_ORNumber(),
+
+                            "COLOR":FE_Column1_BOX1.get(),
+                            "CONSISTENCY":FE_Column2_BOX1.get(),
+                            "WBC": FE_Column4_BOX1.get(),
+                            "RBC":FE_Column5_BOX1.get(),
+                            "BACTERIA":FE_Column6_BOX1.get(),
+                            "FAT_GLOBULES":FE_Column7_BOX1.get(),
+                            "OVA_PARASITE":FE_Column8_BOX1.get(),
+                            "E_HISTOLYTICA":FE_Column9_BOX1.get(),
+                            "E_COLI":FE_Column10_BOX1.get(),
+
+                            "MEDTECH":self.user.fname+" "+self.user.lname,
+                            "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                        }
+                        doc.render(context)
+                        doc.save(Path(__file__).parent/"newDoc.docx")
+                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                        serviceid=self.user.get_test_id("Fecalysis")
+                        client_id=self.user.getClient_name(Name_Entry.get())
+                        total=self.user.get_test_price(serviceid[0])
+                        id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
+                        self.user.update_summaryID_test(id,client_id[0],serviceid[0])
+                        test_id=self.user.get_tests_id(client_id[0],serviceid[0])
+                        self.user.markTest_as_done(test_id[0])
+
+                    FE_Button=Button(FE_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=submit)
+                    FE_Button.place(x=1200,y=430)
 
 
 
