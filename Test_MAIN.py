@@ -25,6 +25,11 @@ from ctypes import windll
 # get the handle to the taskbar
 h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
 
+from ctypes import windll
+
+# get the handle to the taskbar
+h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
+
 
 class Main:
     def __init__(self,init):
@@ -147,11 +152,12 @@ class Main:
                     "Blood Creatinine Test",
                     "Acid Fast Staining",
                     "X-Ray Test",
-                    "Serology"
+                    "Serology",
+                    "Medical Certificate"
                     ]
         
         self.services=[]
-        for i in range (16):
+        for i in range (17):
             Test=IntVar()
             Test.set(0)
             self.services.append(Test)
@@ -183,6 +189,7 @@ class Main:
         Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Roboto 12 ').place(x=280,y=150)
         Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Roboto 12 ').place(x=280,y=175)
         Checkbutton(self.Box,text="Serology",variable=self.services[15],font='Roboto 12 ').place(x=280,y=200)
+        Checkbutton(self.Box,text="Medical Certificate",variable=self.services[16],font='Roboto 12 ').place(x=280,y=220)
 
         #Body-------
 
@@ -479,6 +486,7 @@ class Main:
                     "Urinalysis",
                     "Serology",
                     "Miscelaneous",
+                    "FECALYSIS"
                 ]
 
             def Option_TEST(event):
@@ -486,6 +494,7 @@ class Main:
                     Miscelaneous_Page.pack_forget()
                     Urinalysis_Page.pack_forget()
                     CBC_Page.pack_forget()
+                    FE_Page.pack_forget()
 
                     Serology_Page.pack(expand=1,fill=BOTH)
 
@@ -563,6 +572,7 @@ class Main:
                     Serology_Page.pack_forget()
                     Urinalysis_Page.pack_forget()
                     CBC_Page.pack_forget()
+                    FE_Page.pack_forget()
 
                     Miscelaneous_Page.pack(expand=1,fill=BOTH)
                     Miscelaneous_Title = Label(Miscelaneous_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
@@ -618,6 +628,7 @@ class Main:
                     Serology_Page.pack_forget()
                     Miscelaneous_Page.pack_forget()
                     CBC_Page.pack_forget()
+                    FE_Page.pack_forget()
 
                     Urinalysis_Page.pack(expand=1,fill=BOTH)
 
@@ -828,6 +839,7 @@ class Main:
                     Serology_Page.pack_forget()
                     Miscelaneous_Page.pack_forget()
                     Urinalysis_Page.pack_forget()
+                    FE_Page.pack_forget()
 
                     CBC_Page.pack(expand=1,fill=BOTH)
                     CBC_Title = Label(CBC_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
@@ -1008,6 +1020,71 @@ class Main:
 
                     CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     CBC_Button.place(x=1200,y=430)
+                
+                elif LabTest_Mune.get() == "FECALYSIS":
+                    Serology_Page.pack_forget()
+                    Miscelaneous_Page.pack_forget()
+                    Urinalysis_Page.pack_forget()
+
+                    FE_Page.pack(expand=1,fill=BOTH)
+                    FE_Title = Label(FE_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
+                    FE_Title.place(x=550,y=30)
+
+                    FE_Box=Frame(FE_Page,bg='white')
+                    FE_Box.place(x=450,y=100)
+                    FE_Column1_BOX= Label(FE_Box,text="COLOR",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column1_BOX.grid(row=0,column=0)
+                    FE_Column1_BOX1=Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column1_BOX1.grid(row=0,column=1,padx=1)
+
+                    FE_Column2_BOX= Label(FE_Box,text="CONSISTENCY",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column2_BOX.grid(row=1,column=0)
+                    FE_Column2_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column2_BOX1.grid(row=1,column=1,padx=1)
+
+                    FE_Column3_BOX= Label(FE_Box,text="MICROSCOPIC EXAMINATION",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column3_BOX.grid(row=2,column=0)
+                    FE_Column3_BOX1= Label(FE_Box,text="RESULT",width=18,anchor=CENTER,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column3_BOX1.grid(row=2,column=1,padx=1)
+
+                    FE_Column4_BOX= Label(FE_Box,text="WBC",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column4_BOX.grid(row=4,column=0)
+                    FE_Column4_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column4_BOX1.grid(row=4,column=1,padx=1)
+
+                    FE_Column5_BOX= Label(FE_Box,text="RBC",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column5_BOX.grid(row=5,column=0)
+                    FE_Column5_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column5_BOX1.grid(row=5,column=1,padx=1)
+
+                    FE_Column6_BOX= Label(FE_Box,text="BACTERIA",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column6_BOX.grid(row=6,column=0)
+                    FE_Column6_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column6_BOX1.grid(row=6,column=1,padx=1)
+
+                    FE_Column7_BOX= Label(FE_Box,text="FAT GLOBULES",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column7_BOX.grid(row=7,column=0)
+                    FE_Column7_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column7_BOX1.grid(row=7,column=1,padx=1)
+
+                    FE_Column8_BOX= Label(FE_Box,text="OVA OR PARASITE",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column8_BOX.grid(row=8,column=0)
+                    FE_Column8_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column8_BOX1.grid(row=8,column=1,padx=1)
+
+                    FE_Column9_BOX= Label(FE_Box,text="E. Histolytica CYST",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column9_BOX.grid(row=9,column=0)
+                    FE_Column9_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column9_BOX1.grid(row=9,column=1,padx=1)
+
+                    FE_Column10_BOX= Label(FE_Box,text="E. coli CYST",width=25,anchor=W,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1)
+                    FE_Column10_BOX.grid(row=10,column=0)
+                    FE_Column10_BOX1= Entry(FE_Box,width=20,font=("Roboto",10,"bold"),highlightbackground="black",highlightthickness=1,borderwidth=3)
+                    FE_Column10_BOX1.grid(row=10,column=1,padx=1)
+
+                    FE_Button=Button(FE_Box,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
+                    FE_Button.place(x=1200,y=43)
+
 
 
             Test_Label=Label(Frame_Test,text="TEST:",font='Roboto 12 bold').place(x=1075,y=3)
@@ -1025,6 +1102,7 @@ class Main:
             Miscelaneous_Page = Frame(Contener)
             Urinalysis_Page= Frame(Contener)
             CBC_Page= Frame(Contener)
+            FE_Page = Frame(Contener)
 
 #Laboratory-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Close_Plus_Finding(self):
@@ -1333,10 +1411,10 @@ class Main:
         MidTech_Emp.set("All")
         MidTech_Emp.place(x=203,y=60)
 
-        filter_options=["Monthly","Yearly","1st Semi Annual","2nd Semi Annual","1st Quarter","2nd Quarter","3rd Quarter","4th Quarter"]
+        filter_options=["No Filter","Monthly","Yearly","1st Semi Annual","2nd Semi Annual","1st Quarter","2nd Quarter","3rd Quarter","4th Quarter"]
         Label(Frame_FilterBody,text="Filter By:",font='Roboto 11',).place(x=560,y=12)
         MidTech_Filter=ttk.Combobox(Frame_FilterBody,value=filter_options,font='Roboto 10',state='readonly',width=20)
-        MidTech_Filter.set("Select Filter Option")
+        MidTech_Filter.set("No Filter")
         MidTech_Filter.place(x=620,y=14)
 
         global Valuebox, Monthly_year
@@ -1401,7 +1479,9 @@ class Main:
         def filter_Option(event):
             global filter_choice
             filter_choice=event.widget.get()
-            if event.widget.get()=="Monthly":
+            if event.widget.get() == "No Filter":
+                filter_choice=None
+            elif event.widget.get()=="Monthly":
                 Monthly_months=list(calendar.month_name)
                 Valuebox_label.config(text="Choose Month:")
                 Valuebox.config(values=Monthly_months)
@@ -1500,12 +1580,14 @@ class Main:
         style=ttk.Style()
         style.theme_use("default")
         style.configure("Treeview")
-        Summary_Table['column']=("ID","NAME","TEST","DATE STARTED","DATE FINISHED","MEDTECH")
+        Summary_Table['column']=("ID","NAME","GENDER","TEST","AGE","DATE STARTED","DATE FINISHED","MEDTECH")
         #Column
         Summary_Table.column("#0",width=0,stretch=NO)
         Summary_Table.column("ID",width=50,stretch=NO,anchor=CENTER)
-        Summary_Table.column("NAME",)
+        Summary_Table.column("NAME")
+        Summary_Table.column("GENDER")
         Summary_Table.column("TEST",width=200,stretch=NO)
+        Summary_Table.column("AGE")
         Summary_Table.column("DATE STARTED",width=100,stretch=NO,anchor=CENTER)
         Summary_Table.column("DATE FINISHED",width=100,stretch=NO,anchor=CENTER)
         Summary_Table.column("MEDTECH")
@@ -1513,7 +1595,9 @@ class Main:
         Summary_Table.heading("#0")
         Summary_Table.heading("ID",text="No")
         Summary_Table.heading("NAME",text="NAME",anchor=W)
+        Summary_Table.heading("GENDER",text="Gender",anchor=W)
         Summary_Table.heading("TEST",text="TEST")
+        Summary_Table.heading("AGE",text="Age",anchor=W)
         Summary_Table.heading("DATE STARTED",text="DATE STARTED",anchor=W)
         Summary_Table.heading("DATE FINISHED",text="DATE FINISHED",anchor=W)
         Summary_Table.heading("MEDTECH",text="Medical Technologists",anchor=W)
@@ -1521,12 +1605,11 @@ class Main:
         Summaryscroll.pack(side=RIGHT,fill=Y)
         Summary_Table.pack(expand=1,fill=BOTH)
 
-
         res=self.user.getAllClient_Done()
         count=0
         number=1
         for item in range(len(res)):
-            Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
+            Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5],res[item][6],res[item][7]))
             count+=1
             number+=1
 
@@ -1543,11 +1626,12 @@ class Main:
         MidTech_Emp.bind("<<ComboboxSelected>>",nameCallback)
 
         def ApplyFilter():
+            months=['January','February',"March","April","May","June","July","August","September","October","November","December"]
             global name_Choice,test_choice,filter_date_from,filter_date_to,filter_choice
-            if filter_choice is not None:
+            if filter_choice=="Monthly":
                 if Valuebox.get()=="Select Month" or Monthly_year.get()=="Select Year":
                     messagebox.showerror("No Value Selected", "Month and/or Year is Empty.")
-                else:
+                elif Valuebox.get()!="Select Month" and Valuebox.get() in months:
                     if Valuebox.get()=="January":
                         month_num=1
                     elif Valuebox.get()=="February":
@@ -1581,26 +1665,148 @@ class Main:
                     filter_date_to=date(int(Monthly_year.get()),month_num,day)
                     filter_date_to=filter_date_to.strftime("%Y-%m-%d")
 
+            elif filter_choice=="Yearly":
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+            elif filter_choice=="1st Semi Annual": 
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),1,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 6)
+                    day=res[1]
+                    filter_date_to=date(int(year),6,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
+            elif filter_choice=="2nd Semi Annual": 
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),7,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 12)
+                    day=res[1]
+                    filter_date_to=date(int(year),12,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
+            elif filter_choice=="1st Quarter":
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),1,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 3)
+                    day=res[1]
+                    filter_date_to=date(int(year),3,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
+            elif filter_choice=="2nd Quarter":
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),4,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 6)
+                    day=res[1]
+                    filter_date_to=date(int(year),6,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
+            elif filter_choice=="3rd Quarter":
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),7,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 9)
+                    day=res[1]
+                    filter_date_to=date(int(year),9,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
+            elif filter_choice=="4th Quarter":
+                if Valuebox.get()=="Select Year":
+                    messagebox.showerror("No Value Selected", "Year is Empty.")
+                elif Valuebox.get()!="Select Year":
+                    year=Valuebox.get()
+
+                    filter_date_from_dateObj=date(int(year),10,1)
+                    filter_date_from=filter_date_from_dateObj.strftime("%Y-%m-%d")
+
+                    res=calendar.monthrange(int(year), 12)
+                    day=res[1]
+                    filter_date_to=date(int(year),12,day)
+                    filter_date_to=filter_date_to.strftime("%Y-%m-%d")
+
             if name_Choice is None:
                 name_Choice="All"
             if test_choice is None:
                 test_choice="All"
             sum=summary_filter.Summary()
-            if filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
+            if filter_choice is None and name_Choice!="All" and test_choice!="All" or  filter_choice is None and  name_Choice=="All" and test_choice=="All" or  filter_choice is None and name_Choice=="All" and test_choice!="All" or  filter_choice is None and name_Choice!="All" and test_choice=="All":
+                res=sum.filterOut(name_Choice,test_choice)
+
+            elif filter_choice=="Monthly" and name_Choice=="All" and test_choice=="All":
                 res=sum.filterMonthly(filter_date_from,filter_date_to)
-            elif filter_choice=="Monthly" and name_Choice!="All" or test_choice!="All":
+            elif filter_choice=="Monthly" and name_Choice!="All" and test_choice=="All" or filter_choice=="Monthly" and name_Choice=="All" and test_choice!="All":
                 res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)
+
+            elif filter_choice=="Yearly" and name_Choice!="All" and test_choice=="All" or filter_choice=="Yearly" and name_Choice!="All" and test_choice!="All":
+                res=sum.filterYearlyTest(year,name_Choice,test_choice)
+            elif filter_choice=="Yearly" and name_Choice=="All" and test_choice=="All":
+                res=sum.filterYearly(year)
+
+            elif filter_choice=='1st Semi Annual' and name_Choice=="All" and test_choice=="All" or filter_choice=='2nd Semi Annual' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Semi Annual' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice) 
+
+            elif filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='1st Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '1st Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '1st Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
+
+            elif filter_choice=='2nd Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='2nd Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '2nd Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '2nd Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
+
+            elif filter_choice=='3rd Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='3rd Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '3rd Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '3rd Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice)  
+
+            elif filter_choice=='4th Quarter' and name_Choice=="All" and test_choice=="All" or filter_choice=='4th Quarter' and name_Choice=="All" and test_choice=="All":
+                res=sum.filterMonthly(filter_date_from,filter_date_to)
+            elif filter_choice == '4th Quarter' and name_Choice!="All" or test_choice!="All" or filter_choice == '4th Quarter' and name_Choice!="All" or test_choice!="All":
+                res=sum.filterMonthlyTest(filter_date_from,filter_date_to,name_Choice,test_choice) 
+
             count=0
             number=1
             Summary_Table.delete(*Summary_Table.get_children())
             for item in range(len(res)):
-                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5]))
+                Summary_Table.insert(parent='',index='end',iid=count,value=(number,res[item][1],res[item][2],res[item][3],res[item][4],res[item][5],res[item][6],res[item][7]))
                 count+=1
                 number+=1
                 
         def PrintResults():
             all_items=Summary_Table.get_children()
-
             tests={}
             Gender={}
             age={}
@@ -1660,12 +1866,10 @@ class Main:
             fig, ax = plt.subplots()
             # ax.bar(Gender.keys(), Gender.values())
             ax.pie(Gender.values(), labels=Gender.keys(), autopct='%1.0f%%')
-            plt.xlabel("Gender")
             plt.savefig('gender.png', dpi=300)
 
             fig, ax = plt.subplots()
             ax.pie(age.values(), labels=age.keys(), autopct='%1.0f%%')
-            plt.xlabel("Age")
             plt.savefig('age.png', dpi=300)
 
             fig, ax = plt.subplots()
@@ -1692,11 +1896,6 @@ class Main:
             ax.set_xticklabels(testXOther.keys(), fontsize=5)
             plt.savefig('testXOther.png', dpi=300)
             # print(TestXAge)
-
-            # test_age=[t["age"] for t in TestXAge]
-            # test_name=[t["test"] for t in TestXAge]
-            
-            # print(test_age,test_name)
 
             doc = docx.Document("SUMMARY_REPORT_TEMPLATE.docx")
             data=[]
@@ -1739,6 +1938,46 @@ class Main:
         windll.user32.ShowWindow(h, 9)
         self.Dashboard_GUI.destroy()
 
+    def Cer_onClose(self):
+        global PageOpen
+        if messagebox.askokcancel('Close', 'Are you sure you want to close the View Page all the data will not be Save?'):
+            PageOpen=1
+            self.Dashboard_GUI.grab_release()
+            self.Certificate.destroy()
+
+    def Certificate_Page(self):
+        global PageOpen
+        if PageOpen < 2:
+            self.Certificate = Toplevel(self.Dashboard_GUI)
+            self.Certificate.title("Medical Certificate")
+            Record_width=400
+            Record_height=400
+            self.Certificate.geometry(f'{Record_width}x{Record_height}+{480}+{100}')
+            self.Certificate.resizable(False,False)
+            self.Certificate.protocol("WM_DELETE_WINDOW", self.Cer_onClose)
+            self.Certificate.grab_set()
+
+            Certificate_title=Label(self.Certificate,text="Medical Certificate!",font='Roboto 25 bold').place(x=5,y=5)
+
+            Patent_Label=Label(self.Certificate,text="Patents",font='Roboto 11').place(x=50,y=150)
+            Patent_Value=["GRAPH BAR","GRAPH PIE"]        
+            Patent_Selection=ttk.Combobox(self.Certificate,value=Patent_Value,font='Roboto 10',state='readonly',width=40)
+            Patent_Selection.set("Select Patents")
+            Patent_Selection.place(x=50,y=170)
+
+            Ptest_Label=Label(self.Certificate,text="Graph Model:",font='Roboto 11').place(x=50,y=210)
+            Ptest_Value=["GRAPH BAR","GRAPH PIE"]        
+            Ptest_Selection=ttk.Combobox(self.Certificate,value=Ptest_Value,font='Roboto 10',state='readonly',width=40)
+            Ptest_Selection.set("Select Test")
+            Ptest_Selection.place(x=50,y=230)
+
+            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5).place(x=280,y=300)
+
+            PageOpen += 1
+
+        else:
+            messagebox.showinfo("Error","The Window is already Open!")
+            
     #Dashboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Main_Dashboard(self):   
         self.Dashboard_GUI=Tk()
@@ -1779,6 +2018,9 @@ class Main:
         CDOH_LOGO = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
         CDOH_Label=Label(Frame_Center,image=CDOH_LOGO)
         CDOH_Label.place(x=80,y=50,width=300, height=300)
+
+        
+        Certificate=Button(Frame_Center,text="Certificate",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Certificate_Page).place(x=1240,y=370)
 
         #FrontDesk
         Frame_Laboratory=Frame(self.Page_Dashboard,width=1360,height=290,highlightbackground="black",highlightthickness=1)
