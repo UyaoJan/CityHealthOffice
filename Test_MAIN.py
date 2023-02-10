@@ -20,6 +20,7 @@ import win32api, os, time
 import win32print
 import summary_filter
 
+
 from ctypes import windll
 
 # get the handle to the taskbar
@@ -36,6 +37,7 @@ class Main:
         global PageOpen
         PageOpen = 1
         self.Value_Laboratory = ["Laboratory","X_RAY"]
+        self.client_birthdate=None
         
         windll.user32.ShowWindow(h, 0)
 
@@ -52,7 +54,8 @@ class Main:
         if AGE_Entry.get() is None or AGE_Entry.get().isnumeric()==False:
             errors+=1
         age=AGE_Entry.get()
-        bdate=Birth_Entry.get_date()
+        bdate=self.client_birthdate
+
         gender=Gender_Mune.get()
         if Address_Entry.get() is None:
             errors+=1
@@ -205,19 +208,23 @@ class Main:
         AGE_Entry.place(x=100,y=430)
 
         def calculate_age(event):
-            birthdate=event.widget.get_date()
+            date=event.widget.get()
+            date=datetime.strptime(date,'%m/%d/%y')
+            date=date.date()
+            birthdate=datetime.strptime(str(date),"%Y-%m-%d")
+            birthdate=birthdate.date()
+
             today = date.today()
-            age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+            age = today.year - birthdate.year
             AGE_Entry.delete(0,END)
             AGE_Entry.insert(0,age)
-            # return age
-
-        global Birth_Entry
+            
+        global front_Birth_Entry
         Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=160,y=430)
-        Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
-        Birth_Entry.place(x=230,y=430)
+        front_Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
+        front_Birth_Entry.place(x=230,y=430)
 
-        Birth_Entry.bind("<<DateEntrySelected>>",calculate_age)
+        front_Birth_Entry.bind("<<DateEntrySelected>>",calculate_age)
 
         global Gender_Mune
         Gender_Label=Label(Frame_Input,text="Gender:",font='Roboto 12').place(x=350,y=430)
@@ -233,10 +240,6 @@ class Main:
         Address_Entry.place(x=120,y=460)
 
 
-        global Date_Entry
-        Date_Label=Label(Frame_Input,text="Date:",font="Roboto 12").place(x=480,y=460)
-        Date_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W,state='readonly')
-        Date_Entry.place(x=525,y=460)
 
         Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Roboto 11',command=self.showCheckbox)
         Submit_Input.place(x=540,y=530)
