@@ -246,7 +246,7 @@ class Admin:
                                         message='Save Changes?')
 
                             if answer:
-                                self.View_Page.destroy()
+                                # self.View_Page.destroy()
                                 employee.Employee.editAccount(Account)
                                 messagebox.showinfo("Changes Saved","Account Update Succesful")
 
@@ -263,7 +263,7 @@ class Admin:
                             self.Entry_View_Address.config(state='disabled')
                             self.Entry_View_Pro.config(state='disabled')
                             self.EntryLicense.config(state='disabled')
-                            Entry_Pro.config(state='disabled')
+                            self.Entry_Pro.config(state='disabled')
 
                 print(state)
             
