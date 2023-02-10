@@ -212,8 +212,8 @@ class Main:
         #     AGE_Entry.insert(0,age)
         #     # return age
 
-        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=154,y=430)
-
+        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=153,y=430)
+        
         global Month_Birth
         Month=[' January',' February',' March',' April',' May',' June',' July',' August',' September',' October',' November',' December']
         Month_Birth=ttk.Combobox(Frame_Input,value=Month,font='Roboto 12',width=9,state='readonly')
@@ -225,26 +225,24 @@ class Main:
         Day=number
         Day_Birth=ttk.Combobox(Frame_Input,value=Day,font='Roboto 12',width=2,state='readonly')
         Day_Birth.current(0)
-        Day_Birth.place(x=335,y=430)
+        Day_Birth.place(x=334,y=430)
 
         global Year_Birth
         thisyear=2023
-        Year_number=list(range(1900,thisyear+1))
+        Year_number=list(range(thisyear,1900,-1))
         Year=Year_number
         Year_Birth=ttk.Combobox(Frame_Input,value=Year,font='Roboto 12',width=6,state='readonly')
-        Year_Birth.set(2023)
+        Year_Birth.set("2023")
         Year_Birth.current(0)
         Year_Birth.place(x=380,y=430)
 
 
         # global Birth_Entry
-        # Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=154,y=430)
+        #Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=160,y=430)
         # Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
         # Birth_Entry.place(x=230,y=430)
 
         # Birth_Entry.bind("<<DateEntrySelected>>",calculate_age)
-
-
 
         global Gender_Mune
         Gender_Label=Label(Frame_Input,text="Gender:",font='Roboto 12').place(x=460,y=430)
@@ -259,11 +257,10 @@ class Main:
         Address_Entry=Entry(Frame_Input,textvariable=addrs,width=38,borderwidth=3,font='Roboto 12')
         Address_Entry.place(x=120,y=460)
 
-
-        global Date_Entry
-        Date_Label=Label(Frame_Input,text="Date:",font="Roboto 12").place(x=480,y=460)
-        Date_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W,state='readonly')
-        Date_Entry.place(x=525,y=460)
+        # global Date_Entry
+        # Date_Label=Label(Frame_Input,text="Date:",font="Roboto 12").place(x=480,y=460)
+        # Date_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W,state='readonly')
+        # Date_Entry.place(x=525,y=460)
 
         Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Roboto 11',command=self.showCheckbox)
         Submit_Input.place(x=540,y=530)
@@ -2024,13 +2021,13 @@ class Main:
             self.Certificate.protocol("WM_DELETE_WINDOW", self.Cer_onClose)
             self.Certificate.grab_set()
 
-            Certificate_title=Label(self.Certificate,text="Medical Certificate",font='Roboto 25 bold').place(x=5,y=5)
+            Certificate_title=Label(self.Certificate,text="Medical Certificate",font='Roboto 30 bold').place(x=7,y=7)
             res=self.user.getClientsMedCert()
-            Patent_Label=Label(self.Certificate,text="Patients",font='Roboto 11').place(x=50,y=90)
+            Patent_Label=Label(self.Certificate,text="Patients",font='Roboto 11').place(x=48,y=130)
             Patent_Value=[x[1] for x in res]        
             Patent_Selection=ttk.Combobox(self.Certificate,value=Patent_Value,font='Roboto 10',state='readonly',width=40)
             Patent_Selection.set("Select Patients")
-            Patent_Selection.place(x=50,y=110)
+            Patent_Selection.place(x=50,y=150)
 
             def setClient(event):
                 res=self.user.getClient_name(Patent_Selection.get())
@@ -2043,18 +2040,17 @@ class Main:
 
             P_lABEL=Label(self.Certificate,text="Please Select the Patients, its Purpose \nand its Validity",font='Roboto 13').place(x=50,y=70)
 
-            PURPOSE_lABEL=Label(self.Certificate,text="Purpose",font='Roboto 11').place(x=50,y=130)
+            PURPOSE_lABEL=Label(self.Certificate,text="Purpose",font='Roboto 11').place(x=48,y=180)
             PURPOSE_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
-            PURPOSE_ENTRY.place(x=50,y=150)
+            PURPOSE_ENTRY.place(x=50,y=200)
 
-            REMARKS_lABEL=Label(self.Certificate,text="Remarks",font='Roboto 11').place(x=50,y=170)
+            REMARKS_lABEL=Label(self.Certificate,text="Remarks",font='Roboto 11').place(x=48,y=230)
             REMARKS_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
-            REMARKS_ENTRY.place(x=50,y=190)
+            REMARKS_ENTRY.place(x=50,y=250)
 
-
-            VALID_FROM_LABEL=Label(self.Certificate,text="Valid Until:",font='Roboto 11').place(x=50,y=210)
+            VALID_FROM_LABEL=Label(self.Certificate,text="Valid Until:",font='Roboto 11').place(x=48,y=280)
             VALID_FROM=DateEntry(self.Certificate,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
-            VALID_FROM.place(x=50, y=240)
+            VALID_FROM.place(x=50, y=300)
 
 
 
@@ -2078,8 +2074,8 @@ class Main:
                     "AMOUNT": amount[0],
         
                     "NAME_OF_DOCTOR":self.user.fname+" "+self.user.lname,
-                    "POSITION":"Sample Position",
-                    "LICENSE_NO": "Sample License No"
+                    "POSITION":self.user.role,
+                    "LICENSE_NO": self.user.license_no
                 }
                 doc.render(context)
                 doc.save(Path(__file__).parent/"newDoc.docx")
@@ -2091,7 +2087,7 @@ class Main:
                 test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                 self.user.markTest_as_done(test_id[0])
 
-            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5,command=submit).place(x=280,y=300)
+            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5,command=submit).place(x=260,y=350)
 
             PageOpen += 1
 
