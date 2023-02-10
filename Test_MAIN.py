@@ -204,27 +204,54 @@ class Main:
         AGE_Entry=Entry(Frame_Input,width=5,font='Roboto 12',borderwidth=3)
         AGE_Entry.place(x=100,y=430)
 
-        def calculate_age(event):
-            birthdate=event.widget.get_date()
-            today = date.today()
-            age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
-            AGE_Entry.delete(0,END)
-            AGE_Entry.insert(0,age)
-            # return age
+        # def calculate_age(event):
+        #     birthdate=event.widget.get_date()
+        #     today = date.today()
+        #     age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+        #     AGE_Entry.delete(0,END)
+        #     AGE_Entry.insert(0,age)
+        #     # return age
 
-        global Birth_Entry
-        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=160,y=430)
-        Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
-        Birth_Entry.place(x=230,y=430)
+        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=154,y=430)
 
-        Birth_Entry.bind("<<DateEntrySelected>>",calculate_age)
+        global Month_Birth
+        Month=[' January',' February',' March',' April',' May',' June',' July',' August',' September',' October',' November',' December']
+        Month_Birth=ttk.Combobox(Frame_Input,value=Month,font='Roboto 12',width=9,state='readonly')
+        Month_Birth.current(0)
+        Month_Birth.place(x=225,y=430)
+
+        global Day_Birth
+        number=list(range(1,32))
+        Day=number
+        Day_Birth=ttk.Combobox(Frame_Input,value=Day,font='Roboto 12',width=2,state='readonly')
+        Day_Birth.current(0)
+        Day_Birth.place(x=335,y=430)
+
+        global Year_Birth
+        thisyear=2023
+        Year_number=list(range(1900,thisyear+1))
+        Year=Year_number
+        Year_Birth=ttk.Combobox(Frame_Input,value=Year,font='Roboto 12',width=6,state='readonly')
+        Year_Birth.set(2023)
+        Year_Birth.current(0)
+        Year_Birth.place(x=380,y=430)
+
+
+        # global Birth_Entry
+        # Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=154,y=430)
+        # Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
+        # Birth_Entry.place(x=230,y=430)
+
+        # Birth_Entry.bind("<<DateEntrySelected>>",calculate_age)
+
+
 
         global Gender_Mune
-        Gender_Label=Label(Frame_Input,text="Gender:",font='Roboto 12').place(x=350,y=430)
+        Gender_Label=Label(Frame_Input,text="Gender:",font='Roboto 12').place(x=460,y=430)
         Option=["Male","Female","Other"]
-        Gender_Mune=ttk.Combobox(Frame_Input,value=Option,font='Roboto 12',state='readonly')
+        Gender_Mune=ttk.Combobox(Frame_Input,value=Option,font='Roboto 12',width=10,state='readonly')
         Gender_Mune.current(0)
-        Gender_Mune.place(x=412,y=432)
+        Gender_Mune.place(x=524,y=430)
 
         global Address_Entry,addrs
         addrs=StringVar()
@@ -2014,6 +2041,7 @@ class Main:
 
             Patent_Selection.bind("<<ComboboxSelected>>",setClient)
 
+            P_lABEL=Label(self.Certificate,text="Please Select the Patients, its Purpose \nand its Validity",font='Roboto 13').place(x=50,y=70)
 
             PURPOSE_lABEL=Label(self.Certificate,text="Purpose",font='Roboto 11').place(x=50,y=130)
             PURPOSE_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')

@@ -51,7 +51,7 @@ class Admin:
             messagebox.showinfo("Account Added Successfully","Added Succesfully")
 
         if PageOpen<2:
-            self.Registration_Page=Toplevel()
+            self.Registration_Page=Toplevel(self.AdminGUI)
             self.Registration_Page.title("Registration")
             Rig_width=400
             Rig_height=560
@@ -161,7 +161,7 @@ class Admin:
             
             res=employee.Employee.findAccount(id)
             if PageOpen<2:
-                self.View_Page=Toplevel()
+                self.View_Page=Toplevel(self.AdminGUI)
                 self.View_Page.title("Edit Profile")
                 PAGE_width=700
                 PAGE_height=430
@@ -197,6 +197,7 @@ class Admin:
 
                 state=0
                 print(state)
+                
                 def deleteAccount(id):
                     answer=messagebox.askyesno("Confirm Delete","Delete User?")
                     if answer:
@@ -272,7 +273,7 @@ class Admin:
                 View_img=Label(self.View_Body,text="Image",font=("Arial",15),bg="gray").place(x=470,y=10,relwidth=0.3,relheight=0.5)
 
                 Label_View_Username=Label(self.View_Body,text="Username:",font=("Arial",10,"bold")).place(x=10,y=80)
-                self.Entry_View_Username=Entry(self.View_Body,text="Username:",textvariable=username2,font=("Arial",10,"bold"),width=30,borderwidth=3,state='disabled')
+                self.Entry_View_Username=Entry(self.View_Body,textvariable=username2,font=("Arial",10,"bold"),width=30,borderwidth=3,state='disabled')
                 self.Entry_View_Username.place(x=10,y=100)
 
                 Label_View_Password=Label(self.View_Body,text="Password:",font=("Arial",10,"bold")).place(x=240,y=80)
