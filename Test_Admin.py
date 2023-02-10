@@ -272,7 +272,7 @@ class Admin:
                 View_img=Label(self.View_Body,text="Image",font=("Arial",15),bg="gray").place(x=470,y=10,relwidth=0.3,relheight=0.5)
 
                 Label_View_Username=Label(self.View_Body,text="Username:",font=("Arial",10,"bold")).place(x=10,y=80)
-                self.Entry_View_Username=Entry(self.View_Body,text="Username:",textvariable=username2,font=("Arial",10,"bold"),width=30,borderwidth=3,state='disabled')
+                self.Entry_View_Username=Entry(self.View_Body,textvariable=username2,font=("Arial",10,"bold"),width=30,borderwidth=3,state='disabled')
                 self.Entry_View_Username.place(x=10,y=100)
 
                 Label_View_Password=Label(self.View_Body,text="Password:",font=("Arial",10,"bold")).place(x=240,y=80)
