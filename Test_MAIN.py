@@ -2014,7 +2014,7 @@ class Main:
 
             Patent_Selection.bind("<<ComboboxSelected>>",setClient)
 
-            P_lABEL=Label(self.Certificate,text="Please Select the Patients and Purpose \nof the Patients and Valid Date!",font='Roboto 13').place(x=50,y=70)
+            P_lABEL=Label(self.Certificate,text="Please Select the Patients, its Purpose \nand its Validity",font='Roboto 13').place(x=50,y=70)
 
             PURPOSE_lABEL=Label(self.Certificate,text="Purpose",font='Roboto 11').place(x=48,y=180)
             PURPOSE_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
