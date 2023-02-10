@@ -1008,7 +1008,7 @@ class Main:
                                 "BASOPHIL":CBCS_Column6_BOX1.get(),
                                 "TOTAL":CBCS_Column7_BOX1.get(),
                                 "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                                "LICENSE_NO":self.user.license_no,
+                                "LICENSE_NO":"Sample License No",
                                 "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
                             }
                             doc.render(context)
@@ -1997,13 +1997,13 @@ class Main:
             self.Certificate.protocol("WM_DELETE_WINDOW", self.Cer_onClose)
             self.Certificate.grab_set()
 
-            Certificate_title=Label(self.Certificate,text="Medical Certificate",font='Roboto 30 bold').place(x=7,y=7)
+            Certificate_title=Label(self.Certificate,text="Medical Certificate",font='Roboto 25 bold').place(x=5,y=5)
             res=self.user.getClientsMedCert()
-            Patent_Label=Label(self.Certificate,text="Patients",font='Roboto 11').place(x=48,y=130)
+            Patent_Label=Label(self.Certificate,text="Patients",font='Roboto 11').place(x=50,y=90)
             Patent_Value=[x[1] for x in res]        
             Patent_Selection=ttk.Combobox(self.Certificate,value=Patent_Value,font='Roboto 10',state='readonly',width=40)
             Patent_Selection.set("Select Patients")
-            Patent_Selection.place(x=50,y=150)
+            Patent_Selection.place(x=50,y=110)
 
             def setClient(event):
                 res=self.user.getClient_name(Patent_Selection.get())
@@ -2014,19 +2014,21 @@ class Main:
 
             Patent_Selection.bind("<<ComboboxSelected>>",setClient)
 
-            P_lABEL=Label(self.Certificate,text="Please Select the Patients and Purpose \nof the Patients and Valid Date!",font='Roboto 13').place(x=50,y=70)
 
-            PURPOSE_lABEL=Label(self.Certificate,text="Purpose",font='Roboto 11').place(x=48,y=180)
+            PURPOSE_lABEL=Label(self.Certificate,text="Purpose",font='Roboto 11').place(x=50,y=130)
             PURPOSE_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
-            PURPOSE_ENTRY.place(x=50,y=200)
+            PURPOSE_ENTRY.place(x=50,y=150)
 
-            REMARKS_lABEL=Label(self.Certificate,text="Remarks",font='Roboto 11').place(x=48,y=230)
+            REMARKS_lABEL=Label(self.Certificate,text="Remarks",font='Roboto 11').place(x=50,y=170)
             REMARKS_ENTRY=Entry(self.Certificate,width=33,borderwidth=3,font='Roboto 12')
-            REMARKS_ENTRY.place(x=50,y=250)
+            REMARKS_ENTRY.place(x=50,y=190)
 
-            VALID_FROM_LABEL=Label(self.Certificate,text="Valid Until:",font='Roboto 11').place(x=48,y=280)
+
+            VALID_FROM_LABEL=Label(self.Certificate,text="Valid Until:",font='Roboto 11').place(x=50,y=210)
             VALID_FROM=DateEntry(self.Certificate,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
-            VALID_FROM.place(x=50, y=300)
+            VALID_FROM.place(x=50, y=240)
+
+
 
             def submit():
                 serviceid=self.user.get_test_id("Medical Certificate")
@@ -2048,8 +2050,8 @@ class Main:
                     "AMOUNT": amount[0],
         
                     "NAME_OF_DOCTOR":self.user.fname+" "+self.user.lname,
-                    "POSITION":self.user.role,
-                    "LICENSE_NO": self.user.license_no
+                    "POSITION":"Sample Position",
+                    "LICENSE_NO": "Sample License No"
                 }
                 doc.render(context)
                 doc.save(Path(__file__).parent/"newDoc.docx")
@@ -2061,7 +2063,7 @@ class Main:
                 test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                 self.user.markTest_as_done(test_id[0])
 
-            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5,command=submit).place(x=260,y=350)
+            Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5,command=submit).place(x=280,y=300)
 
             PageOpen += 1
 
