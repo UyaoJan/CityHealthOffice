@@ -52,7 +52,9 @@ class Main:
         if AGE_Entry.get() is None or AGE_Entry.get().isnumeric()==False:
             errors+=1
         age=AGE_Entry.get()
-        bdate=Birth_Entry.get_date()
+        global month_num
+        bdate=str(Year_Birth.get())+'-'+str(month_num)+'-'+str(Day_Birth.get())
+        bdate=datetime.strptime(bdate,"%Y-%m-%d")
         gender=Gender_Mune.get()
         if Address_Entry.get() is None:
             errors+=1
@@ -204,28 +206,8 @@ class Main:
         AGE_Entry=Entry(Frame_Input,width=5,font='Roboto 12',borderwidth=3)
         AGE_Entry.place(x=100,y=430)
 
-        # def calculate_age(event):
-        #     birthdate=event.widget.get_date()
-        #     today = date.today()
-        #     age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
-        #     AGE_Entry.delete(0,END)
-        #     AGE_Entry.insert(0,age)
-        #     # return age
-
-        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=153,y=430)
-        
-        global Month_Birth
-        Month=[' January',' February',' March',' April',' May',' June',' July',' August',' September',' October',' November',' December']
-        Month_Birth=ttk.Combobox(Frame_Input,value=Month,font='Roboto 12',width=9,state='readonly')
-        Month_Birth.current(0)
-        Month_Birth.place(x=225,y=430)
-
-        global Day_Birth
-        number=list(range(1,32))
-        Day=number
-        Day_Birth=ttk.Combobox(Frame_Input,value=Day,font='Roboto 12',width=2,state='readonly')
-        Day_Birth.current(0)
-        Day_Birth.place(x=334,y=430)
+        global month_num, cal, number
+        month_num=1
 
         global Year_Birth
         thisyear=2023
@@ -235,6 +217,56 @@ class Main:
         Year_Birth.set("2023")
         Year_Birth.current(0)
         Year_Birth.place(x=380,y=430)
+
+        curr_month=datetime.strptime(str(month_num),"%m")
+        curr_year=datetime.strptime(Year_Birth.get(),"%Y")
+
+        cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
+        number=[day for week in cal for day in week if day != 0]
+        print(month_num)
+        def setMonth(event):
+            month_num= datetime.strptime(event.widget.get(), '%B').month
+            print(month_num)
+            curr_month=datetime.strptime(str(month_num),"%m")
+            curr_year=datetime.strptime(Year_Birth.get(),"%Y")
+            global cal,number
+            cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
+            number=[day for week in cal for day in week if day != 0]
+            Day_Birth.config(value=number)
+
+        def calculate_age(event):
+            birthdate=event.widget.get()
+            birthdate=datetime.strptime(birthdate,'%Y')
+            birthdate=birthdate.year
+            today = date.today()
+            age= today.year - birthdate
+            AGE_Entry.delete(0,END)
+            AGE_Entry.insert(0,age)
+
+            global month_num
+            month_num=datetime.strptime(Month_Birth.get(), '%B').month
+            curr_month=datetime.strptime(str(month_num),"%m")
+            curr_year=datetime.strptime(Year_Birth.get(),"%Y")
+            global cal,number
+            cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
+            number=[day for week in cal for day in week if day != 0]
+            Day_Birth.config(value=number)
+
+        Year_Birth.bind("<<ComboboxSelected>>",calculate_age)
+
+        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=153,y=430)
+        global Month_Birth
+        Month=['January','February','March','April','May','June','July','August','September','October','November','December']
+        Month_Birth=ttk.Combobox(Frame_Input,value=Month,font='Roboto 12',width=9,state='readonly')
+        Month_Birth.current(0)
+        Month_Birth.place(x=225,y=430)
+        Month_Birth.bind("<<ComboboxSelected>>",setMonth)
+
+        global Day_Birth
+        Day=number
+        Day_Birth=ttk.Combobox(Frame_Input,value=Day,font='Roboto 12',width=2,state='readonly')
+        Day_Birth.current(0)
+        Day_Birth.place(x=334,y=430) 
 
 
         # global Birth_Entry
