@@ -52,7 +52,7 @@ class Main:
         if AGE_Entry.get() is None or AGE_Entry.get().isnumeric()==False:
             errors+=1
         age=AGE_Entry.get()
-        bdate=Birth_Entry.get_date()
+        # bdate=Birth_Entry.get_date()
         gender=Gender_Mune.get()
         if Address_Entry.get() is None:
             errors+=1
@@ -235,7 +235,6 @@ class Main:
         Year_Birth.set("2023")
         Year_Birth.current(0)
         Year_Birth.place(x=380,y=430)
-
 
         # global Birth_Entry
         #Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=160,y=430)
