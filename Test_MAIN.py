@@ -505,16 +505,14 @@ class Main:
                     Test_Table.insert('','end',iid=count,text=res[count][0],values=(i[3],))
                     count+=1
                 
-            def double_click(event):
-                iid=Test_Table.focus()
-                Test_Table.set(iid, 'Complete','Done')
-                item=Test_Table.item(iid)["text"]
-                self.user.markTest_as_done(item)
+            # def double_click(event):
+            #     iid=Test_Table.focus()
+            #     Test_Table.set(iid, 'Complete','Done')
+            #     item=Test_Table.item(iid)["text"]
+            #     self.user.markTest_as_done(item)
 
 
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
-            Test_Table.bind("<Double-Button-1>",double_click)
-
             Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
             Record_Button.place(x=1200,y=100)
 
@@ -612,6 +610,11 @@ class Main:
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0])
+                            for item in Test_Table.get_children():
+                                if Test_Table.item(item)['values'][0]=="Serology":
+                                    Test_Table.set(item, 'Complete','Done')
+
+
 
                     ST_Button=Button(Serology_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
                     ST_Button.place(x=1200,y=430)
@@ -645,8 +648,12 @@ class Main:
                     PT_BOX4.grid(row=1,column=1)
 
                     def submit():
+                        print(PT_BOX2.get())
+                        print(res[0][0])
                         serviceid=self.user.get_test_id(PT_BOX2.get())
-                        services=self.user.getClientTestRequests(res[0][0],serviceid)
+                        services=self.user.getClientTestRequests(int(ID_ENTRY.get()),serviceid)
+                        print(serviceid)
+                        print(services)
                         if services is None:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
@@ -667,10 +674,14 @@ class Main:
                             doc.save(Path(__file__).parent/"newDoc.docx")
                             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                             total=self.user.get_test_price(serviceid[0])
-                            id=self.user.save_to_summary(total[0],serviceid[0],res[0][0])
-                            self.user.update_summaryID_test(id,res[0][0],serviceid[0])
-                            test_id=self.user.get_tests_id(res[0][0],serviceid[0])
+                            id=self.user.save_to_summary(total[0],serviceid[0],int(ID_ENTRY.get()))
+                            self.user.update_summaryID_test(id,int(ID_ENTRY.get()),serviceid[0])
+                            test_id=self.user.get_tests_id(int(ID_ENTRY.get()),serviceid[0])
                             self.user.markTest_as_done(test_id[0])
+
+                            for item in Test_Table.get_children():
+                                if Test_Table.item(item)['values'][0]==PT_BOX2.get():
+                                    Test_Table.set(item, 'Complete','Done')
 
                     PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
                     PT_Button.place(x=1200,y=430)
@@ -886,6 +897,9 @@ class Main:
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0])
+                            for item in Test_Table.get_children():
+                                if Test_Table.item(item)['values'][0]=="Urinalysis (Urine Test)":
+                                    Test_Table.set(item, 'Complete','Done')
 
                     ST_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     ST_Button.place(x=1200,y=430)
@@ -1064,7 +1078,7 @@ class Main:
                                 "BASOPHIL":CBCS_Column6_BOX1.get(),
                                 "TOTAL":CBCS_Column7_BOX1.get(),
                                 "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                                "LICENSE_NO":"Sample License No",
+                                "LICENSE_NO":self.user.license_no,
                                 "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
                             }
                             doc.render(context)
@@ -1075,6 +1089,9 @@ class Main:
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0])
+                            for item in Test_Table.get_children():
+                                if Test_Table.item(item)['values'][0]=="Complete Blood Count":
+                                    Test_Table.set(item, 'Complete','Done')
 
                     CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     CBC_Button.place(x=1200,y=430)
@@ -1177,6 +1194,9 @@ class Main:
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0])
+                            for item in Test_Table.get_children():
+                                if Test_Table.item(item)['values'][0]=="Fecalysis":
+                                    Test_Table.set(item, 'Complete','Done')
 
                     FE_Button=Button(FE_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=submit)
                     FE_Button.place(x=1200,y=430)
