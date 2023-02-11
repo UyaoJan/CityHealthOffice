@@ -320,11 +320,11 @@ class Main:
             self.RecordBody= Frame(self.RecordPage)
             self.RecordBody.pack(expand=1,fill=BOTH)
 
+            global Record_List
+
             Record_search_LB=Label(self.RecordBody,text="SEARCH: ",font='Roboto 12 bold').place(x=10,y=100)
             Record_search_EN=Entry(self.RecordBody,font='Roboto 12',borderwidth=5)
             Record_search_EN.place(x=90,y=98,relwidth=0.6)
-            Record_search_BT=Button(self.RecordBody,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5)
-            Record_search_BT.place(x=365,y=94)
 
             RecordFrame=Frame(self.RecordBody,highlightbackground="black",highlightthickness=1)
             RecordFrame.place(x=0,y=130,relwidth=1.0,relheight=0.78)
@@ -341,6 +341,30 @@ class Main:
             RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
             #print(self.Value_Laboratory)
             if value == "Laboratory":
+                def search():
+                    record=self.user.getClients_labSearch(Record_search_EN.get())
+                    global Record_List
+                    Record_List.destroy()
+
+                    Record_List=Frame(RecordBOX,highlightbackground="black",highlightthickness=2)
+                    RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
+                    for i in range(len(record)):
+                        Record_Number=Frame(Record_List,width=427,height=80)
+                        Record_Number.grid(row=i,column=0)
+
+                        Record_Page=Frame(Record_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
+                        Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+
+                        Number_BOX=Frame(Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
+                        Number_BOX.place(x=10,y=10)
+                        Client_Number=Label(Number_BOX,text=record[i][0],font=("Roboto",25,"bold")).place(x=3,y=0)
+
+                        Client_Name=Label(Record_Page,text="NAME: "+record[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
+                        Client_Test=Label(Record_Page,text="TEST: "+record[i][6],font=("Roboto",8,"bold")).place(x=85,y=30)
+                        
+                Record_search_BT=Button(self.RecordBody,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5,command=search)
+                Record_search_BT.place(x=365,y=94)
+                
                 records=self.user.getClients_lab()
                 #print(value)
                 for i in range(len(records)):
@@ -352,15 +376,40 @@ class Main:
 
                     Number_BOX=Frame(Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
                     Number_BOX.place(x=10,y=10)
-                    Client_Number=Label(Number_BOX,text=records[i][0],font=("Roboto",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
+                    Client_Number=Label(Number_BOX,text=records[i][0],font=("Roboto",25,"bold")).place(x=3,y=0)
 
                     Client_Name=Label(Record_Page,text="NAME: "+records[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
                     Client_Test=Label(Record_Page,text="TEST: "+records[i][6],font=("Roboto",8,"bold")).place(x=85,y=30)
 
-                    Take_Button=Button(Record_Page,text="Take",font=("Roboto",8),width=6,height=0,borderwidth=5)
-                    Take_Button.place(x=360,y=37)
+                    # Take_Button=Button(Record_Page,text="Take",font=("Roboto",8),width=6,height=0,borderwidth=5)
+                    # Take_Button.place(x=360,y=37)
             
             elif value == "X_RAY":
+
+                def search():
+                    record=self.user.getClients_XraySearch(Record_search_EN.get())
+                    global Record_List
+                    Record_List.destroy()
+
+                    Record_List=Frame(RecordBOX,highlightbackground="black",highlightthickness=2)
+                    RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
+                    for i in range(len(record)):
+                        Record_Number=Frame(Record_List,width=427,height=80)
+                        Record_Number.grid(row=i,column=0)
+
+                        Record_Page=Frame(Record_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
+                        Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+
+                        Number_BOX=Frame(Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
+                        Number_BOX.place(x=10,y=10)
+                        Client_Number=Label(Number_BOX,text=record[i][0],font=("Roboto",25,"bold")).place(x=3,y=0)
+
+                        Client_Name=Label(Record_Page,text="NAME: "+record[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
+                        Client_Test=Label(Record_Page,text="TEST: "+record[i][6],font=("Roboto",8,"bold")).place(x=85,y=30)
+                        
+                Record_search_BT=Button(self.RecordBody,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5,command=search)
+                Record_search_BT.place(x=365,y=94)
+
                 records=self.user.getClients_Xray()
                 def take(e):
                     result=self.user.getClient(e)
