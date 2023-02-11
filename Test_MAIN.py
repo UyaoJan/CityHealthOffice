@@ -210,11 +210,11 @@ class Main:
         month_num=1
 
         global Year_Birth
-        thisyear=2023
+        thisyear=datetime.today().year
         Year_number=list(range(thisyear,1900,-1))
         Year=Year_number
         Year_Birth=ttk.Combobox(Frame_Input,value=Year,font='Roboto 12',width=6,state='readonly')
-        Year_Birth.set("2023")
+        Year_Birth.set(thisyear)
         Year_Birth.current(0)
         Year_Birth.place(x=380,y=430)
 
