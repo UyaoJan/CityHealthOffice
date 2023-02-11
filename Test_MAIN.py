@@ -52,7 +52,9 @@ class Main:
         if AGE_Entry.get() is None or AGE_Entry.get().isnumeric()==False:
             errors+=1
         age=AGE_Entry.get()
-        # bdate=Birth_Entry.get_date()
+        global month_num
+        bdate=str(Year_Birth.get())+'-'+str(month_num)+'-'+str(Day_Birth.get())
+        bdate=datetime.strptime(bdate,"%Y-%m-%d")
         gender=Gender_Mune.get()
         if Address_Entry.get() is None:
             errors+=1
@@ -212,29 +214,65 @@ class Main:
         #     AGE_Entry.insert(0,age)
         #     # return age
 
-        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=153,y=430)
-        
-        global Month_Birth
-        Month=[' January',' February',' March',' April',' May',' June',' July',' August',' September',' October',' November',' December']
-        Month_Birth=ttk.Combobox(Frame_Input,value=Month,font='Roboto 12',width=9,state='readonly')
-        Month_Birth.current(0)
-        Month_Birth.place(x=225,y=430)
-
-        global Day_Birth
-        number=list(range(1,32))
-        Day=number
-        Day_Birth=ttk.Combobox(Frame_Input,value=Day,font='Roboto 12',width=2,state='readonly')
-        Day_Birth.current(0)
-        Day_Birth.place(x=334,y=430)
-
         global Year_Birth
-        thisyear=2023
+        thisyear=datetime.today().year
         Year_number=list(range(thisyear,1900,-1))
         Year=Year_number
         Year_Birth=ttk.Combobox(Frame_Input,value=Year,font='Roboto 12',width=6,state='readonly')
-        Year_Birth.set("2023")
+        Year_Birth.set(thisyear)
         Year_Birth.current(0)
         Year_Birth.place(x=380,y=430)
+
+        curr_month=datetime.strptime(str(month_num),"%m")
+        curr_year=datetime.strptime(Year_Birth.get(),"%Y")
+
+        cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
+        number=[day for week in cal for day in week if day != 0]
+        print(month_num)
+        def setMonth(event):
+            month_num= datetime.strptime(event.widget.get(), '%B').month
+            print(month_num)
+            curr_month=datetime.strptime(str(month_num),"%m")
+            curr_year=datetime.strptime(Year_Birth.get(),"%Y")
+            global cal,number
+            cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
+            number=[day for week in cal for day in week if day != 0]
+            Day_Birth.config(value=number)
+
+        def calculate_age(event):
+            birthdate=event.widget.get()
+            birthdate=datetime.strptime(birthdate,'%Y')
+            birthdate=birthdate.year
+            today = date.today()
+            age= today.year - birthdate
+            AGE_Entry.delete(0,END)
+            AGE_Entry.insert(0,age)
+
+            global month_num
+            month_num=datetime.strptime(Month_Birth.get(), '%B').month
+            curr_month=datetime.strptime(str(month_num),"%m")
+            curr_year=datetime.strptime(Year_Birth.get(),"%Y")
+            global cal,number
+            cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
+            number=[day for week in cal for day in week if day != 0]
+            Day_Birth.config(value=number)
+
+        Year_Birth.bind("<<ComboboxSelected>>",calculate_age)
+
+        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=153,y=430)
+        global Month_Birth
+        Month=['January','February','March','April','May','June','July','August','September','October','November','December']
+        Month_Birth=ttk.Combobox(Frame_Input,value=Month,font='Roboto 12',width=9,state='readonly')
+        Month_Birth.current(0)
+        Month_Birth.place(x=225,y=430)
+        Month_Birth.bind("<<ComboboxSelected>>",setMonth)
+
+        global Day_Birth
+        Day=number
+        Day_Birth=ttk.Combobox(Frame_Input,value=Day,font='Roboto 12',width=2,state='readonly')
+        Day_Birth.current(0)
+        Day_Birth.place(x=334,y=430) 
+
 
         # global Birth_Entry
         #Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=160,y=430)
@@ -284,18 +322,20 @@ class Main:
             self.RecordPage.protocol("WM_DELETE_WINDOW", self.Record_on_close)
             self.RecordPage.resizable(False,False)
 
+
             self.RecordBody= Frame(self.RecordPage)
             self.RecordBody.pack(expand=1,fill=BOTH)
 
+            
+
+            global Record_List
             Record_search_LB=Label(self.RecordBody,text="SEARCH: ",font='Roboto 12 bold').place(x=10,y=100)
             Record_search_EN=Entry(self.RecordBody,font='Roboto 12',borderwidth=5)
             Record_search_EN.place(x=90,y=98,relwidth=0.6)
-            Record_search_BT=Button(self.RecordBody,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5)
-            Record_search_BT.place(x=365,y=94)
 
             RecordFrame=Frame(self.RecordBody,highlightbackground="black",highlightthickness=1)
             RecordFrame.place(x=0,y=130,relwidth=1.0,relheight=0.78)
-            RecordBOX= Canvas(RecordFrame,highlightbackground="black",highlightthickness=1)
+            RecordBOX= Canvas(RecordFrame,highlightbackground="black",highlightthickness=1,bg="White")
             RecordBOX.pack(side=LEFT,fill=BOTH,expand=1)
 
             Recordscroll=ttk.Scrollbar(RecordFrame,orient=VERTICAL,command=RecordBOX.yview)
@@ -308,6 +348,32 @@ class Main:
             RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
             #print(self.Value_Laboratory)
             if value == "Laboratory":
+                Record_Title=Label(self.RecordBody,text="Laboratory Test Records",font='Roboto 25 bold').place(x=10,y=0)
+                Record_paragraph=Label(self.RecordBody,text="All Laboratory TEST be save here and \nrecord of the Test being done ",font='Roboto 12').place(x=80,y=43)
+                def search():
+                    record=self.user.getClients_labSearch(Record_search_EN.get())
+                    global Record_List
+                    Record_List.destroy()
+
+                    Record_List=Frame(RecordBOX,highlightbackground="black",highlightthickness=2)
+                    RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
+                    for i in range(len(record)):
+                        Record_Number=Frame(Record_List,width=427,height=80)
+                        Record_Number.grid(row=i,column=0)
+
+                        Record_Page=Frame(Record_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
+                        Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+
+                        Number_BOX=Frame(Record_Page,width=70,height=50,bg="green",highlightbackground="black",highlightthickness=1)
+                        Number_BOX.place(x=10,y=10)
+                        Client_Number=Label(Number_BOX,text=record[i][0],font=("Roboto",17,"bold"),bg="green").place(x=4,y=6)
+
+                        Client_Name=Label(Record_Page,text="NAME: "+record[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
+                        Client_Test=Label(Record_Page,text="TEST: "+record[i][6],font=("Roboto",8,"bold")).place(x=85,y=30)
+                        
+                Record_search_BT=Button(self.RecordBody,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5,command=search)
+                Record_search_BT.place(x=365,y=94)
+                
                 records=self.user.getClients_lab()
                 #print(value)
                 for i in range(len(records)):
@@ -317,17 +383,43 @@ class Main:
                     Record_Page=Frame(Record_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
                     Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
 
-                    Number_BOX=Frame(Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
+                    Number_BOX=Frame(Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1,bg="green")
                     Number_BOX.place(x=10,y=10)
-                    Client_Number=Label(Number_BOX,text=records[i][0],font=("Roboto",25,"bold")).place(x=3,y=0)#luna please limit the Number of the of to 3 only
+                    Client_Number=Label(Number_BOX,text=records[i][0],font=("Roboto",17,"bold"),bg="green").place(x=4,y=6)
 
                     Client_Name=Label(Record_Page,text="NAME: "+records[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
                     Client_Test=Label(Record_Page,text="TEST: "+records[i][6],font=("Roboto",8,"bold")).place(x=85,y=30)
 
-                    Take_Button=Button(Record_Page,text="Take",font=("Roboto",8),width=6,height=0,borderwidth=5)
-                    Take_Button.place(x=360,y=37)
+                    # Take_Button=Button(Record_Page,text="Take",font=("Roboto",8),width=6,height=0,borderwidth=5)
+                    # Take_Button.place(x=360,y=37)
             
             elif value == "X_RAY":
+                Record_Title_Xray=Label(self.RecordBody,text="Laboratory Test Records",font='Roboto 25 bold').place(x=10,y=0)
+                Record_paragraph_Xray=Label(self.RecordBody,text="All X-Ray Laboratory TEST be save here and \nrecord of the Test being done ",font='Roboto 12').place(x=80,y=43)
+                def search():
+                    record=self.user.getClients_XraySearch(Record_search_EN.get())
+                    global Record_List
+                    Record_List.destroy()
+
+                    Record_List=Frame(RecordBOX,highlightbackground="black",highlightthickness=2)
+                    RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
+                    for i in range(len(record)):
+                        Record_Number=Frame(Record_List,width=427,height=80)
+                        Record_Number.grid(row=i,column=0)
+
+                        Record_Page=Frame(Record_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
+                        Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+
+                        Number_BOX=Frame(Record_Page,width=70,height=50,bg="green",highlightbackground="black",highlightthickness=1)
+                        Number_BOX.place(x=10,y=10)
+                        Client_Number=Label(Number_BOX,text=record[i][0],font=("Roboto",17,"bold"),bg="green").place(x=4,y=6)
+
+                        Client_Name=Label(Record_Page,text="NAME: "+record[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
+                        Client_Test=Label(Record_Page,text="TEST: "+record[i][6],font=("Roboto",8,"bold")).place(x=85,y=30)
+                        
+                Record_search_BT=Button(self.RecordBody,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5,command=search)
+                Record_search_BT.place(x=365,y=94)
+
                 records=self.user.getClients_Xray()
                 def take(e):
                     result=self.user.getClient(e)
@@ -344,15 +436,15 @@ class Main:
                     X_RAY_Record_Page=Frame(X_RAY_Record_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
                     X_RAY_Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
 
-                    XRAY_Number_BOX=Frame(X_RAY_Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1)
+                    XRAY_Number_BOX=Frame(X_RAY_Record_Page,width=70,height=50,bg="green",highlightbackground="black",highlightthickness=1)
                     XRAY_Number_BOX.place(x=10,y=10)
-                    XRAY_Client_Number=Label(XRAY_Number_BOX,text=records[i][0],font=("Roboto",25,"bold")).place(x=3,y=0)
+                    XRAY_Client_Number=Label(XRAY_Number_BOX,text=records[i][0],font=("Roboto",17,"bold"),bg="green").place(x=4,y=6)
 
                     XRAY_Client_Name=Label(X_RAY_Record_Page,text="NAME: "+records[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
                     XRAY_Client_Test=Label(X_RAY_Record_Page,text="TEST: XRAY TEST",font=("Roboto",8,"bold")).place(x=85,y=30)
 
-                    XRAY_Take_Button=Button(X_RAY_Record_Page,text="Take",font=("Roboto",8),width=6,height=0,borderwidth=5,command=lambda e= records[i][0]:take(e))
-                    XRAY_Take_Button.place(x=360,y=37)
+                    # XRAY_Take_Button=Button(X_RAY_Record_Page,text="Take",font=("Roboto",8),width=6,height=0,borderwidth=5,command=lambda e= records[i][0]:take(e))
+                    # XRAY_Take_Button.place(x=360,y=37)
             
             PageOpen += 1
 
@@ -401,8 +493,22 @@ class Main:
             # Name_Entry=Entry(Frame_Body,width=59,borderwidth=3,font='Roboto 9')
             res=self.user.getClients_all()
             names=[x[1] for x in res]
-            Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Roboto 12',state='readonly',width=40)
+            Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Roboto 12',width=40)
             Name_Entry.place(x=20,y=70)
+
+            def Name_entry_search(event):
+                value=event.widget.get()
+                if value!='':
+                    lst=self.user.getClients_nameEntrySearch(value)
+                    data=[]
+                    for item in range(len(lst)):
+                        if value.lower() in lst[item][1].lower():
+                            data.append(lst[item][1])
+                    event.widget['values']=data
+
+                else:
+                    lst=self.user.getClients_all()
+                    event.widget['values']=([x[1] for x in lst])
 
             def setClient(event):
                 res=self.user.getClient_name(Name_Entry.get())
@@ -412,6 +518,7 @@ class Main:
                 Gender_Mune.set(res[3])
 
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
+            Name_Entry.bind("<KeyRelease>",Name_entry_search)
 
             AGE_Label=Label(Frame_Body,text="Age: ",font='Roboto 12').place(x=400,y=50)
             AGE_Entry=Entry(Frame_Body,width=8,font='Roboto 9',borderwidth=3,state='disabled')
@@ -442,15 +549,15 @@ class Main:
             style=ttk.Style()
             style.theme_use("default")
             style.configure("Treeview")
-            Test_Table['column']=("Laboratory","Complete")
+            Test_Table['column']=("Laboratory")
 
             Test_Table.column("#0",width=0,stretch=NO)
             Test_Table.column("Laboratory",width=200)
-            Test_Table.column("Complete",width=100)
+            # Test_Table.column("Complete",width=100)
 
             Test_Table.heading("#0")
             Test_Table.heading("Laboratory",text="Laboratory Test")
-            Test_Table.heading("Complete",text="Complete")
+            # Test_Table.heading("Complete",text="Complete")
             Test_Table.pack(expand=1,fill=BOTH)
 
             def setClient(event):
@@ -472,16 +579,14 @@ class Main:
                     Test_Table.insert('','end',iid=count,text=res[count][0],values=(i[3],))
                     count+=1
                 
-            def double_click(event):
-                iid=Test_Table.focus()
-                Test_Table.set(iid, 'Complete','Done')
-                item=Test_Table.item(iid)["text"]
-                self.user.markTest_as_done(item)
+            # def double_click(event):
+            #     iid=Test_Table.focus()
+            #     Test_Table.set(iid, 'Complete','Done')
+            #     item=Test_Table.item(iid)["text"]
+            #     self.user.markTest_as_done(item)
 
 
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
-            Test_Table.bind("<Double-Button-1>",double_click)
-
             Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
             Record_Button.place(x=1200,y=100)
 
@@ -579,6 +684,11 @@ class Main:
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0])
+                            for item in Test_Table.get_children():
+                                if Test_Table.item(item)['values'][0]=="Serology":
+                                    Test_Table.set(item, 'Complete','Done')
+
+
 
                     ST_Button=Button(Serology_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
                     ST_Button.place(x=1200,y=430)
@@ -612,8 +722,12 @@ class Main:
                     PT_BOX4.grid(row=1,column=1)
 
                     def submit():
+                        print(PT_BOX2.get())
+                        print(res[0][0])
                         serviceid=self.user.get_test_id(PT_BOX2.get())
-                        services=self.user.getClientTestRequests(res[0][0],serviceid)
+                        services=self.user.getClientTestRequests(int(ID_ENTRY.get()),serviceid)
+                        print(serviceid)
+                        print(services)
                         if services is None:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
@@ -634,10 +748,14 @@ class Main:
                             doc.save(Path(__file__).parent/"newDoc.docx")
                             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                             total=self.user.get_test_price(serviceid[0])
-                            id=self.user.save_to_summary(total[0],serviceid[0],res[0][0])
-                            self.user.update_summaryID_test(id,res[0][0],serviceid[0])
-                            test_id=self.user.get_tests_id(res[0][0],serviceid[0])
+                            id=self.user.save_to_summary(total[0],serviceid[0],int(ID_ENTRY.get()))
+                            self.user.update_summaryID_test(id,int(ID_ENTRY.get()),serviceid[0])
+                            test_id=self.user.get_tests_id(int(ID_ENTRY.get()),serviceid[0])
                             self.user.markTest_as_done(test_id[0])
+
+                            for item in Test_Table.get_children():
+                                if Test_Table.item(item)['values'][0]==PT_BOX2.get():
+                                    Test_Table.set(item, 'Complete','Done')
 
                     PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
                     PT_Button.place(x=1200,y=430)
@@ -853,6 +971,9 @@ class Main:
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0])
+                            for item in Test_Table.get_children():
+                                if Test_Table.item(item)['values'][0]=="Urinalysis (Urine Test)":
+                                    Test_Table.set(item, 'Complete','Done')
 
                     ST_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     ST_Button.place(x=1200,y=430)
@@ -1031,7 +1152,7 @@ class Main:
                                 "BASOPHIL":CBCS_Column6_BOX1.get(),
                                 "TOTAL":CBCS_Column7_BOX1.get(),
                                 "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                                "LICENSE_NO":"Sample License No",
+                                "LICENSE_NO":self.user.license_no,
                                 "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
                             }
                             doc.render(context)
@@ -1042,6 +1163,9 @@ class Main:
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0])
+                            for item in Test_Table.get_children():
+                                if Test_Table.item(item)['values'][0]=="Complete Blood Count":
+                                    Test_Table.set(item, 'Complete','Done')
 
                     CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     CBC_Button.place(x=1200,y=430)
@@ -1144,6 +1268,9 @@ class Main:
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0])
+                            for item in Test_Table.get_children():
+                                if Test_Table.item(item)['values'][0]=="Fecalysis":
+                                    Test_Table.set(item, 'Complete','Done')
 
                     FE_Button=Button(FE_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=submit)
                     FE_Button.place(x=1200,y=430)
@@ -1270,7 +1397,7 @@ class Main:
             name=StringVar()
             Label(Detail_Body,text="Name: ",font='Roboto 12').place(x=100,y=130)
             # Name_Entry=Entry(Detail_Body,width=50,textvariable=name,borderwidth=3,font='Roboto 9')
-            Name_Entry=ttk.Combobox(Detail_Body,textvariable=name,font='Roboto 9',width=48,state='readonly')
+            Name_Entry=ttk.Combobox(Detail_Body,textvariable=name,font='Roboto 9',width=48)
             result=self.user.getClients_Xray()
             n=1
             Name_Entry['values']=[x[n] for x in result]
@@ -1280,6 +1407,22 @@ class Main:
             Birth_Label=Label(Detail_Body,text="Birthdate:",font="Roboto 12").place(x=100,y=160)
             Birth_Entry=DateEntry(Detail_Body,width=36,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
             Birth_Entry.place(x=170,y=160)
+
+            def Name_entry_search(event):
+                value=event.widget.get()
+                if value!='':
+                    lst=self.user.getClients_NameEntry_XraySearch(value)
+                    data=[]
+                    for item in range(len(lst)):
+                        if value.lower() in lst[item][1].lower():
+                            data.append(lst[item][1])
+                    event.widget['values']=data
+
+                else:
+                    lst=self.user.getClients_Xray()
+                    event.widget['values']=([x[1] for x in lst])
+
+            Name_Entry.bind("<KeyRelease>",Name_entry_search)
 
             age=StringVar()
             AGE_Label=Label(Detail_Body,text="Age: ",font='Roboto 12').place(x=100,y=190)
