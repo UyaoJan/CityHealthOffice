@@ -175,9 +175,26 @@ class Employee:
         result=cursor.fetchall()
         return result
 
+    def getClients_NameEntry_XraySearch(self,search):
+        term='%'+search+'%'
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.Name LIKE '%s' "%(term,)+" AND clients.ClientID=tests.ClientID AND tests.status!='done' AND tests.ServiceID=services.ServiceID AND tests.ServiceID=15;"
+        cursor=self.Cursor
+        cursor.execute(query)
+        result=cursor.fetchall()
+        return result
+
     def getClients_XraySearch(self,search):
         term='%'+search+'%'
         query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.Name LIKE '%s' "%(term,)+" AND clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.ServiceID=15;"
+        cursor=self.Cursor
+        cursor.execute(query)
+        result=cursor.fetchall()
+        return result
+
+
+    def getClients_nameEntrySearch(self,search):
+        term='%'+search+'%'
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.Name LIKE '%s' "%(term,)+" AND clients.ClientID=tests.ClientID AND tests.status!='done' AND tests.ServiceID=services.ServiceID AND tests.ServiceID!=15;"
         cursor=self.Cursor
         cursor.execute(query)
         result=cursor.fetchall()

@@ -483,8 +483,22 @@ class Main:
             # Name_Entry=Entry(Frame_Body,width=59,borderwidth=3,font='Roboto 9')
             res=self.user.getClients_all()
             names=[x[1] for x in res]
-            Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Roboto 12',state='readonly',width=40)
+            Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Roboto 12',width=40)
             Name_Entry.place(x=20,y=70)
+
+            def Name_entry_search(event):
+                value=event.widget.get()
+                if value!='':
+                    lst=self.user.getClients_nameEntrySearch(value)
+                    data=[]
+                    for item in range(len(lst)):
+                        if value.lower() in lst[item][1].lower():
+                            data.append(lst[item][1])
+                    event.widget['values']=data
+
+                else:
+                    lst=self.user.getClients_all()
+                    event.widget['values']=([x[1] for x in lst])
 
             def setClient(event):
                 res=self.user.getClient_name(Name_Entry.get())
@@ -494,6 +508,7 @@ class Main:
                 Gender_Mune.set(res[3])
 
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
+            Name_Entry.bind("<KeyRelease>",Name_entry_search)
 
             AGE_Label=Label(Frame_Body,text="Age: ",font='Roboto 12').place(x=400,y=50)
             AGE_Entry=Entry(Frame_Body,width=8,font='Roboto 9',borderwidth=3,state='disabled')
@@ -1372,7 +1387,7 @@ class Main:
             name=StringVar()
             Label(Detail_Body,text="Name: ",font='Roboto 12').place(x=100,y=130)
             # Name_Entry=Entry(Detail_Body,width=50,textvariable=name,borderwidth=3,font='Roboto 9')
-            Name_Entry=ttk.Combobox(Detail_Body,textvariable=name,font='Roboto 9',width=48,state='readonly')
+            Name_Entry=ttk.Combobox(Detail_Body,textvariable=name,font='Roboto 9',width=48)
             result=self.user.getClients_Xray()
             n=1
             Name_Entry['values']=[x[n] for x in result]
@@ -1382,6 +1397,22 @@ class Main:
             Birth_Label=Label(Detail_Body,text="Birthdate:",font="Roboto 12").place(x=100,y=160)
             Birth_Entry=DateEntry(Detail_Body,width=36,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
             Birth_Entry.place(x=170,y=160)
+
+            def Name_entry_search(event):
+                value=event.widget.get()
+                if value!='':
+                    lst=self.user.getClients_NameEntry_XraySearch(value)
+                    data=[]
+                    for item in range(len(lst)):
+                        if value.lower() in lst[item][1].lower():
+                            data.append(lst[item][1])
+                    event.widget['values']=data
+
+                else:
+                    lst=self.user.getClients_Xray()
+                    event.widget['values']=([x[1] for x in lst])
+
+            Name_Entry.bind("<KeyRelease>",Name_entry_search)
 
             age=StringVar()
             AGE_Label=Label(Detail_Body,text="Age: ",font='Roboto 12').place(x=100,y=190)
