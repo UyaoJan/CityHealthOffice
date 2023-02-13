@@ -208,14 +208,6 @@ class Main:
         AGE_Entry=Entry(Frame_Input,width=5,font='Roboto 12',borderwidth=3)
         AGE_Entry.place(x=100,y=430)
 
-        # def calculate_age(event):
-        #     birthdate=event.widget.get_date()
-        #     today = date.today()
-        #     age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
-        #     AGE_Entry.delete(0,END)
-        #     AGE_Entry.insert(0,age)
-        #     # return age
-
         global Year_Birth
         thisyear=datetime.today().year
         Year_number=list(range(thisyear,1900,-1))
@@ -279,13 +271,6 @@ class Main:
         Day_Birth.current(0)
         Day_Birth.place(x=334,y=430) 
 
-        # global Birth_Entry
-        #Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=160,y=430)
-        # Birth_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,state='readonly')
-        # Birth_Entry.place(x=230,y=430)
-
-        # Birth_Entry.bind("<<DateEntrySelected>>",calculate_age)
-
         global Gender_Mune
         Gender_Label=Label(Frame_Input,text="Gender:",font='Roboto 12').place(x=460,y=430)
         Option=["Male","Female","Other"]
@@ -299,10 +284,6 @@ class Main:
         Address_Entry=Entry(Frame_Input,textvariable=addrs,width=38,borderwidth=3,font='Roboto 12')
         Address_Entry.place(x=120,y=460)
 
-        # global Date_Entry
-        # Date_Label=Label(Frame_Input,text="Date:",font="Roboto 12").place(x=480,y=460)
-        # Date_Entry=DateEntry(Frame_Input,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W,state='readonly')
-        # Date_Entry.place(x=525,y=460)
 
         Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Roboto 11',command=self.showCheckbox)
         Submit_Input.place(x=540,y=530)
@@ -1652,6 +1633,8 @@ class Main:
         Monthly_year=ttk.Combobox(Frame_FilterBody,value=Monthly_years,font='Roboto 10',state='readonly',width=20)
         Monthly_year.set("Select Year")
 
+
+        #Time to View and Save Graph undone
         '''Graph_Label=Label(Frame_FilterBody,text="Graph Model:",font='Roboto 11').place(x=850,y=14)
         Graph_Value=["GRAPH BAR","GRAPH PIE"]        
         Graph_Selection=ttk.Combobox(Frame_FilterBody,value=Graph_Value,font='Roboto 10',state='readonly',width=20)

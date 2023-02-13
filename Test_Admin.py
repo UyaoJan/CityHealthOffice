@@ -1,11 +1,14 @@
+from calendar import calendar
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 from PIL import Image, ImageTk
+import datetime
+from datetime import date, datetime
 from tkcalendar import Calendar,DateEntry
-
+import calendar
 import employee
 
 class Admin:
@@ -126,9 +129,72 @@ class Admin:
             Entry_Age=Entry(Regist_Body,text="Age:",textvariable=age,font=("Arial",10,"bold"),width=10,borderwidth=3)
             Entry_Age.place(x=15,y=290)
 
-            Label_Birthdate=Label(Regist_Body,text="Birthdate:",font="Arial 12").place(x=100,y=270)
-            Entry_Birthdate=DateEntry(Regist_Body,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
-            Entry_Birthdate.place(x=100,y=289)
+            # Label_Birthdate=Label(Regist_Body,text="Birthdate:",font="Arial 12").place(x=100,y=270)
+            # Entry_Birthdate=DateEntry(Regist_Body,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
+            # Entry_Birthdate.place(x=100,y=289)
+
+            global Year_Birth
+            thisyear=datetime.today().year
+            Year_number=list(range(thisyear,1900,-1))
+            Year=Year_number
+            Year_Birth=ttk.Combobox(Regist_Body,value=Year,font='Roboto 12',width=6,state='readonly')
+            Year_Birth.set(thisyear)
+            Year_Birth.current(0)
+            Year_Birth.place(x=260,y=289)
+
+            month_num=datetime.now()
+            month_num=month_num.month
+            curr_month=datetime.strptime(str(month_num),"%m")
+            curr_year=datetime.strptime(Year_Birth.get(),"%Y")
+
+            cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
+            number=[day for week in cal for day in week if day != 0]
+            self.client_bmonth=month_num
+            print(month_num)
+            def setMonth(event):
+                month_num= datetime.strptime(event.widget.get(), '%B').month
+                print(month_num)
+                curr_month=datetime.strptime(str(month_num),"%m")
+                curr_year=datetime.strptime(Year_Birth.get(),"%Y")
+                global cal,number
+                cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
+                number=[day for week in cal for day in week if day != 0]
+                Day_Birth.config(value=number)
+                self.client_bmonth=month_num
+
+            def calculate_age(event):
+                birthdate=event.widget.get()
+                birthdate=datetime.strptime(birthdate,'%Y')
+                birthdate=birthdate.year
+                today = date.today()
+                age= today.year - birthdate
+                Entry_Age.delete(0,END)
+                Entry_Age.insert(0,age)
+
+                month_num=datetime.strptime(Month_Birth.get(), '%B').month
+                curr_month=datetime.strptime(str(month_num),"%m")
+                curr_year=datetime.strptime(Year_Birth.get(),"%Y")
+                global cal,number
+                cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
+                number=[day for week in cal for day in week if day != 0]
+                Day_Birth.config(value=number)
+                self.client_bmonth=month_num
+
+            Year_Birth.bind("<<ComboboxSelected>>",calculate_age)
+
+            Birth_Label=Label(Regist_Body,text="Birthdate:",font="Roboto 12").place(x=100,y=270)
+            global Month_Birth
+            Month=['January','February','March','April','May','June','July','August','September','October','November','December']
+            Month_Birth=ttk.Combobox(Regist_Body,value=Month,font='Roboto 12',width=9,state='readonly')
+            Month_Birth.current(0)
+            Month_Birth.place(x=100,y=289)
+            Month_Birth.bind("<<ComboboxSelected>>",setMonth)
+
+            global Day_Birth
+            Day=number
+            Day_Birth=ttk.Combobox(Regist_Body,value=Day,font='Roboto 12',width=2,state='readonly')
+            Day_Birth.current(0)
+            Day_Birth.place(x=213,y=289) 
 
             Label_Address=Label(Regist_Body,text="Address:",font=("Arial",10,"bold")).place(x=15,y=320)
             Entry_Address=Entry(Regist_Body,text="Address:",textvariable=address,font=("Arial",10,"bold"),width=50,borderwidth=3)
@@ -213,7 +279,27 @@ class Admin:
                         messagebox.showinfo("User Deleted","User Deleted Successfully")
                         employee.Employee.deleteEmployee(id)
                         self.Profile_Number.destroy()
-                        self.Profile_Number.grid(row=self.Account_Num,column=0)
+
+                        result=employee.Employee.getAllEmployees()
+
+                        global labels
+                        labels=[]
+                        for self.Account_Num in range(len(result)):
+                            self.Profile_Number=Frame(Profile,padx=10, pady=10, width=1023, height=200)
+                            self.Profile_Number.grid(row=self.Account_Num,column=0)
+
+                            Profile_Detail=Frame(self.Profile_Number,highlightbackground="black",highlightthickness=1,)
+                            Profile_Detail.place(x=5,y=7,relwidth=0.99,relheight=0.92)
+
+                            # Access Image URL thru result[self.Account_Num][8] 
+                            Profile_Image=Label(Profile_Detail,text="IMAGE",bg="gray").place(x=10,y=10,relwidth=0.2,relheight=0.88)
+                            global Profile_Name
+                            Profile_Name=Label(Profile_Detail,text=result[self.Account_Num][1]+" "+result[self.Account_Num][2],font=("Arail",25,"bold"))
+                            Profile_Name.place(x=220,y=10)
+                            labels.append(Profile_Name)
+
+                            Profile_Edit=Button(Profile_Detail,text="View",width=10,height=2,font=("Arail",10),borderwidth=5,command=lambda x= result[self.Account_Num][0]:self.ViewProfile(x, labels[self.Account_Num]))
+                            Profile_Edit.place(x=850,y=50)
                         self.View_Page.destroy()
                                 
                 def editAccount2(id,state):
@@ -384,15 +470,15 @@ class Admin:
         Profile_BOX.configure(yscrollcommand=Profilescroll.set)
         Profile_BOX.bind('<Configure>',lambda e: Profile_BOX.configure(scrollregion= Profile_BOX.bbox("all")))
 
-        Profile=Frame(Profile_BOX)
-        Profile_BOX.create_window((0,0),window=Profile,anchor=NW)
+        self.Profile=Frame(Profile_BOX)
+        Profile_BOX.create_window((0,0),window=self.Profile,anchor=NW)
 
         result=employee.Employee.getAllEmployees()
 
         global labels
         labels=[]
         for self.Account_Num in range(len(result)):
-            self.Profile_Number=Frame(Profile,padx=10, pady=10, width=1023, height=200)
+            self.Profile_Number=Frame(self.Profile,padx=10, pady=10, width=1023, height=200)
             self.Profile_Number.grid(row=self.Account_Num,column=0)
 
             Profile_Detail=Frame(self.Profile_Number,highlightbackground="black",highlightthickness=1,)
