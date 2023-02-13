@@ -223,6 +223,7 @@ class Main:
         Year_Birth.current(0)
         Year_Birth.place(x=380,y=430)
 
+        global month_num
         curr_month=datetime.strptime(str(month_num),"%m")
         curr_year=datetime.strptime(Year_Birth.get(),"%Y")
 
@@ -272,7 +273,6 @@ class Main:
         Day_Birth=ttk.Combobox(Frame_Input,value=Day,font='Roboto 12',width=2,state='readonly')
         Day_Birth.current(0)
         Day_Birth.place(x=334,y=430) 
-
 
         # global Birth_Entry
         #Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=160,y=430)
