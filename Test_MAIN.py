@@ -38,6 +38,7 @@ class Main:
         self.Value_Laboratory = ["Laboratory","X_RAY"]
         
         windll.user32.ShowWindow(h, 0)
+        self.client_bmonth=None
 
         self.test_date=date.today()
     
@@ -52,9 +53,10 @@ class Main:
         if AGE_Entry.get() is None or AGE_Entry.get().isnumeric()==False:
             errors+=1
         age=AGE_Entry.get()
-        global month_num
-        bdate=str(Year_Birth.get())+'-'+str(month_num)+'-'+str(Day_Birth.get())
+
+        bdate=str(Year_Birth.get())+'-'+str(self.client_bmonth)+'-'+str(Day_Birth.get())
         bdate=datetime.strptime(bdate,"%Y-%m-%d")
+
         gender=Gender_Mune.get()
         if Address_Entry.get() is None:
             errors+=1
@@ -223,11 +225,14 @@ class Main:
         Year_Birth.current(0)
         Year_Birth.place(x=380,y=430)
 
+        month_num=datetime.now()
+        month_num=month_num.month
         curr_month=datetime.strptime(str(month_num),"%m")
         curr_year=datetime.strptime(Year_Birth.get(),"%Y")
 
         cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
         number=[day for week in cal for day in week if day != 0]
+        self.client_bmonth=month_num
         print(month_num)
         def setMonth(event):
             month_num= datetime.strptime(event.widget.get(), '%B').month
@@ -238,6 +243,7 @@ class Main:
             cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
             number=[day for week in cal for day in week if day != 0]
             Day_Birth.config(value=number)
+            self.client_bmonth=month_num
 
         def calculate_age(event):
             birthdate=event.widget.get()
@@ -248,14 +254,15 @@ class Main:
             AGE_Entry.delete(0,END)
             AGE_Entry.insert(0,age)
 
-            global month_num
             month_num=datetime.strptime(Month_Birth.get(), '%B').month
             curr_month=datetime.strptime(str(month_num),"%m")
             curr_year=datetime.strptime(Year_Birth.get(),"%Y")
             global cal,number
+            print(month_num)
             cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
             number=[day for week in cal for day in week if day != 0]
             Day_Birth.config(value=number)
+            self.client_bmonth=month_num
 
         Year_Birth.bind("<<ComboboxSelected>>",calculate_age)
 
