@@ -38,6 +38,7 @@ class Main:
         self.Value_Laboratory = ["Laboratory","X_RAY"]
         
         windll.user32.ShowWindow(h, 0)
+        self.client_bmonth=None
 
         self.test_date=date.today()
     
@@ -52,9 +53,10 @@ class Main:
         if AGE_Entry.get() is None or AGE_Entry.get().isnumeric()==False:
             errors+=1
         age=AGE_Entry.get()
-        global month_num
-        bdate=str(Year_Birth.get())+'-'+str(month_num)+'-'+str(Day_Birth.get())
+
+        bdate=str(Year_Birth.get())+'-'+str(self.client_bmonth)+'-'+str(Day_Birth.get())
         bdate=datetime.strptime(bdate,"%Y-%m-%d")
+
         gender=Gender_Mune.get()
         if Address_Entry.get() is None:
             errors+=1
@@ -223,12 +225,14 @@ class Main:
         Year_Birth.current(0)
         Year_Birth.place(x=380,y=430)
 
-        global month_num
+        month_num=datetime.now()
+        month_num=month_num.month
         curr_month=datetime.strptime(str(month_num),"%m")
         curr_year=datetime.strptime(Year_Birth.get(),"%Y")
 
         cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
         number=[day for week in cal for day in week if day != 0]
+        self.client_bmonth=month_num
         print(month_num)
         def setMonth(event):
             month_num= datetime.strptime(event.widget.get(), '%B').month
@@ -239,6 +243,7 @@ class Main:
             cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
             number=[day for week in cal for day in week if day != 0]
             Day_Birth.config(value=number)
+            self.client_bmonth=month_num
 
         def calculate_age(event):
             birthdate=event.widget.get()
@@ -249,7 +254,6 @@ class Main:
             AGE_Entry.delete(0,END)
             AGE_Entry.insert(0,age)
 
-            global month_num
             month_num=datetime.strptime(Month_Birth.get(), '%B').month
             curr_month=datetime.strptime(str(month_num),"%m")
             curr_year=datetime.strptime(Year_Birth.get(),"%Y")
@@ -257,6 +261,7 @@ class Main:
             cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
             number=[day for week in cal for day in week if day != 0]
             Day_Birth.config(value=number)
+            self.client_bmonth=month_num
 
         Year_Birth.bind("<<ComboboxSelected>>",calculate_age)
 
@@ -1332,6 +1337,15 @@ class Main:
 
             def addFinding():
                 self.user.addXrayFinding(Plus_Name_Entry.get(),Plus__BOX.get("1.0", "end-1c"))
+                PageOpen = 1
+
+                opts=self.user.getAllXrayFinding()
+                n=2
+                if opts is not None:
+                    Option=[x[n] for x in opts]
+                    self.FINDING_Mune.config(value=Option)
+                self.Plus_Finding_Page.destroy()
+                
 
             Plus_ADD_button=Button(Plus_Body,text="ADD",font=("Roboto 10"),width=5,borderwidth=5,command=addFinding)
             Plus_ADD_button.place(x=450,y=560)
@@ -1465,10 +1479,11 @@ class Main:
             IMPRESSIONS_BOX.pack()
 
             def FIND_Click(event):
-                chosen_finding_title=FINDING_Mune.get()
+                chosen_finding_title=self.FINDING_Mune.get()
                 findings=self.user.getXrayFindingDetails(chosen_finding_title)
                 title=findings[0]
                 body=findings[1]
+                Finding_BOX.delete("1.0","end")
                 # print(title,body)
                 Finding_BOX.insert("1.0",body)
 
@@ -1477,10 +1492,10 @@ class Main:
             if opts is not None:
                 Option=[x[n] for x in opts]
             # Option=["Normal","Chest PA"]
-            FINDING_Mune=ttk.Combobox(Detail_Body,value=Option,font='Roboto 12',width=20)
-            FINDING_Mune.set("Select FINDING")
-            FINDING_Mune.bind("<<ComboboxSelected>>",FIND_Click)
-            FINDING_Mune.place(x=449,y=310)
+            self.FINDING_Mune=ttk.Combobox(Detail_Body,value=Option,font='Roboto 12',width=20)
+            self.FINDING_Mune.set("Select FINDING")
+            self.FINDING_Mune.bind("<<ComboboxSelected>>",FIND_Click)
+            self.FINDING_Mune.place(x=449,y=310)
 
             Find_ADD=Button(Detail_Body,text="+",font='Roboto 10 bold',width=2,height=1,command=self.Plus_Finding)
             Find_ADD.place(x=420,y=309)
@@ -1637,7 +1652,7 @@ class Main:
         Monthly_year=ttk.Combobox(Frame_FilterBody,value=Monthly_years,font='Roboto 10',state='readonly',width=20)
         Monthly_year.set("Select Year")
 
-        Graph_Label=Label(Frame_FilterBody,text="Graph Model:",font='Roboto 11').place(x=850,y=14)
+        '''Graph_Label=Label(Frame_FilterBody,text="Graph Model:",font='Roboto 11').place(x=850,y=14)
         Graph_Value=["GRAPH BAR","GRAPH PIE"]        
         Graph_Selection=ttk.Combobox(Frame_FilterBody,value=Graph_Value,font='Roboto 10',state='readonly',width=20)
         Graph_Selection.set("Select Graph Model")
@@ -1672,7 +1687,7 @@ class Main:
                 messagebox.showerror("Access Denied","Please Select A Graph Model to Use For Data Analyst")
 
         Graph_button = Button(Frame_FilterBody,text="Create Graph",font='Roboto 7',borderwidth=3,command=Graph_create)
-        Graph_button.place(x=1100,y=12)
+        Graph_button.place(x=1100,y=12)'''
 
         global name_Choice,test_choice, filter_choice,filter_date_from,filter_date_to
 
@@ -2029,7 +2044,7 @@ class Main:
                 elif itemValues[3] in tests.keys():
                     tests[itemValues[3]]+=1
 
-                if itemValues[2] not in tests.keys():
+                if itemValues[2] not in Gender.keys():
                     Gender[itemValues[2]]=1
                 else:
                     Gender[itemValues[2]]+=1
@@ -2071,6 +2086,7 @@ class Main:
 
             fig, ax = plt.subplots()
             # ax.bar(Gender.keys(), Gender.values())
+            print(Gender.values(),Gender.keys())
             ax.pie(Gender.values(), labels=Gender.keys(), autopct='%1.0f%%')
             plt.savefig('gender.png', dpi=300)
 
@@ -2109,23 +2125,27 @@ class Main:
                 itemVal=Summary_Table.item(i, "values")
                 data.append(itemVal)
 
-            menuTable = doc.add_table(rows=1,cols=6)
+            menuTable = doc.add_table(rows=1,cols=8)
             hdr_Cells = menuTable.rows[0].cells
             hdr_Cells[0].text="No"
             hdr_Cells[1].text="Name"
-            hdr_Cells[2].text="Test"
-            hdr_Cells[3].text="Date Started"
-            hdr_Cells[4].text="Date Finished"
-            hdr_Cells[5].text="Medical Technologist"
+            hdr_Cells[2].text="Gender"
+            hdr_Cells[3].text="Test"
+            hdr_Cells[4].text="Age"
+            hdr_Cells[5].text="Date Started"
+            hdr_Cells[6].text="Date Finished"
+            hdr_Cells[7].text="Medical Technologist"
 
-            for no, name,test, dateStart,dateFin,medTech in data:
+            for no, name,gender,test,age, dateStart,dateFin,medTech in data:
                 row_cell=menuTable.add_row().cells
                 row_cell[0].text=str(no)
                 row_cell[1].text=name
-                row_cell[2].text=test
-                row_cell[3].text=dateStart
-                row_cell[4].text=dateFin
-                row_cell[5].text=medTech
+                row_cell[2].text=gender
+                row_cell[3].text=test
+                row_cell[4].text=age
+                row_cell[5].text=dateStart
+                row_cell[6].text=dateFin
+                row_cell[7].text=medTech
 
             doc.add_picture('tests.png')
             doc.add_picture('gender.png')

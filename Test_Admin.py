@@ -18,6 +18,7 @@ class Admin:
         global PageOpen
         if username.get()=="" and password.get()=="" and firstname.get()=="" and lastname.get()=="" and age.get()=="" and address.get()=="" and profession.get() =="":
             PageOpen=1
+            self.AdminGUI.grab_release()
             self.Registration_Page.destroy()
 
         else:
@@ -30,6 +31,7 @@ class Admin:
                 age.set("")
                 address.set("")
                 profession.set("")
+                self.AdminGUI.grab_release()
                 self.Registration_Page.destroy()
 
     def Regist(self):
@@ -45,10 +47,16 @@ class Admin:
             role=Entry_Pro.get()
             license=LicensePRO.get()
 
-            NewEmp=employee.Employee(None,uname,passwd,fname,lname,how_muchyour_age,addrss,role,license,Entry_Dept.get(),None)
-            NewEmp.register()
+            self.AdminGUI.grab_release()
+            if how_muchyour_age.isnumeric()==True:
+                NewEmp=employee.Employee(None,uname,passwd,fname,lname,how_muchyour_age,addrss,role,license,Entry_Dept.get(),None)
+                NewEmp.register()
+                messagebox.showinfo("Account Added Successfully","Added Succesfully")
+                self.Registration_Page.destroy()
 
-            messagebox.showinfo("Account Added Successfully","Added Succesfully")
+            else:
+                self.Registration_Page.grab_set()
+                messagebox.showerror("ERROR","AGE not A number please use Number only!")
 
         if PageOpen<2:
             self.Registration_Page=Toplevel(self.AdminGUI)
@@ -57,6 +65,7 @@ class Admin:
             Rig_height=560
             self.Registration_Page.geometry(f'{Rig_width}x{Rig_height}+{480}+{100}')
             self.Registration_Page.resizable(False,False)
+            self.Registration_Page.grab_set()
 
             self.Registration_Page.protocol("WM_DELETE_WINDOW", self.Rig_close)
 
@@ -203,6 +212,9 @@ class Admin:
                     if answer:
                         messagebox.showinfo("User Deleted","User Deleted Successfully")
                         employee.Employee.deleteEmployee(id)
+                        self.Profile_Number.destroy()
+                        self.Profile_Number.grid(row=self.Account_Num,column=0)
+                        self.View_Page.destroy()
                                 
                 def editAccount2(id,state):
                     if state==0:
@@ -379,21 +391,21 @@ class Admin:
 
         global labels
         labels=[]
-        for Account_Num in range(len(result)):
-            Profile_Number=Frame(Profile,padx=10, pady=10, width=1023, height=200)
-            Profile_Number.grid(row=Account_Num,column=0)
+        for self.Account_Num in range(len(result)):
+            self.Profile_Number=Frame(Profile,padx=10, pady=10, width=1023, height=200)
+            self.Profile_Number.grid(row=self.Account_Num,column=0)
 
-            Profile_Detail=Frame(Profile_Number,highlightbackground="black",highlightthickness=1,)
+            Profile_Detail=Frame(self.Profile_Number,highlightbackground="black",highlightthickness=1,)
             Profile_Detail.place(x=5,y=7,relwidth=0.99,relheight=0.92)
 
-            # Access Image URL thru result[Account_Num][8] 
+            # Access Image URL thru result[self.Account_Num][8] 
             Profile_Image=Label(Profile_Detail,text="IMAGE",bg="gray").place(x=10,y=10,relwidth=0.2,relheight=0.88)
             global Profile_Name
-            Profile_Name=Label(Profile_Detail,text=result[Account_Num][1]+" "+result[Account_Num][2],font=("Arail",25,"bold"))
+            Profile_Name=Label(Profile_Detail,text=result[self.Account_Num][1]+" "+result[self.Account_Num][2],font=("Arail",25,"bold"))
             Profile_Name.place(x=220,y=10)
             labels.append(Profile_Name)
 
-            Profile_Edit=Button(Profile_Detail,text="View",width=10,height=2,font=("Arail",10),borderwidth=5,command=lambda x= result[Account_Num][0]:self.ViewProfile(x, labels[Account_Num]))
+            Profile_Edit=Button(Profile_Detail,text="View",width=10,height=2,font=("Arail",10),borderwidth=5,command=lambda x= result[self.Account_Num][0]:self.ViewProfile(x, labels[self.Account_Num]))
             Profile_Edit.place(x=850,y=50)
 
         self.AdminGUI.mainloop()
