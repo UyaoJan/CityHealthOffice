@@ -162,8 +162,6 @@ class Main:
             Test.set(0)
             self.services.append(Test)
 
-
-            
         Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Roboto 12 ').place(x=30,y=50)
         Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Roboto 12 ').place(x=30,y=75)
         Checkbutton(self.Box,text="Stool Exam",variable=self.services[2],font='Roboto 12 ').place(x=30,y=100)
@@ -1554,41 +1552,45 @@ class Main:
     def Summary(self):
         def Home():
             self.Page_Summary.destroy()
-            self.Page_Dashboard.pack()
+            width= 1000
+            height= 700
+            self.Dashboard_GUI.geometry("%dx%d"%(width,height))
+            self.Page_Dashboard.pack(expand=1, fill=BOTH)
 
+        width= self.Dashboard_GUI.winfo_screenwidth()
+        height=self.Dashboard_GUI.winfo_screenheight()
+        self.Dashboard_GUI.geometry("%dx%d"%(width,height))
         self.Page_Dashboard.forget()
         self.Page_Summary=Frame(self.Dashboard_GUI,bg="green")
         self.Page_Summary.pack(expand=1, fill=BOTH)
-        Frame_Header=Frame(self.Page_Summary,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
-        Frame_Header.pack()
+        Frame_Header=Frame(self.Page_Summary,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
+        Frame_Header.pack(fill=X)
         image2 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
         IMG_HEADER_SUM=Label(Frame_Header,image=image2,bg='#BDFFC4',width=40,height=40)
         IMG_HEADER_SUM.image=image2
-        IMG_HEADER_SUM.place(x=5,y=1)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').place(x=50,y=1)
-
-        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),font='Roboto 20 ',bg='#BDFFC4').place(x=1150,y=5)
-        # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        # IMG_USERNAME.place(x=1200,y=8)
+        IMG_HEADER_SUM.pack(side=LEFT)
+        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').pack(side=LEFT)
 
         Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
-        Toggle_Button.place(x=1290,y=10)
+        Toggle_Button.pack(side=RIGHT,padx=20)
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
-
         Toggle_Button.menu.add_command(label="Home",font='Roboto 12 ',command=Home)
         Toggle_Button.menu.add_command(label="Logout",font='Roboto 12 ',command=lambda:self.logout())
+
+        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),font='Roboto 20 ',bg='#BDFFC4')
+        HEADER_USERNAME.pack(side=RIGHT)
         #Header-------
         #BODY >> Summary
 
         Frame_SumBody=Frame(self.Page_Summary)
         Frame_SumBody.pack(expand=1,fill=BOTH,side=TOP)
         
-        Frame_FilterBody=Frame(Frame_SumBody,height=130,border=2,borderwidth=5,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
+        Frame_FilterBody=Frame(Frame_SumBody,height=130,border=2,borderwidth=5,highlightbackground="black",highlightthickness=1)
         Frame_FilterBody.pack(fill=X)
 
         FrameIMG1=Frame(Frame_FilterBody,width=110,height=110)
-        FrameIMG1.place(x=40,y=0)
+        FrameIMG1.pack(side=LEFT,padx=10)
 
         image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((110, 110)))
         Img1=Label(FrameIMG1,image = image)
@@ -1599,10 +1601,10 @@ class Main:
         Sum_Test=[x[0] for x in res]
         Sum_Test.insert(0,'All')
 
-        Label(Frame_FilterBody,text="Laboratory Test:",font='Roboto 11',).place(x=200,y=12)
+        Label(Frame_FilterBody,text="Laboratory Test:",font='Roboto 11',).pack(side=LEFT)
         LabTest_Test=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Roboto 10',state='readonly',width=30)
         LabTest_Test.set("All")
-        LabTest_Test.place(x=310,y=14)
+        LabTest_Test.pack(side=LEFT)
 
         emp=employee.Employee.getAllEmployees()
         emp_choices=[x[1]+' '+x[2] for x in emp]
@@ -1685,6 +1687,10 @@ class Main:
             filter_choice=event.widget.get()
             if event.widget.get() == "No Filter":
                 filter_choice=None
+                Monthly_Lyears.place_forget()
+                Monthly_year.place_forget()
+
+
             elif event.widget.get()=="Monthly":
                 Monthly_months=list(calendar.month_name)
                 Valuebox_label.config(text="Choose Month:")
@@ -2243,84 +2249,105 @@ class Main:
     def Main_Dashboard(self):   
         self.Dashboard_GUI=Tk()
         self.Dashboard_GUI.title('CITY HEALTH')
-        width= self.Dashboard_GUI.winfo_screenwidth()
-        height=self.Dashboard_GUI.winfo_screenheight()
+        # width= self.Dashboard_GUI.winfo_screenwidth()
+        # height=self.Dashboard_GUI.winfo_screenheight()
+        width= 1000
+        height= 700
         self.Dashboard_GUI.geometry("%dx%d"%(width,height))
         self.Dashboard_GUI.protocol("WM_DELETE_WINDOW", self.onClose)
 
         self.Page_Dashboard=Frame(self.Dashboard_GUI)
         self.Page_Dashboard.pack(expand=1, fill=BOTH)
-        Frame_Header=Frame(self.Page_Dashboard,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
-        Frame_Header.pack()
+        Frame_Header=Frame(self.Page_Dashboard,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
+        Frame_Header.pack(fill=X)
         image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
         IMG_HEADER_MD=Label(Frame_Header,image=image,bg='#BDFFC4',width=40,height=40)
-        IMG_HEADER_MD.place(x=3,y=1)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').place(x=50,y=1)
-
-        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20').place(x=1150,y=3)
-        # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        # IMG_USERNAME.place(x=1200,y=8)
+        IMG_HEADER_MD.pack(side=LEFT)
+        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').pack(side=LEFT)
 
         Toggle_Button=Menubutton(Frame_Header,width=5,text="=",bg="white",highlightbackground="black",highlightthickness=1,justify=RIGHT)
-        Toggle_Button.place(x=1290,y=10)
+        Toggle_Button.pack(side=RIGHT,padx=20)
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
         Toggle_Button.menu.add_command(label="LOGOUT",font='Roboto 12 bold',command=lambda:self.logout())
+
+        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20')
+        HEADER_USERNAME.pack(side=RIGHT)
         #Header END------------
 
         #Message
-        Frame_Center=Frame(self.Page_Dashboard,width=1360,height=413,highlightbackground="black",highlightthickness=1)
-        Frame_Center.pack()
-        VISION=Label(Frame_Center,text="VISSION:",font=("Roboto",20,'bold')).place(x=440,y=20)
-        VISION_BODY=Label(Frame_Center,text="CAGAYAN DE ORO CITY HEALTH OFFICE - \nThe nations ideal public health care service provider to ensure healthy and empowered \nCagay-anons",justify=LEFT,font=("Roboto",13)).place(x=480,y=56)
-        MISSION=Label(Frame_Center,text="MISSION",justify=LEFT,font=("Roboto",20,'bold')).place(x=440,y=150)
-        MISSION_BODY=Label(Frame_Center,text="We, the Health care managers and providers pledge to deliver quality health care through \nregulative, preventive, curative and rehabilitative services. To attain our mission, \nwe subscribed to the following \nValues: \n• Equality / Liberty \n• Knowledge / Insight \n• Self-actualization \n• Service / vocation",justify=LEFT,font=("Roboto",13)).place(x=480,y=186)
-
-        CDOH_LOGO = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
-        CDOH_Label=Label(Frame_Center,image=CDOH_LOGO)
-        CDOH_Label.place(x=80,y=50,width=300, height=300)
-
-        
-        Certificate=Button(Frame_Center,text="Certificate",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Certificate_Page).place(x=1240,y=370)
+        Frame_Center=Frame(self.Page_Dashboard,highlightbackground="black",highlightthickness=1)
+        Frame_Center.pack(expand=1,fill=BOTH)
 
         #FrontDesk
-        Frame_Laboratory=Frame(self.Page_Dashboard,width=1360,height=290,highlightbackground="black",highlightthickness=1)
-        Frame_Laboratory.pack()
+        Frame_Laboratory=Frame(self.Page_Dashboard,highlightbackground="black",highlightthickness=1)
+        Frame_Laboratory.pack(fill=X)
 
-        Frame_FrontDesk=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
-        Frame_FrontDesk.place(x=0,y=0)
+        Frame_Profile = Frame(Frame_Laboratory,highlightbackground="black",highlightthickness=1)
+        Frame_Profile.pack(expand=True,side=LEFT,fill=X)
+
         CHO_F= ImageTk.PhotoImage(Image.open("CHO_Front.jpg").resize((140, 150)))
-        CHO_FL=Label(Frame_FrontDesk,image=CHO_F,highlightbackground="black",highlightthickness=1)
-        CHO_FL.place(x=80,y=70,width=140, height=150)
-        FrontDesk_label=Label(Frame_FrontDesk,text="FRONT DESK",font=("Roboto",30,"bold")).place(x=20,y=10)
-        Button_FronDesk=Button(Frame_FrontDesk,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
+        CHO_FL=Label(Frame_Profile,image=CHO_F,highlightbackground="black",highlightthickness=1)
+        CHO_FL.pack(side=LEFT)
 
-        #Lab-list
-        Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
-        Frame_LabTest.place(x=350,y=0)
-        Frame_LabCH=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
-        Frame_LabCH.place(x=0,y=0)
-        CHO_L= ImageTk.PhotoImage(Image.open("CHO_Lab.jpg").resize((140, 140)))
-        CHO_LL=Label(Frame_LabTest,image=CHO_L,highlightbackground="black",highlightthickness=1)
-        CHO_LL.place(x=2,y=2,width=140, height=140)
-        Laboratory_label=Label(Frame_LabCH,text="LABORATORY TEST",font=("Roboto",30,"bold")).place(x=147,y=5)
-        Button_LabCH=Button(Frame_LabCH,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=100)
 
-        Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
-        Frame_XRay.place(x=0,y=145)
-        CHO_X= ImageTk.PhotoImage(Image.open("CHO_Xray.jpg").resize((138, 138)))
-        CHO_XL=Label(Frame_XRay,image=CHO_X,highlightbackground="black",highlightthickness=1)
-        CHO_XL.place(x=2,y=2,width=138, height=138)
-        Xray_label=Label(Frame_XRay,text="X-RAY LABORATORY",font=("Roboto",30,"bold")).place(x=147,y=5)
-        Button_XRay=Button(Frame_XRay,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=100)
+        USER_ID=Label(Frame_Profile,text="ID: "+str(self.user.id),bg='#BDFFC4',font='Roboto 13')
+        USER_ID.place(x=150,y=5)
+        USER_NAME=Label(Frame_Profile,text="Name: "+str(self.user.username),bg='#BDFFC4',font='Roboto 15')
+        USER_NAME.place(x=150,y=30)
+        USER_Role=Label(Frame_Profile,text=str(self.user.role),bg='#BDFFC4',font='Roboto 13')
+        USER_Role.place(x=150,y=60)
+        # USER_NAME=Label(Frame_Profile,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20')
+        # USER_NAME.pack(side=LEFT)
 
-        Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
-        Frame_Summary.place(x=1009,y=0)
-        CHO_S= ImageTk.PhotoImage(Image.open("CHO_Summary.jpg").resize((200, 150)))
-        CHO_SL=Label(Frame_Summary,image=CHO_S,highlightbackground="black",highlightthickness=1)
-        CHO_SL.place(x=60,y=70,width=200, height=150)
-        Summary_label=Label(Frame_Summary,text="SUMMARY",font=("Roboto",30,"bold")).place(x=40,y=10)
-        Button_Summary=Button(Frame_Summary,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=118,y=230)
+        Frame_Works = Frame(Frame_Laboratory,width=200,highlightbackground="black",highlightthickness=1)
+        Frame_Works.pack(fill=BOTH,side=RIGHT)
+
+        if self.user.role == "FrontDesk":
+            Button_FronDesk=Button(Frame_Works,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
+            Frame_Works.pack()
+            
+        Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Certificate_Page)
+        Certificate_Button.pack()
+        Button_Summary=Button(Frame_Works,text="Summary",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Summary)
+        Button_Summary.pack()
+
+
+
+        # Frame_FrontDesk=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
+        # Frame_FrontDesk.place(x=0,y=0)
+        # CHO_F= ImageTk.PhotoImage(Image.open("CHO_Front.jpg").resize((140, 150)))
+        # CHO_FL=Label(Frame_FrontDesk,image=CHO_F,highlightbackground="black",highlightthickness=1)
+        # CHO_FL.place(x=80,y=70,width=140, height=150)
+        # FrontDesk_label=Label(Frame_FrontDesk,text="FRONT DESK",font=("Roboto",30,"bold")).place(x=20,y=10)
+        # Button_FronDesk=Button(Frame_FrontDesk,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
+
+        # #Lab-list
+        # Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
+        # Frame_LabTest.place(x=350,y=0)
+        # Frame_LabCH=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
+        # Frame_LabCH.place(x=0,y=0)
+        # CHO_L= ImageTk.PhotoImage(Image.open("CHO_Lab.jpg").resize((140, 140)))
+        # CHO_LL=Label(Frame_LabTest,image=CHO_L,highlightbackground="black",highlightthickness=1)
+        # CHO_LL.place(x=2,y=2,width=140, height=140)
+        # Laboratory_label=Label(Frame_LabCH,text="LABORATORY TEST",font=("Roboto",30,"bold")).place(x=147,y=5)
+        # Button_LabCH=Button(Frame_LabCH,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=100)
+
+        # Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
+        # Frame_XRay.place(x=0,y=145)
+        # CHO_X= ImageTk.PhotoImage(Image.open("CHO_Xray.jpg").resize((138, 138)))
+        # CHO_XL=Label(Frame_XRay,image=CHO_X,highlightbackground="black",highlightthickness=1)
+        # CHO_XL.place(x=2,y=2,width=138, height=138)
+        # Xray_label=Label(Frame_XRay,text="X-RAY LABORATORY",font=("Roboto",30,"bold")).place(x=147,y=5)
+        # Button_XRay=Button(Frame_XRay,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=100)
+
+        # Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
+        # Frame_Summary.place(x=1009,y=0)
+        # CHO_S= ImageTk.PhotoImage(Image.open("CHO_Summary.jpg").resize((200, 150)))
+        # CHO_SL=Label(Frame_Summary,image=CHO_S,highlightbackground="black",highlightthickness=1)
+        # CHO_SL.place(x=60,y=70,width=200, height=150)
+        # Summary_label=Label(Frame_Summary,text="SUMMARY",font=("Roboto",30,"bold")).place(x=40,y=10)
+        # Button_Summary=Button(Frame_Summary,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=118,y=230)
 
         self.Dashboard_GUI.mainloop()
     
