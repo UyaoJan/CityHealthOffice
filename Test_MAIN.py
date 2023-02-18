@@ -442,43 +442,60 @@ class Main:
         else: 
             def Home():
                 Page_Laboratory.destroy()
-                self.Page_Dashboard.pack()
+                width= 1000
+                height= 700
+                self.Dashboard_GUI.geometry("%dx%d"%(width,height))
+                self.Page_Dashboard.pack(expand=1, fill=BOTH)
 
+            width= self.Dashboard_GUI.winfo_screenwidth()
+            height=self.Dashboard_GUI.winfo_screenheight()
+            self.Dashboard_GUI.geometry("%dx%d"%(width,height))
             self.Page_Dashboard.forget()
             Page_Laboratory=Frame(self.Dashboard_GUI,bg="green")
             Page_Laboratory.pack(expand=1, fill=BOTH)
             Frame_Header=Frame(Page_Laboratory,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
-            Frame_Header.pack()
+            Frame_Header.pack(fill=X)
             image4 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
             IMG_HEADER_Lab=Label(Frame_Header,image=image4,bg='#BDFFC4',width=40,height=40)
             IMG_HEADER_Lab.image=image4
-            IMG_HEADER_Lab.place(x=5,y=1)
-            HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').place(x=50,y=1)
-
-            HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ').place(x=1150,y=5)
-            # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-            # IMG_USERNAME.place(x=1250,y=8)
+            IMG_HEADER_Lab.pack(side=LEFT)
+            HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').pack(side=LEFT)
 
             Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
-            Toggle_Button.place(x=1290,y=10)
+            Toggle_Button.pack(side=RIGHT,padx=20)
             Toggle_Button.menu=Menu(Toggle_Button)
             Toggle_Button["menu"]=Toggle_Button.menu
 
             Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=Home)
             Toggle_Button.menu.add_command(label="Logout",font='Roboto 12',command=lambda:self.logout())
+
+            HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ')
+            HEADER_USERNAME.pack(side=RIGHT)
+
             #Header-------
             #BODY >> Laboratory
-            Frame_Body=Frame(Page_Laboratory,width=1360,height=150,highlightbackground="black",highlightthickness=1)
-            Frame_Body.pack()
+            Frame_Body=Frame(Page_Laboratory,highlightbackground="black",highlightthickness=1)
+            Frame_Body.pack(fill=X)
 
-            Labo_Title=Label(Frame_Body,text="Laboratory Test!",font='Roboto 20')
-            Labo_Title.place(x=10,y=5)
-            Name_Label=Label(Frame_Body,text="Name: ",font='Roboto 12').place(x=19,y=50)
-            # Name_Entry=Entry(Frame_Body,width=59,borderwidth=3,font='Roboto 9')
+            Patent_Detail=Frame(Frame_Body)
+            Patent_Detail.pack(side=LEFT,padx=20)
+
+            Labo_Title=Label(Patent_Detail,text="Laboratory Test!",font='Roboto 20',anchor=W)
+            Labo_Title.pack(side=TOP,fill=X)
+
+            Detail_1=Frame(Patent_Detail,bg="gray")
+            Detail_1.pack(pady=5)
+
+            ID_LABEL=Label(Detail_1,text="ID: ",font='Roboto 12').pack(side=LEFT)
+            ID_ENTRY=Entry(Detail_1,width=8,font='Roboto 9',borderwidth=3,state='disabled')
+            ID_ENTRY.pack(side=LEFT)
+
+            Name_Label=Label(Detail_1,text="Name: ",font='Roboto 12').pack(side=LEFT)
+            # Name_Entry=Entry(Detail_1,width=59,borderwidth=3,font='Roboto 9')
             res=self.user.getClients_all()
             names=[x[1] for x in res]
-            Name_Entry=ttk.Combobox(Frame_Body,value=names,font='Roboto 12',width=40)
-            Name_Entry.place(x=20,y=70)
+            Name_Entry=ttk.Combobox(Detail_1,value=names,font='Roboto 12',width=40)
+            Name_Entry.pack(side=LEFT)
 
             def Name_entry_search(event):
                 value=event.widget.get()
@@ -504,32 +521,33 @@ class Main:
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
             Name_Entry.bind("<KeyRelease>",Name_entry_search)
 
-            AGE_Label=Label(Frame_Body,text="Age: ",font='Roboto 12').place(x=400,y=50)
-            AGE_Entry=Entry(Frame_Body,width=8,font='Roboto 9',borderwidth=3,state='disabled')
-            AGE_Entry.place(x=400,y=70)
-
-            ID_LABEL=Label(Frame_Body,text="ID: ",font='Roboto 12').place(x=500,y=50)
-            ID_ENTRY=Entry(Frame_Body,width=8,font='Roboto 9',borderwidth=3,state='disabled')
-            ID_ENTRY.place(x=500,y=70)
+            AGE_Label=Label(Detail_1,text="Age: ",font='Roboto 12').pack(side=LEFT)
+            AGE_Entry=Entry(Detail_1,width=8,font='Roboto 9',borderwidth=3,state='disabled')
+            AGE_Entry.pack(side=LEFT)
 
             # def Gender_Click(event):
-            #     Genderlabel=Label(Frame_Body,Gender_Mune.get(),font="Roboto 12")
+            #     Genderlabel=Label(Patent_Detail,Gender_Mune.get(),font="Roboto 12")
 
-            Gender_Label=Label(Frame_Body,text="Gender:",font='Roboto 12').place(x=150,y=100)
+            Detail_2=Frame(Patent_Detail)
+            Detail_2.pack(side=BOTTOM,fill=X)
+
+            Gender_Label=Label(Detail_2,text="Gender:",font='Roboto 12').pack(side=LEFT)
             Option=["Male","Female","Other"]
-            Gender_Mune=ttk.Combobox(Frame_Body,value=Option,font='Roboto 12',state='readonly')
+            Gender_Mune=ttk.Combobox(Detail_2,value=Option,font='Roboto 12',state='readonly')
             Gender_Mune.set("Select Gender")
             # Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
-            Gender_Mune.place(x=150,y=120)
+            Gender_Mune.pack(side=LEFT,padx=3)
+            Date_Label=Label(Detail_2,text="Date:",font=("Roboto 12")).pack(side=LEFT)
+            Date_Entry=DateEntry(Detail_2,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
+            Date_Entry.pack(side=LEFT)
 
-            Date_Label=Label(Frame_Body,text="Date:",font=("Roboto 12")).place(x=20,y=100)
-            Date_Entry=DateEntry(Frame_Body,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
-            Date_Entry.place(x=20,y=120)
-            
+            Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
+            Record_Button.pack(side=RIGHT)
+
             Testlist=Frame(Frame_Body,bg="blue",highlightbackground="black",highlightthickness=1)
-            Testlist.place(x=850,y=0,relwidth=0.25,relheight=1.0)
+            Testlist.pack(side=RIGHT)
 
-            Test_Table=ttk.Treeview(Testlist)
+            Test_Table=ttk.Treeview(Testlist,height=5)
             style=ttk.Style()
             style.theme_use("default")
             style.configure("Treeview")
@@ -537,12 +555,10 @@ class Main:
 
             Test_Table.column("#0",width=0,stretch=NO)
             Test_Table.column("Laboratory",width=200)
-            # Test_Table.column("Complete",width=100)
 
             Test_Table.heading("#0")
             Test_Table.heading("Laboratory",text="Laboratory Test")
-            # Test_Table.heading("Complete",text="Complete")
-            Test_Table.pack(expand=1,fill=BOTH)
+            Test_Table.pack(fill=Y)
 
             def setClient(event):
                 if Test_Table.get_children()!=0:
@@ -571,15 +587,15 @@ class Main:
 
 
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
-            Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
-            Record_Button.place(x=1200,y=100)
-
             #Frame for the Testing 
             Frame_Test=Frame(Page_Laboratory,highlightbackground="black",highlightthickness=1,bg="blue")
             Frame_Test.pack(expand=1,fill=BOTH)
 
-            Test_Label=Label(Frame_Test,text="Laboratory Test",width=123,font="Roboto 15",anchor=W,highlightbackground="black",highlightthickness=1)
-            Test_Label.place(x=0,y=0)
+            Header_Test=Frame(Frame_Test,highlightbackground="black",highlightthickness=1)
+            Header_Test.pack(fill=X)
+
+            Test_Label=Label(Header_Test,text="Laboratory Test",font="Roboto 15",anchor=W)
+            Test_Label.pack(side=LEFT)
 
             Test=[  
                     "Complete Blood Count / Hematology",
@@ -1258,17 +1274,16 @@ class Main:
 
                     FE_Button=Button(FE_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=submit)
                     FE_Button.place(x=1200,y=430)
-
-
-
-            Test_Label=Label(Frame_Test,text="TEST:",font='Roboto 12 bold').place(x=1075,y=3)
-            LabTest_Mune=ttk.Combobox(Frame_Test,value=Test,font='Roboto 12',state='readonly')
+            
+            Nothing=Label(Header_Test,text="",font='Roboto 12 bold').pack(side=RIGHT,padx=5)
+            LabTest_Mune=ttk.Combobox(Header_Test,value=Test,font='Roboto 12',state='readonly')
             # LabTest_Mune.set("Serology")
             LabTest_Mune.bind("<<ComboboxSelected>>",Option_TEST)
-            LabTest_Mune.place(x=1130,y=3)
+            LabTest_Mune.pack(side=RIGHT)
+            Test_Label=Label(Header_Test,text="TEST:",font='Roboto 12 bold').pack(side=RIGHT)
 
             Contener = Frame(Frame_Test,highlightbackground="white",highlightthickness=5)
-            Contener.place(x=0,y=31,relwidth=1.0,relheight=0.95)
+            Contener.pack(expand=True,fill=BOTH)
 
             #List Frame of the Test
             Serology_Page = Frame(Contener)
@@ -1538,7 +1553,6 @@ class Main:
                         
                         # self.user.markXray_as_done(test_id)
 
-                        
                         id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                         self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                         self.user.markTest_as_done(test_id[0])
@@ -1589,50 +1603,56 @@ class Main:
         Frame_FilterBody=Frame(Frame_SumBody,height=130,border=2,borderwidth=5,highlightbackground="black",highlightthickness=1)
         Frame_FilterBody.pack(fill=X)
 
-        FrameIMG1=Frame(Frame_FilterBody,width=110,height=110)
+        FrameIMG1=Frame(Frame_FilterBody, bg="blue",width=110,height=110)
         FrameIMG1.pack(side=LEFT,padx=10)
 
         image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((110, 110)))
         Img1=Label(FrameIMG1,image = image)
         Img1.image=image
-        Img1.place(x=0,y=0,width=110, height=110)
+        Img1.pack()
 
         res= self.user.getAllTest()
         Sum_Test=[x[0] for x in res]
         Sum_Test.insert(0,'All')
 
-        Label(Frame_FilterBody,text="Laboratory Test:",font='Roboto 11',).pack(side=LEFT)
-        LabTest_Test=ttk.Combobox(Frame_FilterBody,value=Sum_Test,font='Roboto 10',state='readonly',width=30)
+        Container=Frame(Frame_FilterBody)
+        Container.pack(side=LEFT,fill=Y,padx=10)
+
+        Label(Container,text="Laboratory Test:",font='Roboto 11',anchor=W).pack(fill=X)
+        LabTest_Test=ttk.Combobox(Container,value=Sum_Test,font='Roboto 10',state='readonly')
         LabTest_Test.set("All")
-        LabTest_Test.pack(side=LEFT)
+        LabTest_Test.pack(fill=X)
 
         emp=employee.Employee.getAllEmployees()
         emp_choices=[x[1]+' '+x[2] for x in emp]
         emp_choices.insert(0,'All')
-
-        Label(Frame_FilterBody,text="Medical Technologist",font='Roboto 11',).place(x=200,y=40)
-        MidTech_Emp=ttk.Combobox(Frame_FilterBody,value=emp_choices,font='Roboto 10',state='readonly',width=45)
+        # Label(Container,text="").pack(pady=1)
+        Label(Container,text="Medical Technologist",font='Roboto 11',anchor=W).pack(fill=X)
+        MidTech_Emp=ttk.Combobox(Container,value=emp_choices,font='Roboto 10',state='readonly',width=45)
         MidTech_Emp.set("All")
-        MidTech_Emp.place(x=203,y=60)
+        MidTech_Emp.pack()
+
+        Container_2=Frame(Frame_FilterBody)
+        Container_2.pack(side=LEFT,fill=Y,padx=5)
 
         filter_options=["No Filter","Monthly","Yearly","1st Semi Annual","2nd Semi Annual","1st Quarter","2nd Quarter","3rd Quarter","4th Quarter"]
-        Label(Frame_FilterBody,text="Filter By:",font='Roboto 11',).place(x=560,y=12)
-        MidTech_Filter=ttk.Combobox(Frame_FilterBody,value=filter_options,font='Roboto 10',state='readonly',width=20)
+        Label(Container_2,text="Filter By:",font='Roboto 11',anchor=W).pack(fill=X)
+        MidTech_Filter=ttk.Combobox(Container_2,value=filter_options,font='Roboto 10',state='readonly',width=20)
         MidTech_Filter.set("No Filter")
-        MidTech_Filter.place(x=620,y=14)
+        MidTech_Filter.pack()
 
         global Valuebox, Monthly_year
 
         Valuebox_V=list(calendar.month_name)
-        Valuebox_label=Label(Frame_FilterBody,text="Choose Month:",font='Roboto 11',)
+        Valuebox_label=Label(Container_2,text="Choose Month:",font='Roboto 11',anchor=W)
 
-        Valuebox=ttk.Combobox(Frame_FilterBody,value=Valuebox_V,font='Roboto 10',state='readonly',width=20)
+        Valuebox=ttk.Combobox(Container_2,value=Valuebox_V,font='Roboto 10',state='readonly',width=20)
         Valuebox.set("Select Month")
 
         Monthly_yearr=datetime.today().year
         Monthly_years=[Monthly_yearr - i for i in range (6)]
-        Monthly_Lyears=Label(Frame_FilterBody,text="Choose Year :",font='Roboto 11')
-        Monthly_year=ttk.Combobox(Frame_FilterBody,value=Monthly_years,font='Roboto 10',state='readonly',width=20)
+        Monthly_Lyears=Label(Container_2,text="Choose Year :",font='Roboto 11',anchor=W)
+        Monthly_year=ttk.Combobox(Container_2,value=Monthly_years,font='Roboto 10',state='readonly',width=20)
         Monthly_year.set("Select Year")
 
 
@@ -1687,8 +1707,10 @@ class Main:
             filter_choice=event.widget.get()
             if event.widget.get() == "No Filter":
                 filter_choice=None
-                Monthly_Lyears.place_forget()
-                Monthly_year.place_forget()
+                Monthly_Lyears.pack_forget()
+                Monthly_year.pack_forget()
+                Valuebox_label.pack_forget()
+                Valuebox.pack_forget()
 
 
             elif event.widget.get()=="Monthly":
@@ -1696,18 +1718,18 @@ class Main:
                 Valuebox_label.config(text="Choose Month:")
                 Valuebox.config(values=Monthly_months)
 
-                Valuebox_label.place(x=560,y=40)
-                Valuebox.place(x=560,y=60)
+                Valuebox_label.pack(fill=X)
+                Valuebox.pack()
 
-                Monthly_Lyears.place(x=750,y=40)
-                Monthly_year.place(x=750,y=60)
+                Monthly_Lyears.pack(fill=X)
+                Monthly_year.pack()
 
             elif event.widget.get()=="Yearly":
-                Monthly_Lyears.place_forget()
-                Monthly_year.place_forget()
+                Monthly_Lyears.pack_forget()
+                Monthly_year.pack_forget()
                 Valuebox_label.config(text="Choose Yearly:")
-                Valuebox_label.place(x=560,y=40)
-                Valuebox.place(x=560,y=60)
+                Valuebox_label.pack(fill=X)
+                Valuebox.pack()
 
                 Yearly_yearr=datetime.today().year
                 Yearly_years=[Yearly_yearr - i for i in range (6)]
@@ -1715,46 +1737,46 @@ class Main:
                 Valuebox.set('Select Year')
 
             elif event.widget.get()=="1st Semi Annual":
-                Monthly_Lyears.place_forget()
-                Monthly_year.place_forget()
+                Monthly_Lyears.pack_forget()
+                Monthly_year.pack_forget()
                 Valuebox_label.config(text="1st Semi Annual:")
-                Valuebox_label.place(x=560,y=40)
-                Valuebox.place(x=560,y=60)
+                Valuebox_label.pack(fill=X)
+                Valuebox.pack()
                 Semi_1=datetime.today().year
                 Semi_1_years=[Semi_1 - i for i in range (6)]
                 Valuebox.config(values=Semi_1_years)
                 Valuebox.set('Select Year')
 
             elif event.widget.get()=="2nd Semi Annual":
-                Monthly_Lyears.place_forget()
-                Monthly_year.place_forget()
+                Monthly_Lyears.pack_forget()
+                Monthly_year.pack_forget()
                 Valuebox_label.config(text="2nd Semi Annual:")
-                Valuebox_label.place(x=560,y=40)
-                Valuebox.place(x=560,y=60)
+                Valuebox_label.pack(fill=X)
+                Valuebox.pack()
                 Semi_2=datetime.today().year
                 Semi_2_years=[Semi_2 - i for i in range (6)]
                 Valuebox.config(values=Semi_2_years)
                 Valuebox.set('Select Year')
             
             elif event.widget.get()=="1st Quarter":
-                Monthly_Lyears.place_forget()
-                Monthly_year.place_forget()
+                Monthly_Lyears.pack_forget()
+                Monthly_year.pack_forget()
                 Valuebox_label.config(text="1st Quarter:")
-                Valuebox_label.place(x=560,y=40)
-                Valuebox.place(x=560,y=60)
+                Valuebox_label.pack(fill=X)
+                Valuebox.pack()
                 Quarter_1=datetime.today().year
                 Quarter_1_years=[Quarter_1 - i for i in range (6)]
                 Valuebox.config(values=Quarter_1_years)
                 Valuebox.set('Select Year')
 
             elif event.widget.get()=="2nd Quarter":
-                Monthly_Lyears.place_forget()
-                Monthly_year.place_forget()
+                Monthly_Lyears.pack_forget()
+                Monthly_year.pack_forget()
                 Valuebox_label.config(text="2nd Quarter:")
                 Valuebox.set('Select Year')
                 
-                Valuebox_label.place(x=560,y=40)
-                Valuebox.place(x=560,y=60)
+                Valuebox_label.pack(fill=X)
+                Valuebox.pack()
                 Quarter_2=datetime.today().year
                 Quarter_2_years=[Quarter_2 - i for i in range (6)]
                 Valuebox.config(values=Quarter_2_years)
@@ -1762,21 +1784,21 @@ class Main:
 
             elif event.widget.get()=="3rd Quarter":
                 Valuebox_label.config(text="3rd Quarter:")
-                Monthly_Lyears.place_forget()
-                Monthly_year.place_forget()
-                Valuebox_label.place(x=560,y=40)
-                Valuebox.place(x=560,y=60)
+                Monthly_Lyears.pack_forget()
+                Monthly_year.pack_forget()
+                Valuebox_label.pack(fill=X)
+                Valuebox.pack()
                 Quarter_3=datetime.today().year
                 Quarter_3_years=[Quarter_3 - i for i in range (6)]
                 Valuebox.config(values=Quarter_3_years)
                 Valuebox.set('Select Year')
                 
             elif event.widget.get()=="4th Quarter":
-                Monthly_Lyears.place_forget()
-                Monthly_year.place_forget()
+                Monthly_Lyears.pack_forget()
+                Monthly_year.pack_forget()
                 Valuebox_label.config(text="4th Quarter:")
-                Valuebox_label.place(x=560,y=40)
-                Valuebox.place(x=560,y=60)
+                Valuebox_label.pack(fill=X)
+                Valuebox.pack()
                 Quarter_4=datetime.today().year
                 Quarter_4_years=[Quarter_4 - i for i in range (6)]
                 Valuebox.config(values=Quarter_4_years)
@@ -2253,7 +2275,7 @@ class Main:
         # height=self.Dashboard_GUI.winfo_screenheight()
         width= 1000
         height= 700
-        self.Dashboard_GUI.geometry("%dx%d"%(width,height))
+        self.Dashboard_GUI.geometry(f'{width}x{height}+{180}+{20}')
         self.Dashboard_GUI.protocol("WM_DELETE_WINDOW", self.onClose)
 
         self.Page_Dashboard=Frame(self.Dashboard_GUI)
@@ -2286,29 +2308,35 @@ class Main:
         Frame_Profile = Frame(Frame_Laboratory,highlightbackground="black",highlightthickness=1)
         Frame_Profile.pack(expand=True,side=LEFT,fill=X)
 
-        CHO_F= ImageTk.PhotoImage(Image.open("CHO_Front.jpg").resize((140, 150)))
+        CHO_F= ImageTk.PhotoImage(Image.open("CHO_Front.jpg").resize((140, 140)))
         CHO_FL=Label(Frame_Profile,image=CHO_F,highlightbackground="black",highlightthickness=1)
         CHO_FL.pack(side=LEFT)
 
 
-        USER_ID=Label(Frame_Profile,text="ID: "+str(self.user.id),bg='#BDFFC4',font='Roboto 13')
+        USER_ID=Label(Frame_Profile,text="ID: "+str(self.user.id),font='Roboto 13')
         USER_ID.place(x=150,y=5)
-        USER_NAME=Label(Frame_Profile,text="Name: "+str(self.user.username),bg='#BDFFC4',font='Roboto 15')
+        USER_NAME=Label(Frame_Profile,text="Name: "+str(self.user.username),font='Roboto 15')
         USER_NAME.place(x=150,y=30)
-        USER_Role=Label(Frame_Profile,text=str(self.user.role),bg='#BDFFC4',font='Roboto 13')
+        USER_Role=Label(Frame_Profile,text=str(self.user.role),font='Roboto 13')
         USER_Role.place(x=150,y=60)
-        # USER_NAME=Label(Frame_Profile,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20')
+        # USER_NAME=Label(Frame_Profile,text=str(self.user.username),font='Roboto 20')
         # USER_NAME.pack(side=LEFT)
 
         Frame_Works = Frame(Frame_Laboratory,width=200,highlightbackground="black",highlightthickness=1)
         Frame_Works.pack(fill=BOTH,side=RIGHT)
 
-        if self.user.role == "FrontDesk":
-            Button_FronDesk=Button(Frame_Works,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
-            Frame_Works.pack()
+        if self.user.return_dept()=='Imaging Center':
+            Button_XRay=Button(Frame_Works,text="X_RAY",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.X_Ray)
+            Button_XRay.pack(pady=2)
+        elif self.user.return_dept()=='Laboratory Department':
+            Button_LabCH=Button(Frame_Works,text="Laboratory",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.Laboratory)
+            Button_LabCH.pack(pady=2)
+        else:
+            messagebox.showinfo("Error","This Account don't have a Role!")
+
             
         Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Certificate_Page)
-        Certificate_Button.pack()
+        Certificate_Button.pack(pady=1)
         Button_Summary=Button(Frame_Works,text="Summary",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Summary)
         Button_Summary.pack()
 
