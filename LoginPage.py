@@ -2,14 +2,15 @@ from tkinter import *
 from tkinter import messagebox
 import Test_MAIN, employee, Test_Admin
 from PIL import Image, ImageTk
+import os
+from dotenv import load_dotenv
+env_loc="config.env"
+load_dotenv(env_loc)
 
 # Admin Username and Password
 global admin_uname,admin_pass
-admin_uname="admin"
-admin_pass="admin123"
-
-from ctypes import windll
-h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
+admin_uname=os.getenv('ADMIN_USERNAME')
+admin_pass=os.getenv('ADMIN_PASSWORD')
 
 from ctypes import windll
 h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)

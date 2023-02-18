@@ -50,7 +50,7 @@ class Employee:
         cursor=self.Cursor
         query="SELECT id FROM tests WHERE ClientID=%s AND ServiceID=%s"
         cursor.execute(query,(client,service))
-        result=cursor.fetchone()
+        result=cursor.fetchall()
         return result
 
     def getClientTestRequests(self,clientID, testID):
@@ -216,7 +216,7 @@ class Employee:
         return result
 
     def getClientsMedCert(self): 
-        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.ServiceID=19;"
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status!='done' AND tests.ServiceID=19;"
         cursor=self.Cursor
         cursor.execute(query)
         result=cursor.fetchall()
@@ -224,7 +224,7 @@ class Employee:
 
 
     def getClients_Xray(self):
-        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName, tests.id FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.ServiceID=15;"
+        query="SELECT clients.ClientID, clients.Name,clients.age,clients.gender,clients.bday,clients.address, services.ServiceName, tests.id FROM clients, tests, services WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status!='done' AND tests.ServiceID=15;"
         cursor=self.Cursor
         cursor.execute(query)
         result=cursor.fetchall()

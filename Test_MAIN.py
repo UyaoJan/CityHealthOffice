@@ -20,6 +20,8 @@ import win32api, os, time
 import win32print
 import summary_filter
 
+from dotenv import load_dotenv
+
 from ctypes import windll
 
 # get the handle to the taskbar
@@ -28,6 +30,8 @@ h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
 
 class Main:
     def __init__(self,init):
+        env_loc="config.env"
+        load_dotenv(env_loc)
         self.user=init
         self.Dashboard_GUI = None
         self.Page_Summary = None
@@ -647,33 +651,35 @@ class Main:
                             dengue_ns1_antigen_test=ST_BOX12_L.get()
                             document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
                             doc=DocxTemplate(document)
-                                
+                            OR_Num=self.user.generateClient_ORNumber()
                             context={
                                 "NAME":Name_Entry.get(),
                                 "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
                                 "DATE":self.test_date,
-                                "OR_NO":self.user.generateClient_ORNumber(),
+                                "OR_NO":OR_Num,
                                 "BLOODTYPE": blood_type,
                                 "HEPA_B_SCREEN": hepatitis_b_Screening,
                                 "ANTI_HAV_SCREEN": anti_hav_screening,
                                 "SYPHILIS_SCREEN": syphilis_screen,
                                 "DENGUE_ANTIGEN_TEST": dengue_ns1_antigen_test,
                                 "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                                "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                                "PATHOLOGIST":os.getenv("PATHOLOGIST")
                             }
                             doc.render(context)
-                            doc.save(Path(__file__).parent/"newDoc.docx")
+                            path=os.getenv('DRIVE_PATH')+"/Serology"
+                            Exists=os.path.exists(path)
+                            if not Exists:
+                                os.makedirs(path)
+
+                            doc.save(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx")
+
                             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                             serviceid=self.user.get_test_id("Serology")
                             total=self.user.get_test_price(serviceid[0])
                             id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
-                            self.user.markTest_as_done(test_id[0])
-                            for item in Test_Table.get_children():
-                                if Test_Table.item(item)['values'][0]=="Serology":
-                                    Test_Table.set(item, 'Complete','Done')
-
+                            self.user.markTest_as_done(test_id[0][0])
 
 
                     ST_Button=Button(Serology_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
@@ -719,29 +725,30 @@ class Main:
                         else: 
                             document=Path(__file__).parent / "MISCELLANEOUS_TEMPLATE.docx"
                             doc=DocxTemplate(document)
-
+                            OR_Num=self.user.generateClient_ORNumber()
                             context={
                                 "NAME":Name_Entry.get(),
                                 "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
                                 "DATE":self.test_date,
-                                "OR_NO":self.user.generateClient_ORNumber(),
+                                "OR_NO":OR_Num,
                                 "TEST":PT_BOX2.get(),
                                 "RESULT":PT_BOX4.get(),
                                 "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                                "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                                "PATHOLOGIST":os.getenv("PATHOLOGIST")
                             }
                             doc.render(context)
-                            doc.save(Path(__file__).parent/"newDoc.docx")
+                            path=os.getenv('DRIVE_PATH')+"/"+PT_BOX2.get()
+                            Exists=os.path.exists(path)
+                            if not Exists:
+                                os.makedirs(path)
+
+                            doc.save(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx")
                             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                             total=self.user.get_test_price(serviceid[0])
                             id=self.user.save_to_summary(total[0],serviceid[0],int(ID_ENTRY.get()))
                             self.user.update_summaryID_test(id,int(ID_ENTRY.get()),serviceid[0])
                             test_id=self.user.get_tests_id(int(ID_ENTRY.get()),serviceid[0])
-                            self.user.markTest_as_done(test_id[0])
-
-                            for item in Test_Table.get_children():
-                                if Test_Table.item(item)['values'][0]==PT_BOX2.get():
-                                    Test_Table.set(item, 'Complete','Done')
+                            self.user.markTest_as_done(test_id[0][0])
 
                     PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
                     PT_Button.place(x=1200,y=430)
@@ -918,12 +925,12 @@ class Main:
                         else: 
                             document=Path(__file__).parent / "URINALYSIS_TEMPLATE.docx"
                             doc=DocxTemplate(document)
-                                
+                            OR_Num=self.user.generateClient_ORNumber()
                             context={
                                 "NAME":Name_Entry.get(),
                                 "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
                                 "DATE":self.test_date,
-                                "OR_NO":self.user.generateClient_ORNumber(),
+                                "OR_NO":OR_Num,
 
                                 "COLOR":UR_Column1_BOX1.get(),
                                 "CLARITY":UR_Column2_BOX1.get(),
@@ -947,19 +954,21 @@ class Main:
                                 "OTHERS":UR_Column21_BOX1.get(),
                                 
                                 "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
-                                "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                                "PATHOLOGIST":os.getenv("PATHOLOGIST")
                             }
                             doc.render(context)
-                            doc.save(Path(__file__).parent/"newDoc.docx")
+                            path=os.getenv('DRIVE_PATH')+"/Urinalysis"
+                            Exists=os.path.exists(path)
+                            if not Exists:
+                                os.makedirs(path)
+
+                            doc.save(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx")
                             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                             total=self.user.get_test_price(serviceid[0])
                             id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
-                            self.user.markTest_as_done(test_id[0])
-                            for item in Test_Table.get_children():
-                                if Test_Table.item(item)['values'][0]=="Urinalysis (Urine Test)":
-                                    Test_Table.set(item, 'Complete','Done')
+                            self.user.markTest_as_done(test_id[0][0])
 
                     ST_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     ST_Button.place(x=1200,y=430)
@@ -1115,12 +1124,12 @@ class Main:
                         else: 
                             document=Path(__file__).parent / "HEMATOLOGY COMPLETE BLOOD COUNT.docx"
                             doc=DocxTemplate(document)
-                                
+                            OR_Num=self.user.generateClient_ORNumber()
                             context={
                                 "NAME":Name_Entry.get(),
                                 "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
                                 "DATE":self.test_date,
-                                "OR_NUM":self.user.generateClient_ORNumber(),
+                                "OR_NUM":OR_Num,
                                 "WBC":CBC_Column2_BOX1.get(),
                                 "RBC":CBC_Column3_BOX1.get(),
                                 "HEMOGLOBIN":CBC_Column4_BOX1.get(),
@@ -1139,19 +1148,21 @@ class Main:
                                 "TOTAL":CBCS_Column7_BOX1.get(),
                                 "MEDTECH_NAME":self.user.fname+" "+self.user.lname,
                                 "LICENSE_NO":self.user.license_no,
-                                "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                                "PATHOLOGIST":os.getenv("PATHOLOGIST")
                             }
                             doc.render(context)
-                            doc.save(Path(__file__).parent/"newDoc.docx")
+                            path=os.getenv('DRIVE_PATH')+"/Complete Blood Count"
+                            Exists=os.path.exists(path)
+                            if not Exists:
+                                os.makedirs(path)
+
+                            doc.save(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx")
                             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                             total=self.user.get_test_price(serviceid[0])
                             id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
-                            self.user.markTest_as_done(test_id[0])
-                            for item in Test_Table.get_children():
-                                if Test_Table.item(item)['values'][0]=="Complete Blood Count":
-                                    Test_Table.set(item, 'Complete','Done')
+                            self.user.markTest_as_done(test_id[0][0])
 
                     CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     CBC_Button.place(x=1200,y=430)
@@ -1226,12 +1237,12 @@ class Main:
                         else: 
                             document=Path(__file__).parent / "FECALYSIS.docx"
                             doc=DocxTemplate(document)
-                                
+                            OR_Num=self.user.generateClient_ORNumber()    
                             context={
                                 "NAME":Name_Entry.get(),
                                 "AGE_SEX":AGE_Entry.get()+'/'+Gender_Mune.get(),
                                 "DATE":self.test_date,
-                                "OR_NO":self.user.generateClient_ORNumber(),
+                                "OR_NO":OR_Num,
 
                                 "COLOR":FE_Column1_BOX1.get(),
                                 "CONSISTENCY":FE_Column2_BOX1.get(),
@@ -1244,19 +1255,21 @@ class Main:
                                 "E_COLI":FE_Column10_BOX1.get(),
 
                                 "MEDTECH":self.user.fname+" "+self.user.lname,
-                                "PATHOLOGIST":"JERRY C. ABROGUEÑA, MD, FPSP"
+                                "PATHOLOGIST":os.getenv("PATHOLOGIST")
                             }
                             doc.render(context)
-                            doc.save(Path(__file__).parent/"newDoc.docx")
+                            path=os.getenv('DRIVE_PATH')+"/Complete Blood Count"
+                            Exists=os.path.exists(path)
+                            if not Exists:
+                                os.makedirs(path)
+
+                            doc.save(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx")
                             win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                             total=self.user.get_test_price(serviceid[0])
                             id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
-                            self.user.markTest_as_done(test_id[0])
-                            for item in Test_Table.get_children():
-                                if Test_Table.item(item)['values'][0]=="Fecalysis":
-                                    Test_Table.set(item, 'Complete','Done')
+                            self.user.markTest_as_done(test_id[0][0])
 
                     FE_Button=Button(FE_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=submit)
                     FE_Button.place(x=1200,y=430)
@@ -1528,14 +1541,19 @@ class Main:
                             "AGE":age.get(),
                             "GENDER":Gender_Mune.get(),
                             "DATE":self.test_date,
-                            "ID":client_id,
+                            "ID":client_id[0],
                             "FINDINGS":Finding_BOX.get("1.0","end-1c"),
                             "IMPRESSION":IMPRESSIONS_BOX.get("1.0","end-1c"),
                             "IMAGE":image,
                             "medtech_name":self.user.fname+" "+self.user.lname
                         }
                         doc.render(context)
-                        doc.save(Path(__file__).parent/"newDoc.docx")
+                        path=os.getenv('DRIVE_PATH')+"/X-Ray"
+                        Exists=os.path.exists(path)
+                        if not Exists:
+                            os.makedirs(path)
+
+                        doc.save(path+"/"+name.get()+"_"+str(self.test_date)+".docx")
                         win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
                         
                         # self.user.markXray_as_done(test_id)
@@ -1543,7 +1561,7 @@ class Main:
                         
                         id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                         self.user.update_summaryID_test(id,client_id[0],serviceid[0])
-                        self.user.markTest_as_done(test_id[0])
+                        self.user.markTest_as_done(test_id[0][0])
                         
             Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Roboto 11',borderwidth=2,command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
             Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Roboto 11',borderwidth=2,command=lambda: submit()).place(x=520,y=630)
@@ -2206,7 +2224,7 @@ class Main:
 
                 document=Path(__file__).parent / "MEDICAL_CERTIFICATE_TEMPLATE.docx"
                 doc=DocxTemplate(document)
-                                
+                OR_Num=self.user.generateClient_ORNumber(),    
                 context={
                     "DATE_TODAY":self.test_date,
                     "CLIENT_NAME":name,
@@ -2215,7 +2233,7 @@ class Main:
                     "PURPOSE": PURPOSE_ENTRY.get(),
                     "REMARKS": REMARKS_ENTRY.get(),
                     "VALID_UNTIL": str(self.test_date)+'-'+str(VALID_FROM.get_date()),
-                    "OR_NUM": self.user.generateClient_ORNumber(),
+                    "OR_NUM": OR_Num[0],
                     "AMOUNT": amount[0],
         
                     "NAME_OF_DOCTOR":self.user.fname+" "+self.user.lname,
@@ -2223,14 +2241,19 @@ class Main:
                     "LICENSE_NO": self.user.license_no
                 }
                 doc.render(context)
-                doc.save(Path(__file__).parent/"newDoc.docx")
+                path=os.getenv('DRIVE_PATH')+"/Medical Certificates"
+                Exists=os.path.exists(path)
+                if not Exists:
+                    os.makedirs(path)
+
+                doc.save(path+"/"+name+"_"+str(OR_Num[0])+".docx")
                 win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
 
                 total=self.user.get_test_price(serviceid[0])
                 id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                 self.user.update_summaryID_test(id,client_id[0],serviceid[0])
                 test_id=self.user.get_tests_id(client_id[0],serviceid[0])
-                self.user.markTest_as_done(test_id[0])
+                self.user.markTest_as_done(test_id[0][0])
 
             Certificate_button=Button(self.Certificate,text="Print Certificate",width=12,height=1,bg="green",borderwidth=5,command=submit).place(x=260,y=350)
 
