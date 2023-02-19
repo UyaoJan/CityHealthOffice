@@ -2106,48 +2106,47 @@ class Main:
                 # TestXAge['test']=itemValues[3]
                 # TestXAge['age']=itemValues[4]
 
-
             fig, ax = plt.subplots()
-            ax.bar(tests.keys(), tests.values())
-            plt.xlabel("Number of Clients in Each Test")
-            xticks = ax.get_xticks()
-            ax.set_xticklabels(tests.keys(), fontsize=5)
-            plt.savefig('tests.png', dpi=300)
+            if LabTest_Test.get()=="All":
+                bars=ax.barh(list(tests.keys()), list(tests.values()), label=tests.keys())
+                plt.ylabel("Number of Clients per Test")
+                # plt.legend(handles=bars, bbox_to_anchor=(0, 1.02), loc='lower left')
+                plt.savefig('tests.png', dpi=300, bbox_inches='tight')
 
-            fig, ax = plt.subplots()
-            # ax.bar(Gender.keys(), Gender.values())
-            print(Gender.values(),Gender.keys())
-            ax.pie(Gender.values(), labels=Gender.keys(), autopct='%1.0f%%')
-            plt.savefig('gender.png', dpi=300)
+                fig, ax = plt.subplots()
+                ax.pie(Gender.values(), labels=Gender.keys(), autopct='%1.0f%%')
+                plt.savefig('gender.png', dpi=300)
 
-            fig, ax = plt.subplots()
-            ax.pie(age.values(), labels=age.keys(), autopct='%1.0f%%')
-            plt.savefig('age.png', dpi=300)
+                fig, ax = plt.subplots()
+                ax.pie(age.values(), labels=age.keys(), autopct='%1.0f%%')
+                plt.savefig('age.png', dpi=300)
 
-            fig, ax = plt.subplots()
-            ax.bar(testXMale.keys(),testXMale.values())
-            plt.xlabel("Test")
-            plt.ylabel("Number of Males")
-            xticks = ax.get_xticks()
-            ax.set_xticklabels(testXMale.keys(), fontsize=5)
-            plt.savefig('testXMale.png', dpi=300)
+                fig, ax = plt.subplots()
+                bars=ax.barh(list(testXMale.keys()), list(testXMale.values()), label=testXMale.keys())
+                plt.ylabel("Number of Males")
+                # plt.legend(handles=bars, bbox_to_anchor=(0, 1.02), loc='lower left')
+                plt.savefig('testXMale.png', dpi=300, bbox_inches='tight')
 
-            fig, ax = plt.subplots()
-            ax.bar(testXFemale.keys(),testXFemale.values())
-            plt.xlabel("Test")
-            plt.ylabel("Number of Females")
-            xticks = ax.get_xticks()
-            ax.set_xticklabels(testXFemale.keys(), fontsize=5)
-            plt.savefig('testXFemale.png', dpi=300)
+                fig, ax = plt.subplots()
+                bars=ax.barh(list(testXFemale.keys()), list(testXFemale.values()), label=testXFemale.keys())
+                plt.ylabel("Number of Females")
+                # plt.legend(handles=bars, bbox_to_anchor=(0, 1.02), loc='lower left')
+                plt.savefig('testXFemale.png', dpi=300, bbox_inches='tight')
 
-            fig, ax = plt.subplots()
-            ax.bar(testXOther.keys(),testXOther.values())
-            plt.xlabel("Test")
-            plt.ylabel("Number of 'Other'")
-            xticks = ax.get_xticks()
-            ax.set_xticklabels(testXOther.keys(), fontsize=5)
-            plt.savefig('testXOther.png', dpi=300)
-            # print(TestXAge)
+                fig, ax = plt.subplots()
+                bars=ax.barh(list(testXOther.keys()), list(testXOther.values()), label=testXOther.keys())
+                plt.ylabel("Number of 'Other'")
+                # plt.legend(handles=bars, bbox_to_anchor=(0, 1.02), loc='lower left')
+                plt.savefig('testXOther.png', dpi=300, bbox_inches='tight')
+            else:
+                fig, ax = plt.subplots()
+                ax.pie(Gender.values(), labels=Gender.keys(), autopct='%1.0f%%')
+                plt.savefig('gender.png', dpi=300)
+
+                fig, ax = plt.subplots()
+                ax.pie(age.values(), labels=age.keys(), autopct='%1.0f%%')
+                plt.savefig('age.png', dpi=300)
+            
 
             doc = docx.Document("SUMMARY_REPORT_TEMPLATE.docx")
             data=[]
