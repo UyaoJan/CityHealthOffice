@@ -22,10 +22,10 @@ import summary_filter
 
 from dotenv import load_dotenv
 
-from ctypes import windll
+# from ctypes import windll
 
-# get the handle to the taskbar
-h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
+# # get the handle to the taskbar
+# h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
 
 
 class Main:
@@ -41,7 +41,7 @@ class Main:
         PageOpen = 1
         self.Value_Laboratory = ["Laboratory","X_RAY"]
         
-        windll.user32.ShowWindow(h, 0)
+        # windll.user32.ShowWindow(h, 0)
         self.client_bmonth=None
 
         self.test_date=date.today()
@@ -1185,6 +1185,7 @@ class Main:
                     Serology_Page.pack_forget()
                     Miscelaneous_Page.pack_forget()
                     Urinalysis_Page.pack_forget()
+                    CBC_Page.pack_forget()
 
                     FE_Page.pack(expand=1,fill=BOTH)
                     FE_Title = Label(FE_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
@@ -1272,7 +1273,7 @@ class Main:
                                 "PATHOLOGIST":os.getenv("PATHOLOGIST")
                             }
                             doc.render(context)
-                            path=os.getenv('DRIVE_PATH')+"/Complete Blood Count"
+                            path=os.getenv('DRIVE_PATH')+"/Fecalysis"
                             Exists=os.path.exists(path)
                             if not Exists:
                                 os.makedirs(path)
@@ -2190,7 +2191,7 @@ class Main:
         Button(Frame_FilterBody,text="Print Out Results",command=lambda: PrintResults()).place(x=1100,y=50)
 
     def onClose(self):
-        windll.user32.ShowWindow(h, 9)
+        # windll.user32.ShowWindow(h, 9)
         self.Dashboard_GUI.destroy()
 
     def Cer_onClose(self):
@@ -2354,6 +2355,9 @@ class Main:
         elif self.user.return_dept()=='Laboratory Department':
             Button_LabCH=Button(Frame_Works,text="Laboratory",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.Laboratory)
             Button_LabCH.pack(pady=2)
+        elif self.user.return_dept()=='None':
+            Button_FronDesk=Button(Frame_Works,text="Front Desk",font=("Roboto",8,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.FrontDesk)
+            Button_FronDesk.pack(pady=2)
         else:
             messagebox.showinfo("Error","This Account don't have a Role!")
 
