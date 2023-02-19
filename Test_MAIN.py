@@ -687,7 +687,7 @@ class Main:
 
                             doc.save(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx")
 
-                            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                            win32api.ShellExecute(0, "print", path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx", None, ".", 0)
                             serviceid=self.user.get_test_id("Serology")
                             total=self.user.get_test_price(serviceid[0])
                             id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
@@ -757,7 +757,7 @@ class Main:
                                 os.makedirs(path)
 
                             doc.save(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx")
-                            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                            win32api.ShellExecute(0, "print", path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx", None, ".", 0)
                             total=self.user.get_test_price(serviceid[0])
                             id=self.user.save_to_summary(total[0],serviceid[0],int(ID_ENTRY.get()))
                             self.user.update_summaryID_test(id,int(ID_ENTRY.get()),serviceid[0])
@@ -977,7 +977,7 @@ class Main:
                                 os.makedirs(path)
 
                             doc.save(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx")
-                            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                            win32api.ShellExecute(0, "print", path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx", None, ".", 0)
                             total=self.user.get_test_price(serviceid[0])
                             id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
@@ -1171,7 +1171,7 @@ class Main:
                                 os.makedirs(path)
 
                             doc.save(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx")
-                            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                            win32api.ShellExecute(0, "print", path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx", None, ".", 0)
                             total=self.user.get_test_price(serviceid[0])
                             id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
@@ -1279,7 +1279,7 @@ class Main:
                                 os.makedirs(path)
 
                             doc.save(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx")
-                            win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                            win32api.ShellExecute(0, "print", str(path+"/"+Name_Entry.get()+"_"+str(OR_Num)+".docx"), None, ".", 0)
                             total=self.user.get_test_price(serviceid[0])
                             id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                             self.user.update_summaryID_test(id,client_id[0],serviceid[0])
@@ -1568,7 +1568,7 @@ class Main:
                             os.makedirs(path)
 
                         doc.save(path+"/"+name.get()+"_"+str(self.test_date)+".docx")
-                        win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                        win32api.ShellExecute(0, "print", path+"/"+name.get()+"_"+str(self.test_date)+".docx", None, ".", 0)
                         
                         # self.user.markXray_as_done(test_id)
 
@@ -2276,7 +2276,7 @@ class Main:
                     os.makedirs(path)
 
                 doc.save(path+"/"+name+"_"+str(OR_Num[0])+".docx")
-                win32api.ShellExecute(0, "print", str(Path(__file__).parent/"newDoc.docx"), None, ".", 0)
+                win32api.ShellExecute(0, "print", path+"/"+name+"_"+str(OR_Num[0])+".docx", None, ".", 0)
 
                 total=self.user.get_test_price(serviceid[0])
                 id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
