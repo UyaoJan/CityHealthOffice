@@ -663,7 +663,7 @@ class Main:
                             anti_hav_screening=ST_BOX10_L.get()
                             syphilis_screen=ST_BOX11_L.get()
                             dengue_ns1_antigen_test=ST_BOX12_L.get()
-                            document=Path(__file__).parent / "SEROLOGY_TEMPLATE.docx"
+                            document=Path(__file__).parent / os.getenv("SEROLOGY_TEMPLATE")
                             doc=DocxTemplate(document)
                             OR_Num=self.user.generateClient_ORNumber()
                             context={
@@ -737,7 +737,7 @@ class Main:
                         if services is None:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
-                            document=Path(__file__).parent / "MISCELLANEOUS_TEMPLATE.docx"
+                            document=Path(__file__).parent / os.getenv("MISCELLANEOUS_TEMPLATE")
                             doc=DocxTemplate(document)
                             OR_Num=self.user.generateClient_ORNumber()
                             context={
@@ -937,7 +937,7 @@ class Main:
                         if services is None:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
-                            document=Path(__file__).parent / "URINALYSIS_TEMPLATE.docx"
+                            document=Path(__file__).parent / os.getenv("URINALYSIS_TEMPLATE")
                             doc=DocxTemplate(document)
                             OR_Num=self.user.generateClient_ORNumber()
                             context={
@@ -1136,7 +1136,7 @@ class Main:
                         if services is None:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
-                            document=Path(__file__).parent / "HEMATOLOGY COMPLETE BLOOD COUNT.docx"
+                            document=Path(__file__).parent / os.getenv("CBC_TEMPLATE")
                             doc=DocxTemplate(document)
                             OR_Num=self.user.generateClient_ORNumber()
                             context={
@@ -1250,7 +1250,7 @@ class Main:
                         if services is None:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
-                            document=Path(__file__).parent / "FECALYSIS.docx"
+                            document=Path(__file__).parent / os.getenv("FECALYSIS_TEMPLATE")
                             doc=DocxTemplate(document)
                             OR_Num=self.user.generateClient_ORNumber()    
                             context={
@@ -1545,7 +1545,7 @@ class Main:
                         total=self.user.get_test_price(serviceid[0])
                         test_id=self.user.get_tests_id(client_id[0],serviceid[0])
 
-                        document=Path(__file__).parent / "XRAY_TEMPLATE.docx"
+                        document=Path(__file__).parent / os.getenv("XRAY_TEMPLATE")
                         doc=DocxTemplate(document)
 
                         image=InlineImage(doc,filepath,width=Inches(3), height=Inches(2.94))
@@ -2148,7 +2148,7 @@ class Main:
                 plt.savefig('age.png', dpi=300)
             
 
-            doc = docx.Document("SUMMARY_REPORT_TEMPLATE.docx")
+            doc = docx.Document(os.getenv("SUMMARY_REPORT_TEMPLATE"))
             data=[]
             for i in all_items:
                 itemVal=Summary_Table.item(i, "values")
@@ -2250,7 +2250,7 @@ class Main:
                 client_id=self.user.getClient_name(name)
                 amount=self.user.getTestAmount(serviceid)
 
-                document=Path(__file__).parent / "MEDICAL_CERTIFICATE_TEMPLATE.docx"
+                document=Path(__file__).parent / os.getenv("MED_CERT_TEMPLATE")
                 doc=DocxTemplate(document)
                 OR_Num=self.user.generateClient_ORNumber(),    
                 context={
