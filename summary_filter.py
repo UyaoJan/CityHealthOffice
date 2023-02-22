@@ -9,19 +9,19 @@ class Summary:
     def filterOut(self,name,test):
         cursor=self.Cursor
         if name =="All" and test=="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and summary.id=tests.summary_id GROUP BY summary.id"
             cursor.execute(query)
 
         elif name!="All" and test !="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and services.ServiceName=%s and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s;"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and services.ServiceName=%s and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s and summary.id=tests.summary_id GROUP BY summary.id;"
             cursor.execute(query,(test,name))
 
         elif name!='All' and test=="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s;"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s and summary.id=tests.summary_id GROUP BY summary.id;"
             cursor.execute(query,(name,))
 
         elif name=="All" and test !="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and services.ServiceName=%s;"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and services.ServiceName=%s and summary.id=tests.summary_id GROUP BY summary.id;"
             cursor.execute(query,(test,))
 
         result=cursor.fetchall()
@@ -29,24 +29,26 @@ class Summary:
 
     def filterYearly(self,year): 
         cursor=self.Cursor
-        query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and YEAR(summary.dateFinished)=%s"
+        print('year')
+        query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and YEAR(summary.dateFinished)=%s and summary.id=tests.summary_id GROUP BY summary.id"
         cursor.execute(query,(year,))
         result=cursor.fetchall()
         return result
 
     def filterYearlyTest(self,year, name,test):
         cursor=self.Cursor
+        print(print('yearly test'))
         if name =="All" and test=="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and YEAR(summary.dateFinished)=%s"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and YEAR(summary.dateFinished)=%s and summary.id=tests.summary_id GROUP BY summary.id"
             cursor.execute(query,(year,))
         elif name!="All" and test !="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and YEAR(summary.dateFinished)=%s and services.ServiceName=%s and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and YEAR(summary.dateFinished)=%s and services.ServiceName=%s and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s and summary.id=tests.summary_id GROUP BY summary.id"
             cursor.execute(query,(year,test,name))
         elif name!='All' and test=="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and YEAR(summary.dateFinished)=%s and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and YEAR(summary.dateFinished)=%s and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s and summary.id=tests.summary_id GROUP BY summary.id"
             cursor.execute(query,(year,name))
         elif name=="All" and test !="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and YEAR(summary.dateFinished)=%s and services.ServiceName=%s"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and YEAR(summary.dateFinished)=%s and services.ServiceName=%s and summary.id=tests.summary_id GROUP BY summary.id;"
             cursor.execute(query,(year,test))
 
         result=cursor.fetchall()
@@ -57,19 +59,19 @@ class Summary:
         # query="SELECT clients.ClientID,clients.Name,services.ServiceName,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and summary.dateFinished>=%s and summary.dateFinished<=%s"   
         # cursor.execute(query,(dateFROM,dateTo))
         if name =="All" and test=="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and summary.dateFinished>=%s and summary.dateFinished<=%s"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and summary.dateFinished>=%s and summary.dateFinished<=%s and summary.id=tests.summary_id GROUP BY summary.id"
             cursor.execute(query,(dateFROM,dateTo))
 
         elif name!="All" and test !="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and services.ServiceName=%s and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s and summary.dateFinished>=%s and summary.dateFinished<=%s;"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and services.ServiceName=%s and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s and summary.dateFinished>=%s and summary.dateFinished<=%s and summary.id=tests.summary_id GROUP BY summary.id;"
             cursor.execute(query,(test,name,dateFROM,dateTo))
 
         elif name!='All' and test=="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s and summary.dateFinished>=%s and summary.dateFinished<=%s;"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ')=%s and summary.dateFinished>=%s and summary.dateFinished<=%s and summary.id=tests.summary_id GROUP BY summary.id;"
             cursor.execute(query,(name,dateFROM,dateTo))
 
         elif name=="All" and test !="All":
-            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and services.ServiceName=%s and summary.dateFinished>=%s and summary.dateFinished<=%s;"
+            query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and services.ServiceName=%s and summary.dateFinished>=%s and summary.dateFinished<=%s and summary.id=tests.summary_id GROUP BY summary.id;"
             cursor.execute(query,(test,dateFROM,dateTo))
 
         result=cursor.fetchall()
@@ -78,7 +80,7 @@ class Summary:
 
     def filterMonthly(self, dateFROM,dateTo):
         cursor=self.Cursor
-        query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and summary.dateFinished>=%s and summary.dateFinished<=%s"   
+        query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and summary.dateFinished>=%s and summary.dateFinished<=%s and summary.id=tests.summary_id GROUP BY summary.id "   
         cursor.execute(query,(dateFROM,dateTo))
         result=cursor.fetchall()
         return result

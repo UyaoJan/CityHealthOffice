@@ -95,7 +95,7 @@ class Employee:
     def getAllClient_Done(self):
         cursor=self.Cursor
         # query="SELECT clients.ClientID,clients.Name,services.ServiceName,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id;"
-        query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID;"
+        query="SELECT clients.ClientID,clients.Name,clients.gender,services.ServiceName,clients.age,tests.date,summary.dateFinished,CONCAT(medtechs.FirstName,' ',medtechs.LastName,' ') as medtech_name FROM clients,services,medtechs,tests,summary WHERE clients.ClientID=tests.ClientID AND tests.ServiceID=services.ServiceID AND tests.status='done' and tests.MedTechID=medtechs.id and summary.ClientID=tests.ClientID and summary.id=tests.summary_id GROUP BY summary.id;"
         cursor.execute(query)
         result=cursor.fetchall()
         return result
