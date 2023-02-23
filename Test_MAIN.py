@@ -1170,7 +1170,7 @@ class Main:
                     CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     CBC_Button.place(x=1200,y=430)
                 
-                elif LabTest_Mune.get() == "FECALYSIS":
+                elif LabTest_Mune.get() == "Fecalysis":
                     Serology_Page.pack_forget()
                     Miscelaneous_Page.pack_forget()
                     Urinalysis_Page.pack_forget()
