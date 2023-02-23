@@ -55,13 +55,16 @@ class Employee:
 
     def getClientTestRequests(self,clientID, testID):
         cursor=self.Cursor
-        query="SELECT ServiceID FROM tests WHERE ServiceID=%s and ClientID=%s;"
+        query="SELECT ServiceID FROM tests WHERE ClientID=%s;"
+
         if isinstance(clientID, int):
-            cursor.execute(query,(testID[0],clientID))
+            cursor.execute(query,(clientID,))
         elif isinstance(clientID, tuple):
-            cursor.execute(query,(testID[0],clientID[0]))
+            cursor.execute(query,(clientID[0],))
         result=cursor.fetchall()
+        print(result)
         rows=len(result)
+        print(rows)
         if rows ==0:
             return None
         else:

@@ -655,7 +655,7 @@ class Main:
                         serviceid=self.user.get_test_id("Serology")
                         client_id=self.user.getClient_name(Name_Entry.get())
                         services=self.user.getClientTestRequests(client_id,serviceid)
-                        if services is None:
+                        if tuple(serviceid) not in services:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
                             blood_type=ST_BOX8_L.get()
@@ -734,7 +734,7 @@ class Main:
                         services=self.user.getClientTestRequests(int(ID_ENTRY.get()),serviceid)
                         print(serviceid)
                         print(services)
-                        if services is None:
+                        if tuple(serviceid) not in services:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
                             document=Path(__file__).parent / os.getenv("MISCELLANEOUS_TEMPLATE")
@@ -934,7 +934,7 @@ class Main:
                         client_id=self.user.getClient_name(Name_Entry.get())
                         serviceid=self.user.get_test_id("Urinalysis (Urine Test)")
                         services=self.user.getClientTestRequests(client_id,serviceid)
-                        if services is None:
+                        if tuple(serviceid) not in services:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
                             document=Path(__file__).parent / os.getenv("URINALYSIS_TEMPLATE")
@@ -1133,7 +1133,7 @@ class Main:
                         serviceid=self.user.get_test_id("Complete Blood Count")
                         client_id=self.user.getClient_name(Name_Entry.get())
                         services=self.user.getClientTestRequests(client_id,serviceid)
-                        if services is None:
+                        if tuple(serviceid) not in services:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
                             document=Path(__file__).parent / os.getenv("CBC_TEMPLATE")
@@ -1247,7 +1247,7 @@ class Main:
                         serviceid=self.user.get_test_id("Fecalysis")
                         client_id=self.user.getClient_name(Name_Entry.get())
                         services=self.user.getClientTestRequests(client_id,serviceid)
-                        if services is None:
+                        if tuple(serviceid) not in services:
                             messagebox.showerror("Error","This Test was not Requested by the Client")
                         else: 
                             document=Path(__file__).parent / os.getenv("FECALYSIS_TEMPLATE")
