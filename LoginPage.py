@@ -38,20 +38,23 @@ class Loginpage():
     def LoginStart(self):
         self.LoginGUI.title("CITY HEALTH OFFICE LOGIN PAGE")
         self.LoginGUI.resizable(False,False)
+        width=700
+        height=350
+        self.LoginGUI.geometry(f'{width}x{height}+{350}+{170}')
 
         global username,password
         username=StringVar()
         password=StringVar()
 
-        self.LoginFrame1=Frame(self.LoginGUI,width=350,height=350)
-        self.LoginFrame1.grid(row=0,column=0)
+        self.LoginFrame1=Frame(self.LoginGUI)
+        self.LoginFrame1.pack(side=LEFT)
         H_LOGO = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
         self.IMG=Label(self.LoginFrame1,image=H_LOGO)
-        self.IMG.place(x=30,y=30,width=300, height=300)
+        self.IMG.pack(padx=30)
 
         #Frame2
         self.LoginFrame2=Frame(self.LoginGUI,width=350,height=350)
-        self.LoginFrame2.grid(row=0,column=1)
+        self.LoginFrame2.pack(side=RIGHT)
 
         self.Label_Login=Label(self.LoginFrame2,text="LOGIN",font='Roboto 60 bold').place(x=20,y=20)
 
@@ -63,7 +66,7 @@ class Loginpage():
         self.Password=StringVar()
         self.Password_Entry=Entry(self.LoginFrame2,width=40,textvariable=password,show="*",borderwidth=3,).place(x=50,y=200)
 
-        self.Login_Enter=Button(self.LoginFrame2,text="ENTER",width=10,bg="green", command=self.loginLogic)
+        self.Login_Enter=Button(self.LoginFrame2,text="ENTER",width=10,borderwidth=5,bg="green",command=self.loginLogic)
         self.Login_Enter.place(x=220,y=250)
         self.LoginGUI.mainloop()
     

@@ -10,6 +10,7 @@ from datetime import date, datetime
 from tkcalendar import Calendar,DateEntry
 import calendar
 import employee
+import employee, LoginPage
 
 class Admin:
     def __init__(self):
@@ -424,6 +425,11 @@ class Admin:
                 PageOpen +=1
             else:
                 messagebox.showinfo("Error","The Window EDIT is already Open!")
+    
+    def logout(self):
+        self.AdminGUI.destroy()
+        interface=LoginPage.Loginpage()
+        interface.start()
 
     def AdminGUI_Main(self):
         self.AdminGUI=Tk()
@@ -434,12 +440,18 @@ class Admin:
 
         Page_Admin=Frame(self.AdminGUI)
         Page_Admin.pack(expand=1, fill=BOTH)
-        Frame_Header=Frame(Page_Admin,width=1360,height=50,highlightbackground="black",highlightthickness=1)
-        Frame_Header.pack()
 
-        IMG_HEADER=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        IMG_HEADER.place(x=10,y=8)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",font='Arial 20 bold').place(x=50,y=8)
+        Frame_Header=Frame(Page_Admin,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
+        Frame_Header.pack(fill=X)
+        image3 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
+        IMG_HEADER_Xray=Label(Frame_Header,image=image3,bg='#BDFFC4',width=40,height=40)
+        IMG_HEADER_Xray.image=image3
+        IMG_HEADER_Xray.pack(side=LEFT)
+        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 20 bold')
+        HEADER_TITLE.pack(side=LEFT)
+
+        LOGOUT=Button(Frame_Header,text="LOGOUT",borderwidth=5,font=("Arial",12),command=lambda:self.logout())
+        LOGOUT.pack(side=RIGHT,padx=10)
         #Header END-----------
 
         Admin_Body=Frame(Page_Admin)
@@ -448,18 +460,20 @@ class Admin:
         Admin_LEFT=Frame(Admin_Body,width=270)
         Admin_LEFT.pack(fill=Y,side=LEFT)
 
-        Logo_Admin=Label(Admin_LEFT,text="LOGO",width=30,height=15,bg="white",highlightbackground="black",highlightthickness=1).place(x=20,y=30)
+        Logo_Admin=Label(Admin_LEFT,text="LOGO",width=30,height=15,bg="white",highlightbackground="black",highlightthickness=1)
+        Logo_Admin.pack(padx=30,pady=40)
 
         Registration_Button=Button(Admin_LEFT,text="Registration",width=20,height=2,font=("Arail",10),borderwidth=5,command=self.Regist)
-        Registration_Button.place(x=40,y=300)
+        Registration_Button.pack()
 
         Admin_RIGHT=Frame(Admin_Body,width=250)
         Admin_RIGHT.pack(expand=1,fill=BOTH,side=RIGHT)
 
-        Title_Admin=Label(Admin_RIGHT,text="Account Management Page",font=("Arail",35,"bold")).place(x=20,y=5)
+        Title_Admin=Label(Admin_RIGHT,text="Account Management Page",font=("Arail",35,"bold"),anchor=W)
+        Title_Admin.pack(fill=X,padx=20)
 
-        Account_List=Frame(Admin_RIGHT)
-        Account_List.place(x=20,y=70,relwidth=0.96,relheight=0.88)
+        Account_List=Frame(Admin_RIGHT,highlightbackground="black",highlightthickness=1,)
+        Account_List.pack(fill=BOTH,padx=20,expand=1)
 
         Profile_BOX=Canvas(Account_List)
         Profile_BOX.pack(side=LEFT,fill=BOTH,expand=1)
