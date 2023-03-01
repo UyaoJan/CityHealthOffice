@@ -206,39 +206,42 @@ class Main:
         Checkbutton(self.Box_L,text="Serology",variable=self.services[15],anchor=W,font='Roboto 12 ').pack(fill=X)
         Checkbutton(self.Box_L,text="Medical Certificate",variable=self.services[16],anchor=W,font='Roboto 12 ').pack(fill=X)
         Checkbutton(self.Box_L,text="Fecalysis",variable=self.services[17],anchor=W,font='Roboto 12 ').pack(fill=X)
-
         #Body-------
 
         #IMPUT-----------------
-        Frame_Input=Frame(Frame_Body,width=680,height=700)
-        Frame_Input.pack()
+        Frame_Input=Frame(Frame_Body)
+        Frame_Input.pack(fill=BOTH,side=RIGHT,expand=TRUE)
                 
         FrameIMG=Frame(Frame_Input,width=300,height=300)
-        FrameIMG.place(x=170,y=40)
+        FrameIMG.pack(pady=40)
 
         image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
         Img=Label(FrameIMG,image = image)
         Img.image=image
-        Img.place(x=0,y=0,width=300, height=300)
+        Img.pack(fill=BOTH)
 
+        contener_FD=Frame(Frame_Input)
+        contener_FD.pack(pady=20)
         global Name_Entry
-        Name_Label=Label(Frame_Input,text="Name: ",font='Roboto 12').place(x=46,y=400)
-        Name_Entry=Entry(Frame_Input,width=59,borderwidth=3,font='Roboto 12')
-        Name_Entry.place(x=100,y=400)
+        Name_Label=Label(contener_FD,text="Name: ",font='Roboto 12',anchor=W).pack(fill=X)
+        Name_Entry=Entry(contener_FD,width=59,borderwidth=3,font='Roboto 12')
+        Name_Entry.pack()
+
+        contener_FD2=Frame(contener_FD)
+        contener_FD2.pack(pady=4)
 
         global AGE_Entry
-        AGE_Label=Label(Frame_Input,text="Age: ",font='Roboto 12').place(x=46,y=430)
-        AGE_Entry=Entry(Frame_Input,width=5,font='Roboto 12',borderwidth=3)
-        AGE_Entry.place(x=100,y=430)
+        AGE_Label=Label(contener_FD2,text="Age: ",font='Roboto 12').pack(side=LEFT)
+        AGE_Entry=Entry(contener_FD2,width=5,font='Roboto 12',borderwidth=3)
+        AGE_Entry.pack(side=LEFT)
 
         global Year_Birth
         thisyear=datetime.today().year
         Year_number=list(range(thisyear,1900,-1))
         Year=Year_number
-        Year_Birth=ttk.Combobox(Frame_Input,value=Year,font='Roboto 12',width=6,state='readonly')
+        Year_Birth=ttk.Combobox(contener_FD2,value=Year,font='Roboto 12',width=6,state='readonly')
         Year_Birth.set(thisyear)
         Year_Birth.current(0)
-        Year_Birth.place(x=380,y=430)
 
         month_num=datetime.now()
         month_num=month_num.month
@@ -248,10 +251,10 @@ class Main:
         cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
         number=[day for week in cal for day in week if day != 0]
         self.client_bmonth=month_num
-        print(month_num)
+        # print(month_num)
         def setMonth(event):
             month_num= datetime.strptime(event.widget.get(), '%B').month
-            print(month_num)
+            # print(month_num)
             curr_month=datetime.strptime(str(month_num),"%m")
             curr_year=datetime.strptime(Year_Birth.get(),"%Y")
             global cal,number
@@ -280,37 +283,37 @@ class Main:
 
         Year_Birth.bind("<<ComboboxSelected>>",calculate_age)
 
-        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=153,y=430)
+        Birth_Label=Label(contener_FD2,text="Birthdate:",font="Roboto 12").pack(side=LEFT)
         global Month_Birth
         Month=['January','February','March','April','May','June','July','August','September','October','November','December']
-        Month_Birth=ttk.Combobox(Frame_Input,value=Month,font='Roboto 12',width=9,state='readonly')
+        Month_Birth=ttk.Combobox(contener_FD2,value=Month,font='Roboto 12',width=9,state='readonly')
         Month_Birth.current(0)
-        Month_Birth.place(x=225,y=430)
+        
         Month_Birth.bind("<<ComboboxSelected>>",setMonth)
 
         global Day_Birth
         Day=number
-        Day_Birth=ttk.Combobox(Frame_Input,value=Day,font='Roboto 12',width=2,state='readonly')
+        Day_Birth=ttk.Combobox(contener_FD2,value=Day,font='Roboto 12',width=2,state='readonly')
         Day_Birth.current(0)
-        Day_Birth.place(x=334,y=430) 
+        Month_Birth.pack(side=LEFT)
+        Day_Birth.pack(side=LEFT)
+        Year_Birth.pack(side=LEFT)
 
         global Gender_Mune
-        Gender_Label=Label(Frame_Input,text="Gender:",font='Roboto 12').place(x=460,y=430)
+        Gender_Label=Label(contener_FD2,text="Gender:",font='Roboto 12').pack(side=LEFT)
         Option=["Male","Female","Other"]
-        Gender_Mune=ttk.Combobox(Frame_Input,value=Option,font='Roboto 12',width=10,state='readonly')
+        Gender_Mune=ttk.Combobox(contener_FD2,value=Option,font='Roboto 12',width=7,state='readonly')
         Gender_Mune.current(0)
-        Gender_Mune.place(x=524,y=430)
+        Gender_Mune.pack(side=LEFT)
 
         global Address_Entry,addrs
         addrs=StringVar()
-        Address_Label=Label(Frame_Input,text="Address: ",font='Roboto 12').place(x=46,y=460)
-        Address_Entry=Entry(Frame_Input,textvariable=addrs,width=38,borderwidth=3,font='Roboto 12')
-        Address_Entry.place(x=120,y=460)
+        Address_Label=Label(contener_FD,text="Address: ",font='Roboto 12',anchor=W).pack(fill=X)
+        Address_Entry=Entry(contener_FD,textvariable=addrs,borderwidth=3,font='Roboto 12')
+        Address_Entry.pack(fill=X)
 
-
-        Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Roboto 11',command=self.showCheckbox)
-        Submit_Input.place(x=540,y=530)
-
+        Submit_Input=Button(contener_FD,text="Submit",width=10,bg="green",font='Roboto 11',command=self.showCheckbox)
+        Submit_Input.pack(side=RIGHT,pady=20)
 
 #FrontDesk-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Record_on_close(self):
@@ -2357,7 +2360,7 @@ class Main:
             Button_LabCH.pack(pady=2)
         else:
             # messagebox.showinfo("Error","This Account don't have a Role!")
-            Button_FronDesk=Button(Frame_Works,text="FrontDisk",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.FrontDesk)
+            Button_FronDesk=Button(Frame_Works,text="FrontDisk",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.FrontDesk)
             Button_FronDesk.pack(pady=2)
 
             
@@ -2365,43 +2368,6 @@ class Main:
         Certificate_Button.pack(pady=1)
         Button_Summary=Button(Frame_Works,text="Summary",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Summary)
         Button_Summary.pack()
-
-
-
-        # Frame_FrontDesk=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
-        # Frame_FrontDesk.place(x=0,y=0)
-        # CHO_F= ImageTk.PhotoImage(Image.open("CHO_Front.jpg").resize((140, 150)))
-        # CHO_FL=Label(Frame_FrontDesk,image=CHO_F,highlightbackground="black",highlightthickness=1)
-        # CHO_FL.place(x=80,y=70,width=140, height=150)
-        # FrontDesk_label=Label(Frame_FrontDesk,text="FRONT DESK",font=("Roboto",30,"bold")).place(x=20,y=10)
-        # Button_FronDesk=Button(Frame_FrontDesk,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
-
-        # #Lab-list
-        # Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
-        # Frame_LabTest.place(x=350,y=0)
-        # Frame_LabCH=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
-        # Frame_LabCH.place(x=0,y=0)
-        # CHO_L= ImageTk.PhotoImage(Image.open("CHO_Lab.jpg").resize((140, 140)))
-        # CHO_LL=Label(Frame_LabTest,image=CHO_L,highlightbackground="black",highlightthickness=1)
-        # CHO_LL.place(x=2,y=2,width=140, height=140)
-        # Laboratory_label=Label(Frame_LabCH,text="LABORATORY TEST",font=("Roboto",30,"bold")).place(x=147,y=5)
-        # Button_LabCH=Button(Frame_LabCH,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=100)
-
-        # Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
-        # Frame_XRay.place(x=0,y=145)
-        # CHO_X= ImageTk.PhotoImage(Image.open("CHO_Xray.jpg").resize((138, 138)))
-        # CHO_XL=Label(Frame_XRay,image=CHO_X,highlightbackground="black",highlightthickness=1)
-        # CHO_XL.place(x=2,y=2,width=138, height=138)
-        # Xray_label=Label(Frame_XRay,text="X-RAY LABORATORY",font=("Roboto",30,"bold")).place(x=147,y=5)
-        # Button_XRay=Button(Frame_XRay,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=100)
-
-        # Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
-        # Frame_Summary.place(x=1009,y=0)
-        # CHO_S= ImageTk.PhotoImage(Image.open("CHO_Summary.jpg").resize((200, 150)))
-        # CHO_SL=Label(Frame_Summary,image=CHO_S,highlightbackground="black",highlightthickness=1)
-        # CHO_SL.place(x=60,y=70,width=200, height=150)
-        # Summary_label=Label(Frame_Summary,text="SUMMARY",font=("Roboto",30,"bold")).place(x=40,y=10)
-        # Button_Summary=Button(Frame_Summary,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=118,y=230)
 
         self.Dashboard_GUI.mainloop()
     

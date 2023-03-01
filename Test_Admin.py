@@ -17,6 +17,8 @@ class Admin:
         self.AdminGUI = None
         global PageOpen
         PageOpen = 1
+        global update_id
+
     
     def Rig_close(self):
         global PageOpen
@@ -40,8 +42,8 @@ class Admin:
 
     def Regist(self):
         global PageOpen
-
         def submit():
+            global PageOpen
             uname=Entry_Username.get()
             passwd=Entry_Password.get()
             fname=Entry_FName.get()
@@ -56,8 +58,11 @@ class Admin:
                 NewEmp=employee.Employee(None,uname,passwd,fname,lname,how_muchyour_age,addrss,role,license,Entry_Dept.get(),None)
                 NewEmp.register()
                 messagebox.showinfo("Account Added Successfully","Added Succesfully")
+                PageOpen = 1
                 self.Registration_Page.destroy()
-
+                self.update_main()
+                self.Stop_update()
+                
             else:
                 self.Registration_Page.grab_set()
                 messagebox.showerror("ERROR","AGE not A number please use Number only!")
@@ -129,10 +134,6 @@ class Admin:
             Label_Age=Label(Regist_Body,text="Age:",font=("Arial",10,"bold")).place(x=15,y=270)
             Entry_Age=Entry(Regist_Body,text="Age:",textvariable=age,font=("Arial",10,"bold"),width=10,borderwidth=3)
             Entry_Age.place(x=15,y=290)
-
-            # Label_Birthdate=Label(Regist_Body,text="Birthdate:",font="Arial 12").place(x=100,y=270)
-            # Entry_Birthdate=DateEntry(Regist_Body,width=26,backgroud="magenta3",foreground="White",font="Arial 12",bd=2,state='readonly')
-            # Entry_Birthdate.place(x=100,y=289)
 
             global Year_Birth
             thisyear=datetime.today().year
@@ -275,35 +276,23 @@ class Admin:
                 print(state)
                 
                 def deleteAccount(id):
+                    global update_id,PageOpen,result
                     answer=messagebox.askyesno("Confirm Delete","Delete User?")
                     if answer:
                         messagebox.showinfo("User Deleted","User Deleted Successfully")
                         employee.Employee.deleteEmployee(id)
                         self.Profile_Number.destroy()
+                        self.View_Page.destroy()
 
                         result=employee.Employee.getAllEmployees()
 
                         global labels
-                        labels=[]
-                        for self.Account_Num in range(len(result)):
-                            self.Profile_Number=Frame(Profile,padx=10, pady=10, width=1023, height=200)
-                            self.Profile_Number.grid(row=self.Account_Num,column=0)
+                        self.update_main()
+                        self.Stop_update()
+                        PageOpen = 1
 
-                            Profile_Detail=Frame(self.Profile_Number,highlightbackground="black",highlightthickness=1,)
-                            Profile_Detail.place(x=5,y=7,relwidth=0.99,relheight=0.92)
-
-                            # Access Image URL thru result[self.Account_Num][8] 
-                            Profile_Image=Label(Profile_Detail,text="IMAGE",bg="gray").place(x=10,y=10,relwidth=0.2,relheight=0.88)
-                            global Profile_Name
-                            Profile_Name=Label(Profile_Detail,text=result[self.Account_Num][1]+" "+result[self.Account_Num][2],font=("Arail",25,"bold"))
-                            Profile_Name.place(x=220,y=10)
-                            labels.append(Profile_Name)
-
-                            Profile_Edit=Button(Profile_Detail,text="View",width=10,height=2,font=("Arail",10),borderwidth=5,command=lambda x= result[self.Account_Num][0]:self.ViewProfile(x, labels[self.Account_Num]))
-                            Profile_Edit.place(x=850,y=50)
-                        self.View_Page.destroy()
-                                
                 def editAccount2(id,state):
+                    global update_id
                     if state==0:
                         state=1
                         self.Entry_View_Username.config(state='normal')
@@ -317,7 +306,7 @@ class Admin:
                         self.EntryLicense.config(state='normal')
                         self.Entry_Pro.config(state='readonly')
 
-                        View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id,state))
+                        View_EDIT=Button(self.View_Body,text="Save",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id,state))
                         View_EDIT.place(x=510,y=270)
                         
                     elif state==1:
@@ -328,7 +317,6 @@ class Admin:
                         profession2.get(),
                         license.get(),
                         dept.get(),
-
                         age2.get(),
                         address2.get(),
                         username2.get(),
@@ -340,20 +328,21 @@ class Admin:
 
                         if Account==ress: 
                             messagebox.showinfo("No Changes Made","No Changes have been Made!")
-                        
                         else:
                             answer = messagebox.askyesno(title='confirmation',
                                         message='Save Changes?')
 
                             if answer:
-                                # self.View_Page.destroy()
+                                self.Account_List.pack_forget()
                                 employee.Employee.editAccount(Account)
+                                self.Account_List.pack(fill=BOTH,padx=20,expand=1)
                                 messagebox.showinfo("Changes Saved","Account Update Succesful")
-
-                            else: messagebox.showinfo("No Changes Made","No Changes have been Made!")
+                            else: 
+                                self.Profile_BOX.pack(side=LEFT,fill=BOTH,expand=1)
+                                messagebox.showinfo("No Changes Made","No Changes have been Made!")
+                                
                            
                             state=0
-
                             self.Entry_View_Username.config(state='disabled')
                             self.Entry_View_Password.config(state='disabled')
                             self.Entry_View_FName.config(state='disabled')
@@ -364,6 +353,9 @@ class Admin:
                             self.Entry_View_Pro.config(state='disabled')
                             self.EntryLicense.config(state='disabled')
                             self.Entry_Pro.config(state='disabled')
+                        self.update_main()
+                        self.Stop_update()
+                        
 
                 print(state)
             
@@ -410,14 +402,17 @@ class Admin:
                 Label_Pro=Label(self.View_Body,text="Department",font=("Arial",10,"bold")).place(x=10,y=330)
                 self.Entry_Pro=ttk.Combobox(self.View_Body,value=['None','Laboratory Department', 'Imaging Center'],textvariable=dept,font='Arial 12',width=37,state='disabled')
                 print(res)
+
+                View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
+                View_DELETE.place(x=510,y=310)
+
                 self.Entry_Pro.current(self.Entry_Pro['values'].index(res[5]))
                 self.Entry_Pro.place(x=10,y=350)
                 
                 View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id,state))
                 View_EDIT.place(x=510,y=270)
 
-                View_DELETE=Button(self.View_Body,text="Delete",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: deleteAccount(id))
-                View_DELETE.place(x=510,y=310)
+               
 
                 View_Cancel=Button(self.View_Body,text="Cancel",width=15,height=1,font=("Arail",10),borderwidth=5,command=self.View_on_close)
                 View_Cancel.place(x=510,y=350)
@@ -425,6 +420,48 @@ class Admin:
                 PageOpen +=1
             else:
                 messagebox.showinfo("Error","The Window EDIT is already Open!")
+    
+    def update_main(self):
+        self.Account_List.pack_forget()
+        
+        self.Account_List=Frame(self.Admin_RIGHT,highlightbackground="black",highlightthickness=1,)
+        self.Account_List.pack(fill=BOTH,padx=20,expand=1)
+
+        self.Profile_BOX=Canvas(self.Account_List)
+        self.Profile_BOX.pack(side=LEFT,fill=BOTH,expand=1)
+
+        Profilescroll=ttk.Scrollbar(self.Account_List,orient=VERTICAL,command=self.Profile_BOX.yview)
+        Profilescroll.pack(side=RIGHT,fill=Y)
+
+        self.Profile_BOX.configure(yscrollcommand=Profilescroll.set)
+        self.Profile_BOX.bind('<Configure>',lambda e: self.Profile_BOX.configure(scrollregion= self.Profile_BOX.bbox("all")))
+
+        self.Profile=Frame(self.Profile_BOX)
+        self.Profile_BOX.create_window((0,0),window=self.Profile,anchor=NW)
+
+        result=employee.Employee.getAllEmployees()
+        for self.Account_Num in range(len(result)):
+            self.Profile_Number=Frame(self.Profile,padx=10, pady=10, width=1023, height=200)
+            self.Profile_Number.grid(row=self.Account_Num,column=0)
+
+            Profile_Detail=Frame(self.Profile_Number,highlightbackground="black",highlightthickness=1,)
+            Profile_Detail.place(x=5,y=7,relwidth=0.99,relheight=0.92)
+
+            # Access Image URL thru result[self.Account_Num][8] 
+            Profile_Image=Label(Profile_Detail,text="IMAGE",bg="gray").place(x=10,y=10,relwidth=0.2,relheight=0.88)
+            global Profile_Name
+            Profile_Name=Label(Profile_Detail,text=result[self.Account_Num][1]+" "+result[self.Account_Num][2],font=("Arail",25,"bold"))
+            Profile_Name.place(x=220,y=10)
+            labels.append(Profile_Name)
+
+            Profile_Edit=Button(Profile_Detail,text="View",width=10,height=2,font=("Arail",10),borderwidth=5,command=lambda x= result[self.Account_Num][0]:self.ViewProfile(x, labels[self.Account_Num]))
+            Profile_Edit.place(x=850,y=50)
+        global update_id
+        update_id=self.AdminGUI.after(1000, self.update_main)
+
+    def Stop_update(self):
+        global update_id
+        self.AdminGUI.after_cancel(update_id)
     
     def logout(self):
         self.AdminGUI.destroy()
@@ -438,10 +475,10 @@ class Admin:
         height=self.AdminGUI.winfo_screenheight()
         self.AdminGUI.geometry("%dx%d"%(width,height))
 
-        Page_Admin=Frame(self.AdminGUI)
-        Page_Admin.pack(expand=1, fill=BOTH)
+        self.Page_Admin=Frame(self.AdminGUI)
+        self.Page_Admin.pack(expand=1, fill=BOTH)
 
-        Frame_Header=Frame(Page_Admin,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
+        Frame_Header=Frame(self.Page_Admin,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
         Frame_Header.pack(fill=X)
         image3 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
         IMG_HEADER_Xray=Label(Frame_Header,image=image3,bg='#BDFFC4',width=40,height=40)
@@ -453,8 +490,7 @@ class Admin:
         LOGOUT=Button(Frame_Header,text="LOGOUT",borderwidth=5,font=("Arial",12),command=lambda:self.logout())
         LOGOUT.pack(side=RIGHT,padx=10)
         #Header END-----------
-
-        Admin_Body=Frame(Page_Admin)
+        Admin_Body=Frame(self.Page_Admin)
         Admin_Body.pack(expand=1,fill=BOTH)
 
         Admin_LEFT=Frame(Admin_Body,width=270)
@@ -466,26 +502,26 @@ class Admin:
         Registration_Button=Button(Admin_LEFT,text="Registration",width=20,height=2,font=("Arail",10),borderwidth=5,command=self.Regist)
         Registration_Button.pack()
 
-        Admin_RIGHT=Frame(Admin_Body,width=250)
-        Admin_RIGHT.pack(expand=1,fill=BOTH,side=RIGHT)
+        self.Admin_RIGHT=Frame(Admin_Body,width=250)
+        self.Admin_RIGHT.pack(expand=1,fill=BOTH,side=RIGHT)
 
-        Title_Admin=Label(Admin_RIGHT,text="Account Management Page",font=("Arail",35,"bold"),anchor=W)
+        Title_Admin=Label(self.Admin_RIGHT,text="Account Management Page",font=("Arail",35,"bold"),anchor=W)
         Title_Admin.pack(fill=X,padx=20)
 
-        Account_List=Frame(Admin_RIGHT,highlightbackground="black",highlightthickness=1,)
-        Account_List.pack(fill=BOTH,padx=20,expand=1)
+        self.Account_List=Frame(self.Admin_RIGHT,highlightbackground="black",highlightthickness=1,)
+        self.Account_List.pack(fill=BOTH,padx=20,expand=1)
 
-        Profile_BOX=Canvas(Account_List)
-        Profile_BOX.pack(side=LEFT,fill=BOTH,expand=1)
+        self.Profile_BOX=Canvas(self.Account_List)
+        self.Profile_BOX.pack(side=LEFT,fill=BOTH,expand=1)
 
-        Profilescroll=ttk.Scrollbar(Account_List,orient=VERTICAL,command=Profile_BOX.yview)
+        Profilescroll=ttk.Scrollbar(self.Account_List,orient=VERTICAL,command=self.Profile_BOX.yview)
         Profilescroll.pack(side=RIGHT,fill=Y)
 
-        Profile_BOX.configure(yscrollcommand=Profilescroll.set)
-        Profile_BOX.bind('<Configure>',lambda e: Profile_BOX.configure(scrollregion= Profile_BOX.bbox("all")))
+        self.Profile_BOX.configure(yscrollcommand=Profilescroll.set)
+        self.Profile_BOX.bind('<Configure>',lambda e: self.Profile_BOX.configure(scrollregion= self.Profile_BOX.bbox("all")))
 
-        self.Profile=Frame(Profile_BOX)
-        Profile_BOX.create_window((0,0),window=self.Profile,anchor=NW)
+        self.Profile=Frame(self.Profile_BOX)
+        self.Profile_BOX.create_window((0,0),window=self.Profile,anchor=NW)
 
         result=employee.Employee.getAllEmployees()
 
