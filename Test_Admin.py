@@ -226,6 +226,7 @@ class Admin:
 
     def View_on_close(self):
         global PageOpen
+        self.AdminGUI.grab_release()
         if tk.messagebox.askokcancel('Close', 'Are you sure you want to close the View Page all the data will not be Save?'):
             PageOpen=1
             self.View_Page.destroy()
@@ -240,6 +241,7 @@ class Admin:
             if PageOpen<2:
                 self.View_Page=Toplevel(self.AdminGUI)
                 self.View_Page.title("Edit Profile")
+                self.View_Page.grab_set()
                 PAGE_width=700
                 PAGE_height=430
                 self.View_Page.geometry(f'{PAGE_width}x{PAGE_height}+{400}+{200}')
@@ -276,6 +278,7 @@ class Admin:
                 print(state)
                 
                 def deleteAccount(id):
+                    self.AdminGUI.grab_release()
                     global update_id,PageOpen,result
                     answer=messagebox.askyesno("Confirm Delete","Delete User?")
                     if answer:
@@ -292,6 +295,7 @@ class Admin:
                         PageOpen = 1
 
                 def editAccount2(id,state):
+                    self.View_Page.wm_attributes("-topmost",0)
                     global update_id
                     if state==0:
                         state=1
@@ -355,6 +359,7 @@ class Admin:
                             self.Entry_Pro.config(state='disabled')
                         self.update_main()
                         self.Stop_update()
+                        self.AdminGUI.grab_release()
                         
 
                 print(state)
@@ -411,8 +416,6 @@ class Admin:
                 
                 View_EDIT=Button(self.View_Body,text="Edit",width=15,height=1,font=("Arail",10),borderwidth=5,command=lambda: editAccount2(id,state))
                 View_EDIT.place(x=510,y=270)
-
-               
 
                 View_Cancel=Button(self.View_Body,text="Cancel",width=15,height=1,font=("Arail",10),borderwidth=5,command=self.View_on_close)
                 View_Cancel.place(x=510,y=350)
@@ -474,6 +477,7 @@ class Admin:
         width= self.AdminGUI.winfo_screenwidth()
         height=self.AdminGUI.winfo_screenheight()
         self.AdminGUI.geometry("%dx%d"%(width,height))
+
 
         self.Page_Admin=Frame(self.AdminGUI)
         self.Page_Admin.pack(expand=1, fill=BOTH)

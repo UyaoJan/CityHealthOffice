@@ -550,9 +550,6 @@ class Main:
             AGE_Entry=Entry(Detail_1,width=8,font='Roboto 9',borderwidth=3,state='disabled')
             AGE_Entry.pack(side=LEFT)
 
-            # def Gender_Click(event):
-            #     Genderlabel=Label(Patent_Detail,Gender_Mune.get(),font="Roboto 12")
-
             Detail_2=Frame(Patent_Detail)
             Detail_2.pack(side=BOTTOM,fill=X)
 
@@ -2344,7 +2341,7 @@ class Main:
         USER_ID.place(x=150,y=5)
         USER_NAME=Label(Frame_Profile,text="Name: "+str(self.user.username),font='Roboto 15')
         USER_NAME.place(x=150,y=30)
-        USER_Role=Label(Frame_Profile,text=str(self.user.role),font='Roboto 13')
+        USER_Role=Label(Frame_Profile,text="Profession:"+str(self.user.role),font='Roboto 13')
         USER_Role.place(x=150,y=60)
         # USER_NAME=Label(Frame_Profile,text=str(self.user.username),font='Roboto 20')
         # USER_NAME.pack(side=LEFT)
@@ -2355,20 +2352,23 @@ class Main:
         if self.user.return_dept()=='Imaging Center':
             Button_XRay=Button(Frame_Works,text="X_RAY",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.X_Ray)
             Button_XRay.pack(pady=2)
+            Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Certificate_Page)
+            Certificate_Button.pack(pady=1)
+
         elif self.user.return_dept()=='Laboratory Department':
             Button_LabCH=Button(Frame_Works,text="Laboratory",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.Laboratory)
             Button_LabCH.pack(pady=2)
+            Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Certificate_Page)
+            Certificate_Button.pack(pady=1)
+
         else:
             # messagebox.showinfo("Error","This Account don't have a Role!")
-            Button_FronDesk=Button(Frame_Works,text="FrontDisk",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.FrontDesk)
-            Button_FronDesk.pack(pady=2)
+            Button_FronDesk=Button(Frame_Works,text="FrontDisk",font=("Roboto",12,"bold"),width=10,height=3,bg="green",borderwidth=5,command=self.FrontDesk)
+            Button_FronDesk.pack()
 
-            
-        Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Certificate_Page)
-        Certificate_Button.pack(pady=1)
         Button_Summary=Button(Frame_Works,text="Summary",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Summary)
         Button_Summary.pack()
-
+        
         self.Dashboard_GUI.mainloop()
     
     def start(self):
