@@ -22,9 +22,7 @@ import summary_filter
 
 from dotenv import load_dotenv
 
-# from ctypes import windll
-
-# # get the handle to the taskbar
+# get the handle to the taskbar
 # h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
 
 
@@ -40,13 +38,31 @@ class Main:
         global PageOpen
         PageOpen = 1
         self.Value_Laboratory = ["Laboratory","X_RAY"]
+        self.Close_ID=["Laboratory","X_RAY","Summary","FrontDesk"]
         
         # windll.user32.ShowWindow(h, 0)
-        self.client_bmonth=None
+        # self.client_bmonth=None
 
         self.test_date=date.today()
     
         #Checkbox Def
+    
+    def HOME_PAGE(self,Close):
+        width= 1000
+        height= 500
+        self.Dashboard_GUI.resizable(False,False)
+        self.Dashboard_GUI.attributes("-fullscreen", False)
+        self.Dashboard_GUI.geometry(f'{width}x{height}+{180}+{80}')
+        self.Page_Dashboard.pack(expand=1, fill=BOTH)
+        
+        if Close == "Laboratory":
+            self.Page_Laboratory.destroy()
+        elif Close == "X_RAY":
+            self.Page_XRAY.destroy()
+        elif Close == "Summary":
+            self.Page_Summary.destroy()
+        elif Close == "FrontDesk":
+            self.Page_FrontDesk.destroy()
 
     def showCheckbox(self):
         errors=0
@@ -87,7 +103,7 @@ class Main:
             user.addNewClient(user, client,chosen_serve,today)
             messagebox.showinfo("Client Entered Successfully","New Client Data Registered Successfully")
                 
-            Page_FrontDesk.destroy()
+            self.Page_FrontDesk.destroy()
             self.Page_Dashboard.pack()
 
         else: messagebox.showerror("Input Error","There is one or More Errors in Data Entered. \nPlease Make sure that the Data you entered followed Specifications")
@@ -98,46 +114,53 @@ class Main:
         interface.start()
 
     def FrontDesk(self):
-        def Home():
-            Page_FrontDesk.destroy()
-            self.Page_Dashboard.pack()
+        width= self.Dashboard_GUI.winfo_screenwidth()
+        height=self.Dashboard_GUI.winfo_screenheight()
+        self.Dashboard_GUI.geometry(f'{width}x{height}+{0}+{0}')
+        self.Dashboard_GUI.resizable(True,True)
         self.Page_Dashboard.forget()
-        global Page_FrontDesk
-        Page_FrontDesk=Frame(self.Dashboard_GUI)
-        Page_FrontDesk.pack(expand=1, fill=BOTH)
-        Frame_Header=Frame(Page_FrontDesk,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
-        Frame_Header.pack()
+        self.Page_FrontDesk=Frame(self.Dashboard_GUI)
+        self.Page_FrontDesk.pack(expand=1, fill=BOTH)
+
+        Frame_Header=Frame(self.Page_FrontDesk,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
+        Frame_Header.pack(fill=X)
         image5 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
         IMG_HEADER_FD=Label(Frame_Header,image=image5,bg='#BDFFC4',width=40,height=40)
         IMG_HEADER_FD.image=image5
-        IMG_HEADER_FD.place(x=5,y=1)
-        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').place(x=50,y=1)
-
-        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ').place(x=1150,y=5)
-        # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-        # IMG_USERNAME.place(x=1200,y=5)
+        IMG_HEADER_FD.pack(side=LEFT,padx=5)
+        HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 25 bold').pack(side=LEFT)
 
         Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
-        Toggle_Button.place(x=1290,y=10)
+        Toggle_Button.pack(side=RIGHT,padx=5)
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=Home)
+        Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=lambda:self.HOME_PAGE(self.Close_ID[4]))
         Toggle_Button.menu.add_command(label="Logout",font='Roboto 12',command=lambda:self.logout())
+
+        HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ').pack(side=RIGHT)
 
         #Header-------
         #Body-------
-        Frame_Body=Frame(Page_FrontDesk)
-        Frame_Body.pack(side=RIGHT)
+        Frame_Body=Frame(self.Page_FrontDesk)
+        Frame_Body.pack(side=RIGHT,fill=BOTH,expand=True)
 
-        Frame_LIST=Frame(Frame_Body,width=680,height=700)
-        Frame_LIST.pack(side=LEFT)
-        FrontDesk_Title=Label(Frame_Body,text="New Client",font='Roboto 75')
-        FrontDesk_Title.place(x=20,y=20)
-        Box_Title=Label(Frame_Body,text="Laboratory Test List",font='Roboto 25')
-        Box_Title.place(x=54,y=300)
-        self.Box=Frame(Frame_LIST,width=560,height=300,highlightbackground="black",highlightthickness=1)
-        self.Box.place(x=50,y=320)
+        Frame_LIST=Frame(Frame_Body)
+        Frame_LIST.pack(side=LEFT,fill=BOTH,expand=True)
+        FrontDesk_Title=Label(Frame_LIST,text="New Client",font='Roboto 75')
+        FrontDesk_Title.pack(pady=30)
+
+        Space=Frame(Frame_LIST,height=150)
+        Space.pack(fill=BOTH)
+
+        Box_Title=Label(Frame_LIST,text="Laboratory Test List",width=28,anchor=W,font='Roboto 25')
+        Box_Title.pack()
+        self.Box=Frame(Frame_LIST,highlightbackground="black",highlightthickness=1)
+        self.Box.pack()
+        self.Box_R=Frame(self.Box)
+        self.Box_R.pack(side=LEFT,fill=BOTH,padx=5)
+        self.Box_L=Frame(self.Box)
+        self.Box_L.pack(side=RIGHT,fill=BOTH)
         #checkbox
         self.Value=[
                     "Complete Blood Count",
@@ -166,58 +189,61 @@ class Main:
             Test.set(0)
             self.services.append(Test)
 
-        Checkbutton(self.Box,text="Complete Blood Count",variable=self.services[0],font='Roboto 12 ').place(x=30,y=50)
-        Checkbutton(self.Box,text="Blood Type",variable=self.services[1],font='Roboto 12 ').place(x=30,y=75)
-        Checkbutton(self.Box,text="Stool Exam",variable=self.services[2],font='Roboto 12 ').place(x=30,y=100)
-        Checkbutton(self.Box,text="Urinalysis (“Urine Test”)",variable=self.services[3],font='Roboto 12 ').place(x=30,y=125)
-        Checkbutton(self.Box,text="Syphilis Rapid Test",variable=self.services[4],font='Roboto 12 ').place(x=30,y=150)
-        Checkbutton(self.Box,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],font='Roboto 12 ').place(x=30,y=175)
-        Checkbutton(self.Box,text="Anti-HAV Test",variable=self.services[6],font='Roboto 12 ').place(x=30,y=200)
-        Checkbutton(self.Box,text="Drug Test",variable=self.services[7],font='Roboto 12 ').place(x=30,y=222)
-        Checkbutton(self.Box,text="Pregnancy Test",variable=self.services[8],font='Roboto 12 ').place(x=30,y=245)
-        Checkbutton(self.Box,text="Fasting Blood Suger Test",variable=self.services[9],font='Roboto 12 ').place(x=280,y=50)
-        Checkbutton(self.Box,text="Blood Uric Acid Test",variable=self.services[10],font='Roboto 12 ').place(x=280,y=75)
-        Checkbutton(self.Box,text="Blood Cholesterol Test",variable=self.services[11],font='Roboto 12 ').place(x=280,y=100)
-        Checkbutton(self.Box,text="Blood Creatinine Test",variable=self.services[12],font='Roboto 12 ').place(x=280,y=125)
-        Checkbutton(self.Box,text="Acid Fast Staining",variable=self.services[13],font='Roboto 12 ').place(x=280,y=150)
-        Checkbutton(self.Box,text="X-Ray Test",variable=self.services[14],font='Roboto 12 ').place(x=280,y=175)
-        Checkbutton(self.Box,text="Serology",variable=self.services[15],font='Roboto 12 ').place(x=280,y=200)
-        Checkbutton(self.Box,text="Medical Certificate",variable=self.services[16],font='Roboto 12 ').place(x=280,y=220)
-        Checkbutton(self.Box,text="Fecalysis",variable=self.services[17],font='Roboto 12 ').place(x=280,y=240)
+        Checkbutton(self.Box_R,text="Complete Blood Count",width=25,anchor=W,variable=self.services[0],font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_R,text="Blood Type",variable=self.services[1],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_R,text="Stool Exam",variable=self.services[2],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_R,text="Urinalysis (“Urine Test”)",variable=self.services[3],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_R,text="Syphilis Rapid Test",variable=self.services[4],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_R,text="Hepatitis B (“Antigen Test”)",variable=self.services[5],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_R,text="Anti-HAV Test",variable=self.services[6],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_R,text="Drug Test",variable=self.services[7],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_R,text="Pregnancy Test",variable=self.services[8],anchor=W,font='Roboto 12 ').pack(fill=X)
 
+        Checkbutton(self.Box_L,text="Fasting Blood Suger Test",width=25,anchor=W,variable=self.services[9],font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_L,text="Blood Uric Acid Test",variable=self.services[10],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_L,text="Blood Cholesterol Test",variable=self.services[11],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_L,text="Blood Creatinine Test",variable=self.services[12],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_L,text="Acid Fast Staining",variable=self.services[13],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_L,text="X-Ray Test",variable=self.services[14],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_L,text="Serology",variable=self.services[15],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_L,text="Medical Certificate",variable=self.services[16],anchor=W,font='Roboto 12 ').pack(fill=X)
+        Checkbutton(self.Box_L,text="Fecalysis",variable=self.services[17],anchor=W,font='Roboto 12 ').pack(fill=X)
         #Body-------
 
-
         #IMPUT-----------------
-        Frame_Input=Frame(Frame_Body,width=680,height=700)
-        Frame_Input.pack()
+        Frame_Input=Frame(Frame_Body)
+        Frame_Input.pack(fill=BOTH,side=RIGHT,expand=TRUE)
                 
         FrameIMG=Frame(Frame_Input,width=300,height=300)
-        FrameIMG.place(x=170,y=40)
+        FrameIMG.pack(pady=40)
 
         image = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
         Img=Label(FrameIMG,image = image)
         Img.image=image
-        Img.place(x=0,y=0,width=300, height=300)
+        Img.pack(fill=BOTH)
 
+        contener_FD=Frame(Frame_Input)
+        contener_FD.pack(pady=20)
         global Name_Entry
-        Name_Label=Label(Frame_Input,text="Name: ",font='Roboto 12').place(x=46,y=400)
-        Name_Entry=Entry(Frame_Input,width=59,borderwidth=3,font='Roboto 12')
-        Name_Entry.place(x=100,y=400)
+        Name_Label=Label(contener_FD,text="Name: ",font='Roboto 12',anchor=W).pack(fill=X)
+        Name_Entry=Entry(contener_FD,width=59,borderwidth=3,font='Roboto 12')
+        Name_Entry.pack()
+
+        contener_FD2=Frame(contener_FD)
+        contener_FD2.pack(pady=4)
 
         global AGE_Entry
-        AGE_Label=Label(Frame_Input,text="Age: ",font='Roboto 12').place(x=46,y=430)
-        AGE_Entry=Entry(Frame_Input,width=5,font='Roboto 12',borderwidth=3)
-        AGE_Entry.place(x=100,y=430)
+        AGE_Label=Label(contener_FD2,text="Age: ",font='Roboto 12').pack(side=LEFT)
+        AGE_Entry=Entry(contener_FD2,width=5,font='Roboto 12',borderwidth=3)
+        AGE_Entry.pack(side=LEFT)
 
         global Year_Birth
         thisyear=datetime.today().year
         Year_number=list(range(thisyear,1900,-1))
         Year=Year_number
-        Year_Birth=ttk.Combobox(Frame_Input,value=Year,font='Roboto 12',width=6,state='readonly')
+        Year_Birth=ttk.Combobox(contener_FD2,value=Year,font='Roboto 12',width=6,state='readonly')
         Year_Birth.set(thisyear)
         Year_Birth.current(0)
-        Year_Birth.place(x=380,y=430)
 
         month_num=datetime.now()
         month_num=month_num.month
@@ -227,10 +253,10 @@ class Main:
         cal=calendar.monthcalendar(int(curr_year.year),int(curr_month.month))
         number=[day for week in cal for day in week if day != 0]
         self.client_bmonth=month_num
-        print(month_num)
+        # print(month_num)
         def setMonth(event):
             month_num= datetime.strptime(event.widget.get(), '%B').month
-            print(month_num)
+            # print(month_num)
             curr_month=datetime.strptime(str(month_num),"%m")
             curr_year=datetime.strptime(Year_Birth.get(),"%Y")
             global cal,number
@@ -259,37 +285,37 @@ class Main:
 
         Year_Birth.bind("<<ComboboxSelected>>",calculate_age)
 
-        Birth_Label=Label(Frame_Input,text="Birthdate:",font="Roboto 12").place(x=153,y=430)
+        Birth_Label=Label(contener_FD2,text="Birthdate:",font="Roboto 12").pack(side=LEFT)
         global Month_Birth
         Month=['January','February','March','April','May','June','July','August','September','October','November','December']
-        Month_Birth=ttk.Combobox(Frame_Input,value=Month,font='Roboto 12',width=9,state='readonly')
+        Month_Birth=ttk.Combobox(contener_FD2,value=Month,font='Roboto 12',width=9,state='readonly')
         Month_Birth.current(0)
-        Month_Birth.place(x=225,y=430)
+        
         Month_Birth.bind("<<ComboboxSelected>>",setMonth)
 
         global Day_Birth
         Day=number
-        Day_Birth=ttk.Combobox(Frame_Input,value=Day,font='Roboto 12',width=2,state='readonly')
+        Day_Birth=ttk.Combobox(contener_FD2,value=Day,font='Roboto 12',width=2,state='readonly')
         Day_Birth.current(0)
-        Day_Birth.place(x=334,y=430) 
+        Month_Birth.pack(side=LEFT)
+        Day_Birth.pack(side=LEFT)
+        Year_Birth.pack(side=LEFT)
 
         global Gender_Mune
-        Gender_Label=Label(Frame_Input,text="Gender:",font='Roboto 12').place(x=460,y=430)
+        Gender_Label=Label(contener_FD2,text="Gender:",font='Roboto 12').pack(side=LEFT)
         Option=["Male","Female","Other"]
-        Gender_Mune=ttk.Combobox(Frame_Input,value=Option,font='Roboto 12',width=10,state='readonly')
+        Gender_Mune=ttk.Combobox(contener_FD2,value=Option,font='Roboto 12',width=7,state='readonly')
         Gender_Mune.current(0)
-        Gender_Mune.place(x=524,y=430)
+        Gender_Mune.pack(side=LEFT)
 
         global Address_Entry,addrs
         addrs=StringVar()
-        Address_Label=Label(Frame_Input,text="Address: ",font='Roboto 12').place(x=46,y=460)
-        Address_Entry=Entry(Frame_Input,textvariable=addrs,width=38,borderwidth=3,font='Roboto 12')
-        Address_Entry.place(x=120,y=460)
+        Address_Label=Label(contener_FD,text="Address: ",font='Roboto 12',anchor=W).pack(fill=X)
+        Address_Entry=Entry(contener_FD,textvariable=addrs,borderwidth=3,font='Roboto 12')
+        Address_Entry.pack(fill=X)
 
-
-        Submit_Input=Button(Frame_Input,text="Submit",width=10,bg="green",font='Roboto 11',command=self.showCheckbox)
-        Submit_Input.place(x=540,y=530)
-
+        Submit_Input=Button(contener_FD,text="Submit",width=10,bg="green",font='Roboto 11',command=self.showCheckbox)
+        Submit_Input.pack(side=RIGHT,pady=20)
 
 #FrontDesk-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Record_on_close(self):
@@ -444,21 +470,18 @@ class Main:
         if self.user.return_dept()!='Laboratory Department':
             messagebox.showerror("Access Denied","Only Employees from Laboratory Department or Users with Administrative Access can Access this Page")
         else: 
-            def Home():
-                Page_Laboratory.destroy()
-                width= 1000
-                height= 700
-                self.Dashboard_GUI.geometry("%dx%d"%(width,height))
-                self.Page_Dashboard.pack(expand=1, fill=BOTH)
-
+            self.Dashboard_GUI.resizable(True,True)
             width= self.Dashboard_GUI.winfo_screenwidth()
             height=self.Dashboard_GUI.winfo_screenheight()
-            self.Dashboard_GUI.geometry("%dx%d"%(width,height))
+            self.Dashboard_GUI.geometry(f'{width}x{height}+{0}+{0}')
             self.Page_Dashboard.forget()
-            Page_Laboratory=Frame(self.Dashboard_GUI,bg="green")
-            Page_Laboratory.pack(expand=1, fill=BOTH)
-            Frame_Header=Frame(Page_Laboratory,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
+            self.Page_Laboratory=Frame(self.Dashboard_GUI,bg="green")
+            self.Page_Laboratory.pack(expand=1, fill=BOTH)
+
+
+            Frame_Header=Frame(self.Page_Laboratory,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
             Frame_Header.pack(fill=X)
+
             image4 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
             IMG_HEADER_Lab=Label(Frame_Header,image=image4,bg='#BDFFC4',width=40,height=40)
             IMG_HEADER_Lab.image=image4
@@ -470,7 +493,7 @@ class Main:
             Toggle_Button.menu=Menu(Toggle_Button)
             Toggle_Button["menu"]=Toggle_Button.menu
 
-            Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=Home)
+            Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=lambda:self.HOME_PAGE(self.Close_ID[0]))
             Toggle_Button.menu.add_command(label="Logout",font='Roboto 12',command=lambda:self.logout())
 
             HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ')
@@ -478,7 +501,7 @@ class Main:
 
             #Header-------
             #BODY >> Laboratory
-            Frame_Body=Frame(Page_Laboratory,highlightbackground="black",highlightthickness=1)
+            Frame_Body=Frame(self.Page_Laboratory,highlightbackground="black",highlightthickness=1)
             Frame_Body.pack(fill=X)
 
             Patent_Detail=Frame(Frame_Body)
@@ -528,9 +551,6 @@ class Main:
             AGE_Label=Label(Detail_1,text="Age: ",font='Roboto 12').pack(side=LEFT)
             AGE_Entry=Entry(Detail_1,width=8,font='Roboto 9',borderwidth=3,state='disabled')
             AGE_Entry.pack(side=LEFT)
-
-            # def Gender_Click(event):
-            #     Genderlabel=Label(Patent_Detail,Gender_Mune.get(),font="Roboto 12")
 
             Detail_2=Frame(Patent_Detail)
             Detail_2.pack(side=BOTTOM,fill=X)
@@ -592,7 +612,7 @@ class Main:
 
             Name_Entry.bind("<<ComboboxSelected>>",setClient)
             #Frame for the Testing 
-            Frame_Test=Frame(Page_Laboratory,highlightbackground="black",highlightthickness=1,bg="blue")
+            Frame_Test=Frame(self.Page_Laboratory,highlightbackground="black",highlightthickness=1,bg="blue")
             Frame_Test.pack(expand=1,fill=BOTH)
 
             Header_Test=Frame(Frame_Test,highlightbackground="black",highlightthickness=1)
@@ -606,7 +626,7 @@ class Main:
                     "Urinalysis",
                     "Serology",
                     "Miscelaneous",
-                    "FECALYSIS"
+                    "Fecalysis"
                 ]
 
             def Option_TEST(event):
@@ -1181,11 +1201,11 @@ class Main:
                     CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
                     CBC_Button.place(x=1200,y=430)
                 
-                elif LabTest_Mune.get() == "FECALYSIS":
+                elif LabTest_Mune.get() == "Fecalysis":
                     Serology_Page.pack_forget()
-                    Miscelaneous_Page.pack_forget()
-                    Urinalysis_Page.pack_forget()
                     CBC_Page.pack_forget()
+                    Miscelaneous_Page.pack_forget()
+                    Urinalysis_Page.pack_forget() 
 
                     FE_Page.pack(expand=1,fill=BOTH)
                     FE_Title = Label(FE_Page,text=LabTest_Mune.get(),font=("Roboto",20,"bold"))
@@ -1344,6 +1364,7 @@ class Main:
             Plus__BOX.pack()
 
             def addFinding():
+                global PageOpen
                 self.user.addXrayFinding(Plus_Name_Entry.get(),Plus__BOX.get("1.0", "end-1c"))
                 PageOpen = 1
 
@@ -1369,41 +1390,44 @@ class Main:
     def X_Ray(self):
         if self.user.return_dept()!='Imaging Center':
             messagebox.showerror("Access Denied","Only Employees from Imaging Center or Users with Administrative Access can Access this Page")
-        else: 
-            global title, body
-            def Home():
-                Page_XRAY.destroy()
-                self.Page_Dashboard.pack()
-
+        else:
+            self.Dashboard_GUI.resizable(True,True)
+            width= self.Dashboard_GUI.winfo_screenwidth()
+            height=self.Dashboard_GUI.winfo_screenheight()
+            self.Dashboard_GUI.geometry(f'{width}x{height}+{0}+{0}')
             self.Page_Dashboard.forget()
-            Page_XRAY=Frame(self.Dashboard_GUI,bg="green")
-            Page_XRAY.pack(expand=1, fill=BOTH)
-            Frame_Header=Frame(Page_XRAY,width=1360,height=50,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
-            Frame_Header.pack()
+            self.Page_XRAY=Frame(self.Dashboard_GUI)
+            self.Page_XRAY.pack(expand=1, fill=BOTH)
+            
+            Frame_Header=Frame(self.Page_XRAY,bg='#BDFFC4',highlightbackground="black",highlightthickness=1)
+            Frame_Header.pack(fill=X)
             image3 = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((40, 40)))
             IMG_HEADER_Xray=Label(Frame_Header,image=image3,bg='#BDFFC4',width=40,height=40)
             IMG_HEADER_Xray.image=image3
-            IMG_HEADER_Xray.place(x=3,y=1)
-            HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 20 bold').place(x=50,y=8)
-
-            HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ').place(x=1150,y=5)
-            # IMG_USERNAME=Label(Frame_Header,text='IMG',bg='green',width=5,height=2)
-            # IMG_USERNAME.place(x=1200,y=8)
+            IMG_HEADER_Xray.pack(side=LEFT,padx=20)
+            HEADER_TITLE=Label(Frame_Header,text="City Health Office",bg='#BDFFC4',font='Roboto 20 bold')
+            HEADER_TITLE.pack(side=LEFT)
 
             Toggle_Button=Menubutton(Frame_Header,width=5,text="=",highlightbackground="black",highlightthickness=1,justify=RIGHT)
-            Toggle_Button.place(x=1290,y=10)
+            Toggle_Button.pack(side=RIGHT,padx=8)
             Toggle_Button.menu=Menu(Toggle_Button)
             Toggle_Button["menu"]=Toggle_Button.menu
 
-            Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=Home)
+            Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=lambda:self.HOME_PAGE(self.Close_ID[1]))
             Toggle_Button.menu.add_command(label="Logout",font='Roboto 12',command=lambda:self.logout())
+
+            HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ')
+            HEADER_USERNAME.pack(side=RIGHT)
             #Header-------
             #BODY >> Laboratory
-            Detail_Body=Frame(Page_XRAY,width=300)
+            Detail_Body=Frame(self.Page_XRAY)
             Detail_Body.pack(expand=1,fill=BOTH,side=LEFT)
             
-            XRAY_Title=Label(Detail_Body,text="X-Ray Laboratory Test",font='Roboto 40 bold')
-            XRAY_Title.place(x=10,y=15) 
+            XRAY_Title=Label(Detail_Body,text="X-Ray Laboratory Test",anchor=W,font='Roboto 40 bold')
+            XRAY_Title.pack(fill=X,padx=5,pady=20)
+
+            Client_Detailbox=Frame(Detail_Body)
+            Client_Detailbox.pack(pady=10)
 
             def setValue(event):
                 global client_id, test_id
@@ -1417,18 +1441,17 @@ class Main:
 
 
             name=StringVar()
-            Label(Detail_Body,text="Name: ",font='Roboto 12').place(x=100,y=130)
-            # Name_Entry=Entry(Detail_Body,width=50,textvariable=name,borderwidth=3,font='Roboto 9')
-            Name_Entry=ttk.Combobox(Detail_Body,textvariable=name,font='Roboto 9',width=48)
+            Label(Client_Detailbox,text="Name: ",font='Roboto 12',anchor=W).pack(fill=X)
+            Name_Entry=ttk.Combobox(Client_Detailbox,textvariable=name,font='Roboto 9',width=48)
             result=self.user.getClients_Xray()
             n=1
             Name_Entry['values']=[x[n] for x in result]
-            Name_Entry.place(x=160,y=130)
+            Name_Entry.pack()
             Name_Entry.bind('<<ComboboxSelected>>', setValue)
 
-            Birth_Label=Label(Detail_Body,text="Birthdate:",font="Roboto 12").place(x=100,y=160)
-            Birth_Entry=DateEntry(Detail_Body,width=36,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
-            Birth_Entry.place(x=170,y=160)
+            Birth_Label=Label(Client_Detailbox,text="Birthdate:",font="Roboto 12",anchor=W).pack(fill=X)
+            Birth_Entry=DateEntry(Client_Detailbox,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
+            Birth_Entry.pack(fill=X)
 
             def Name_entry_search(event):
                 value=event.widget.get()
@@ -1447,44 +1470,19 @@ class Main:
             Name_Entry.bind("<KeyRelease>",Name_entry_search)
 
             age=StringVar()
-            AGE_Label=Label(Detail_Body,text="Age: ",font='Roboto 12').place(x=100,y=190)
-            AGE_Entry=Entry(Detail_Body,width=50,textvariable=age,font='Roboto 9',borderwidth=3)
-            AGE_Entry.place(x=160,y=190)
+            AGE_Label=Label(Client_Detailbox,text="Age: ",font='Roboto 12',anchor=W).pack(fill=X)
+            AGE_Entry=Entry(Client_Detailbox,textvariable=age,font='Roboto 9',borderwidth=3)
+            AGE_Entry.pack(fill=X)
 
             def Gender_Click():
-                Genderlabel=Label(Detail_Body,Gender_Mune.get(),font="Roboto 12 bold")
+                Genderlabel=Label(Client_Detailbox,Gender_Mune.get(),font="Roboto 12 bold")
 
-            Gender_Label=Label(Detail_Body,text="Gender:",font='Roboto 12 ').place(x=100,y=220)
+            Gender_Label=Label(Client_Detailbox,text="Gender:",font='Roboto 12 ',anchor=W).pack(fill=X)
             Option=["Male","Female","Other"]
-            Gender_Mune=ttk.Combobox(Detail_Body,value=Option,font='Roboto 12',width=37,state='readonly')
+            Gender_Mune=ttk.Combobox(Client_Detailbox,value=Option,font='Roboto 12',state='readonly')
             Gender_Mune.set("Select Gender")
             Gender_Mune.bind("<<ComboboxSelected>>",Gender_Click)
-            Gender_Mune.place(x=160,y=220)
-
-            # Date_Label=Label(Detail_Body,text="Date:",font="Roboto 12").place(x=100,y=250)
-            # Date_Entry=DateEntry(Detail_Body,width=37,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
-            # Date_Entry.place(x=160,y=250)
-
-            Label_Finding=Label(Detail_Body,text="Finding:",font=("Roboto 20 bold"))
-            Label_Finding.place(x=60,y=305)
-
-            FindBody=Frame(Detail_Body,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
-            FindBody.place(x=60,y=340)
-            Find_scroll=Scrollbar(FindBody,orient='vertical')
-            Find_scroll.pack(side=RIGHT,fill='y')
-            Finding_BOX = Text(FindBody, height = 9, width = 70,borderwidth=5,font=("Roboto 11 "),yscrollcommand=Find_scroll.set)
-            Find_scroll.config(command=Finding_BOX.yview)
-            Finding_BOX.pack()
-
-            Label_IMPRESSIONSBody=Label(Detail_Body,text="Impression:",font=("Roboto 20 bold"))
-            Label_IMPRESSIONSBody.place(x=60,y=530)
-            IMPRESSIONSBody=Frame(Detail_Body,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
-            IMPRESSIONSBody.place(x=60,y=570)
-            IMPRESSIONS_scroll=Scrollbar(IMPRESSIONSBody,orient='vertical')
-            IMPRESSIONS_scroll.pack(side=RIGHT,fill='y')
-            IMPRESSIONS_BOX = Text(IMPRESSIONSBody, height = 5, width = 70,borderwidth=5,font=("Roboto 11 "),yscrollcommand=IMPRESSIONS_scroll.set)
-            IMPRESSIONS_scroll.config(command=IMPRESSIONS_BOX.yview)
-            IMPRESSIONS_BOX.pack()
+            Gender_Mune.pack(fill=X)
 
             def FIND_Click(event):
                 chosen_finding_title=self.FINDING_Mune.get()
@@ -1499,37 +1497,64 @@ class Main:
             n=2
             if opts is not None:
                 Option=[x[n] for x in opts]
-            # Option=["Normal","Chest PA"]
-            self.FINDING_Mune=ttk.Combobox(Detail_Body,value=Option,font='Roboto 12',width=20)
+
+            self.body=Frame(Detail_Body)
+            self.body.pack()
+            self.body2=Frame(self.body)
+            self.body2.pack(fill=X)
+            self.FINDING_Mune=ttk.Combobox(self.body2,value=Option,font='Roboto 12',width=20)
             self.FINDING_Mune.set("Select FINDING")
             self.FINDING_Mune.bind("<<ComboboxSelected>>",FIND_Click)
-            self.FINDING_Mune.place(x=449,y=310)
+            self.FINDING_Mune.pack(side=RIGHT)
+            Find_ADD=Button(self.body2,text="+",font='Roboto 10 bold',width=2,height=1,command=self.Plus_Finding)
+            Find_ADD.pack(side=RIGHT)
+            Label_Finding=Label(self.body2,text="Finding:",font=("Roboto 20 bold"))
+            Label_Finding.pack(side=LEFT)
+            FindBody=Frame(self.body,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
+            FindBody.pack()
+            Find_scroll=Scrollbar(FindBody,orient='vertical')
+            Find_scroll.pack(side=RIGHT,fill='y')
+            Finding_BOX = Text(FindBody, height = 9, width = 70,borderwidth=5,font=("Roboto 11 "),yscrollcommand=Find_scroll.set)
+            Find_scroll.config(command=Finding_BOX.yview)
+            Finding_BOX.pack()
 
-            Find_ADD=Button(Detail_Body,text="+",font='Roboto 10 bold',width=2,height=1,command=self.Plus_Finding)
-            Find_ADD.place(x=420,y=309)
+            self.body_IM=Frame(Detail_Body)
+            self.body_IM.pack()
+            Label_IMPRESSIONSBody=Label(self.body_IM,text="Impression:",font=("Roboto 20 bold"),anchor=W)
+            Label_IMPRESSIONSBody.pack(fill=X)
+            IMPRESSIONSBody=Frame(self.body_IM,width=550,height=200,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
+            IMPRESSIONSBody.pack()
+            IMPRESSIONS_scroll=Scrollbar(IMPRESSIONSBody,orient='vertical')
+            IMPRESSIONS_scroll.pack(side=RIGHT,fill='y')
+            IMPRESSIONS_BOX = Text(IMPRESSIONSBody, height = 5, width = 70,borderwidth=5,font=("Roboto 11 "),yscrollcommand=IMPRESSIONS_scroll.set)
+            IMPRESSIONS_scroll.config(command=IMPRESSIONS_BOX.yview)
+            IMPRESSIONS_BOX.pack()
 
-            Img_Body=Frame(Page_XRAY,width=300)
-            Img_Body.pack(expand=1,fill=BOTH,side=RIGHT)
+            Img_Body=Frame(self.Page_XRAY)
+            Img_Body.pack(fill=BOTH,side=RIGHT,expand=True)
 
-            Image_Box=Frame(Img_Body,width=300,height=390,bg="green",highlightbackground="black",highlightthickness=2)
-            Image_Box.place(x=210,y=20)
+            Image_Box=Frame(Img_Body,width=300,height=390,bg="blue",highlightbackground="black",highlightthickness=2)
+            Image_Box.pack(pady=40)
 
-            Image_upload=Label(Image_Box,width=40,height=25,borderwidth=2,padx=2,pady=2)
-            Image_upload.place()
-
-            Upload_button=Button(Image_Box,text="Upload the X-Ray",command=lambda:open_file(),width=41,height=25,borderwidth=2)
-            Upload_button.place(x=0,y=0)
+            Upload_button=Button(Image_Box,text="Upload the X-Ray",width=40,height=25,command=lambda:open_file())
+            Upload_button.pack(fill=BOTH)
 
             def open_file():
-                global img, filepath
+                global img, filepath,b2
                 f_types = [('Jpg Files', '*.jpg')]
                 filepath = filedialog.askopenfilename(filetypes=f_types)
                 img=Image.open(filepath)
-                img_resized=img.resize((285,375)) 
+                img_resized=img.resize((285,375))
                 img=ImageTk.PhotoImage(img_resized)
-                b2 =Button(Image_Box,image=img,borderwidth=5,command=open_file) 
-                b2.place(x=0,y=0)
+                b2 =Button(Image_Box,image=img,borderwidth=5,command=Reopen) 
+                b2.pack(fill=BOTH)
+                Upload_button.pack_forget()
             
+            def Reopen():
+                if messagebox.askokcancel('Change', 'Are you sure you want to Delete this Image?'):
+                    Upload_button.pack(fill=BOTH)
+                    b2.pack_forget()
+
             def submit():
                 if name.get() =="":
                     messagebox.showerror("Error","Select a Client First")
@@ -1574,25 +1599,20 @@ class Main:
 
                         id=self.user.save_to_summary(total[0],serviceid[0],client_id[0])
                         self.user.update_summaryID_test(id,client_id[0],serviceid[0])
-                        self.user.markTest_as_done(test_id[0][0])
-                        
-            Record_Xray=Button(Img_Body,text="Record",width=10,bg="green",font='Roboto 11',borderwidth=2,command=lambda:self.Record(self.Value_Laboratory[1])).place(x=410,y=630)
-            Submit_Xray=Button(Img_Body,text="Submit",width=10,bg="green",font='Roboto 11',borderwidth=2,command=lambda: submit()).place(x=520,y=630)
+                        self.user.markTest_as_done(test_id[0])
+            XRay_Continer=Frame(Img_Body)
+            XRay_Continer.pack(side=BOTTOM,fill=X,pady=40)
+            Submit_Xray=Button(XRay_Continer,text="Submit",width=10,bg="green",font='Roboto 11',borderwidth=5,command=lambda: submit()).pack(side=RIGHT,padx=20)
+            Record_Xray=Button(XRay_Continer,text="Record",width=10,bg="green",font='Roboto 11',borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[1])).pack(side=RIGHT)
 
 #X_Ray Laboratory  END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #Summary>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Summary(self):
-        def Home():
-            self.Page_Summary.destroy()
-            width= 1000
-            height= 700
-            self.Dashboard_GUI.geometry("%dx%d"%(width,height))
-            self.Page_Dashboard.pack(expand=1, fill=BOTH)
-
         width= self.Dashboard_GUI.winfo_screenwidth()
         height=self.Dashboard_GUI.winfo_screenheight()
-        self.Dashboard_GUI.geometry("%dx%d"%(width,height))
+        self.Dashboard_GUI.geometry(f'{width}x{height}+{0}+{0}')
+        self.Dashboard_GUI.resizable(True,True)
         self.Page_Dashboard.forget()
         self.Page_Summary=Frame(self.Dashboard_GUI,bg="green")
         self.Page_Summary.pack(expand=1, fill=BOTH)
@@ -1608,7 +1628,7 @@ class Main:
         Toggle_Button.pack(side=RIGHT,padx=20)
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
-        Toggle_Button.menu.add_command(label="Home",font='Roboto 12 ',command=Home)
+        Toggle_Button.menu.add_command(label="Home",font='Roboto 12 ',command=lambda:self.HOME_PAGE(self.Close_ID[2]))
         Toggle_Button.menu.add_command(label="Logout",font='Roboto 12 ',command=lambda:self.logout())
 
         HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),font='Roboto 20 ',bg='#BDFFC4')
@@ -2305,9 +2325,10 @@ class Main:
         # width= self.Dashboard_GUI.winfo_screenwidth()
         # height=self.Dashboard_GUI.winfo_screenheight()
         width= 1000
-        height= 700
-        self.Dashboard_GUI.geometry(f'{width}x{height}+{180}+{20}')
+        height= 500
+        self.Dashboard_GUI.geometry(f'{width}x{height}+{180}+{80}')
         self.Dashboard_GUI.protocol("WM_DELETE_WINDOW", self.onClose)
+        self.Dashboard_GUI.resizable(False,False)
 
         self.Page_Dashboard=Frame(self.Dashboard_GUI)
         self.Page_Dashboard.pack(expand=1, fill=BOTH)
@@ -2348,7 +2369,7 @@ class Main:
         USER_ID.place(x=150,y=5)
         USER_NAME=Label(Frame_Profile,text="Name: "+str(self.user.username),font='Roboto 15')
         USER_NAME.place(x=150,y=30)
-        USER_Role=Label(Frame_Profile,text=str(self.user.role),font='Roboto 13')
+        USER_Role=Label(Frame_Profile,text="Profession:"+str(self.user.role),font='Roboto 13')
         USER_Role.place(x=150,y=60)
         # USER_NAME=Label(Frame_Profile,text=str(self.user.username),font='Roboto 20')
         # USER_NAME.pack(side=LEFT)
@@ -2359,58 +2380,23 @@ class Main:
         if self.user.return_dept()=='Imaging Center':
             Button_XRay=Button(Frame_Works,text="X_RAY",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.X_Ray)
             Button_XRay.pack(pady=2)
+            Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Certificate_Page)
+            Certificate_Button.pack(pady=1)
+
         elif self.user.return_dept()=='Laboratory Department':
             Button_LabCH=Button(Frame_Works,text="Laboratory",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.Laboratory)
             Button_LabCH.pack(pady=2)
-        elif self.user.return_dept()=='None':
-            Button_FronDesk=Button(Frame_Works,text="Front Desk",font=("Roboto",8,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.FrontDesk)
-            Button_FronDesk.pack(pady=2)
-        else:
-            messagebox.showinfo("Error","This Account don't have a Role!")
+            Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Certificate_Page)
+            Certificate_Button.pack(pady=1)
 
-            
-        Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Certificate_Page)
-        Certificate_Button.pack(pady=1)
+        else:
+            # messagebox.showinfo("Error","This Account don't have a Role!")
+            Button_FronDesk=Button(Frame_Works,text="FrontDisk",font=("Roboto",12,"bold"),width=10,height=3,bg="green",borderwidth=5,command=self.FrontDesk)
+            Button_FronDesk.pack()
+
         Button_Summary=Button(Frame_Works,text="Summary",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Summary)
         Button_Summary.pack()
-
-
-
-        # Frame_FrontDesk=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
-        # Frame_FrontDesk.place(x=0,y=0)
-        # CHO_F= ImageTk.PhotoImage(Image.open("CHO_Front.jpg").resize((140, 150)))
-        # CHO_FL=Label(Frame_FrontDesk,image=CHO_F,highlightbackground="black",highlightthickness=1)
-        # CHO_FL.place(x=80,y=70,width=140, height=150)
-        # FrontDesk_label=Label(Frame_FrontDesk,text="FRONT DESK",font=("Roboto",30,"bold")).place(x=20,y=10)
-        # Button_FronDesk=Button(Frame_FrontDesk,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.FrontDesk).place(x=118,y=230)
-
-        # #Lab-list
-        # Frame_LabTest=Frame(Frame_Laboratory,width=660,height=290)
-        # Frame_LabTest.place(x=350,y=0)
-        # Frame_LabCH=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
-        # Frame_LabCH.place(x=0,y=0)
-        # CHO_L= ImageTk.PhotoImage(Image.open("CHO_Lab.jpg").resize((140, 140)))
-        # CHO_LL=Label(Frame_LabTest,image=CHO_L,highlightbackground="black",highlightthickness=1)
-        # CHO_LL.place(x=2,y=2,width=140, height=140)
-        # Laboratory_label=Label(Frame_LabCH,text="LABORATORY TEST",font=("Roboto",30,"bold")).place(x=147,y=5)
-        # Button_LabCH=Button(Frame_LabCH,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Laboratory).place(x=570,y=100)
-
-        # Frame_XRay=Frame(Frame_LabTest,width=660,height=145,highlightbackground="black",highlightthickness=1)
-        # Frame_XRay.place(x=0,y=145)
-        # CHO_X= ImageTk.PhotoImage(Image.open("CHO_Xray.jpg").resize((138, 138)))
-        # CHO_XL=Label(Frame_XRay,image=CHO_X,highlightbackground="black",highlightthickness=1)
-        # CHO_XL.place(x=2,y=2,width=138, height=138)
-        # Xray_label=Label(Frame_XRay,text="X-RAY LABORATORY",font=("Roboto",30,"bold")).place(x=147,y=5)
-        # Button_XRay=Button(Frame_XRay,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.X_Ray).place(x=570,y=100)
-
-        # Frame_Summary=Frame(Frame_Laboratory,width=350,height=290,highlightbackground="black",highlightthickness=1)
-        # Frame_Summary.place(x=1009,y=0)
-        # CHO_S= ImageTk.PhotoImage(Image.open("CHO_Summary.jpg").resize((200, 150)))
-        # CHO_SL=Label(Frame_Summary,image=CHO_S,highlightbackground="black",highlightthickness=1)
-        # CHO_SL.place(x=60,y=70,width=200, height=150)
-        # Summary_label=Label(Frame_Summary,text="SUMMARY",font=("Roboto",30,"bold")).place(x=40,y=10)
-        # Button_Summary=Button(Frame_Summary,text="CHECK HERE",font=("Roboto",8,"bold"),width=9,height=1,bg="green",borderwidth=5,command=self.Summary).place(x=118,y=230)
-
+        
         self.Dashboard_GUI.mainloop()
     
     def start(self):
