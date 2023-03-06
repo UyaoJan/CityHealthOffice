@@ -37,7 +37,7 @@ class Main:
         self.Page_XRAY = None
         global PageOpen
         PageOpen = 1
-        self.Value_Laboratory = ["Laboratory","X_RAY"]
+        self.Value_Laboratory = ["Laboratory","X_RAY","FrontDesk"]
         self.Close_ID=["Laboratory","X_RAY","Summary","FrontDesk"]
         
         # windll.user32.ShowWindow(h, 0)
@@ -89,10 +89,8 @@ class Main:
             if int(self.services[i].get()) == 1:
                 Selected += str(i)
                 this=self.Value[i]
-                # print(self.services[i].get())
-                # print(this)
                 chosen_serve.append(this)
-                # print(self.services[i].get())
+
 
         if len(chosen_serve)==0:
             errors+=1
@@ -102,9 +100,17 @@ class Main:
             user=self.user
             user.addNewClient(user, client,chosen_serve,today)
             messagebox.showinfo("Client Entered Successfully","New Client Data Registered Successfully")
-                
-            self.Page_FrontDesk.destroy()
-            self.Page_Dashboard.pack()
+            Name_Entry.delete(0,END)
+            AGE_Entry.delete(0,END)
+            Address_Entry.delete(0,END)
+            Year_Birth.current(0)
+            Month_Birth.current(0)
+            Day_Birth.current(0)
+            Gender_Mune.current(0)
+            for i in range(len(self.services)):
+                if int(self.services[i].get()) == 1:
+                    self.services[i].set(0)
+
 
         else: messagebox.showerror("Input Error","There is one or More Errors in Data Entered. \nPlease Make sure that the Data you entered followed Specifications")
 
@@ -184,6 +190,7 @@ class Main:
                     ]
         
         self.services=[]
+        global Test
         for i in range (len(self.Value)):
             Test=IntVar()
             Test.set(0)
@@ -314,8 +321,10 @@ class Main:
         Address_Entry=Entry(contener_FD,textvariable=addrs,borderwidth=3,font='Roboto 12')
         Address_Entry.pack(fill=X)
 
-        Submit_Input=Button(contener_FD,text="Submit",width=10,bg="green",font='Roboto 11',command=self.showCheckbox)
-        Submit_Input.pack(side=RIGHT,pady=20)
+        Submit_Input=Button(contener_FD,text="Submit",bg="green",width=10,height=1,font=("Roboto",10),borderwidth=5,command=self.showCheckbox)
+        Submit_Input.pack(side=RIGHT,pady=20,padx=3)
+        Record_Button=Button(contener_FD,text="List Client",bg="green",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[2]))
+        Record_Button.pack(side=RIGHT)
 
 #FrontDesk-END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Record_on_close(self):
@@ -327,8 +336,8 @@ class Main:
     def Record(self,value):
         global PageOpen
         if PageOpen < 2:
-            self.RecordPage=Toplevel()
-            self.RecordPage.title("Record")
+            self.RecordPage=Toplevel(self.Dashboard_GUI)
+            self.RecordPage.title("Appointment List")
             self.RecordPage
             Record_width=450
             Record_height=600
@@ -336,20 +345,23 @@ class Main:
             self.RecordPage.protocol("WM_DELETE_WINDOW", self.Record_on_close)
             self.RecordPage.resizable(False,False)
 
-
             self.RecordBody= Frame(self.RecordPage)
             self.RecordBody.pack(expand=1,fill=BOTH)
-
+            Record_Body=Frame(self.RecordBody)
+            Record_Body.pack(fill=BOTH)
+            Record_Title=Label(Record_Body,text="Appointment List",font='Roboto 25 bold').pack(pady=5)
+            Record_search_Frame=Frame(Record_Body)
+            Record_search_Frame.pack(fill=X,pady=5)
+            global Record_List
+            Record_search_LB=Label(Record_search_Frame,text="SEARCH: ",font='Roboto 12 bold').pack(side=LEFT,padx=3)
+            Record_search_EN=Entry(Record_search_Frame,font='Roboto 12',borderwidth=5)
+            Record_search_EN.pack(side=LEFT,fill=X,expand=1)
+            Record_refresh_BT=Button(Record_search_Frame,text="Refresh",font='Roboto 10',width=6,height=0,borderwidth=5,command=lambda: self.re(value))
             
 
-            global Record_List
-            Record_search_LB=Label(self.RecordBody,text="SEARCH: ",font='Roboto 12 bold').place(x=10,y=100)
-            Record_search_EN=Entry(self.RecordBody,font='Roboto 12',borderwidth=5)
-            Record_search_EN.place(x=90,y=98,relwidth=0.6)
-
-            RecordFrame=Frame(self.RecordBody,highlightbackground="black",highlightthickness=1)
-            RecordFrame.place(x=0,y=130,relwidth=1.0,relheight=0.78)
-            RecordBOX= Canvas(RecordFrame,highlightbackground="black",highlightthickness=1,bg="White")
+            RecordFrame=Frame(self.RecordBody,highlightbackground="black",highlightthickness=2)
+            RecordFrame.pack(expand=1,fill=BOTH)
+            RecordBOX= Canvas(RecordFrame,bg="White")
             RecordBOX.pack(side=LEFT,fill=BOTH,expand=1)
 
             Recordscroll=ttk.Scrollbar(RecordFrame,orient=VERTICAL,command=RecordBOX.yview)
@@ -358,21 +370,18 @@ class Main:
             RecordBOX.configure(yscrollcommand=Recordscroll.set)
             RecordBOX.bind('<Configure>',lambda e: RecordBOX.configure(scrollregion= RecordBOX.bbox("all")))
 
-            Record_List=Frame(RecordBOX,highlightbackground="black",highlightthickness=2)
+            Record_List=Frame(RecordBOX)
             RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
-            #print(self.Value_Laboratory)
             if value == "Laboratory":
-                Record_Title=Label(self.RecordBody,text="Laboratory Test Records",font='Roboto 25 bold').place(x=10,y=0)
-                Record_paragraph=Label(self.RecordBody,text="All Laboratory TEST be save here and \nrecord of the Test being done ",font='Roboto 12').place(x=80,y=43)
-                
+
                 def setClient(name):
                     res=self.user.getClient_name(name)
                     print(res)
                     age=IntVar()
-                    age.set(res[2])
-                    self.AGE_Entry.config(textvariable=age)
                     self.Name_Entry.set(res[1])
+                    age.set(res[2])
                     self.Gender_Mune.set(res[3])
+                    self.AGE_Entry.config(textvariable=age)
 
                     client_identification=IntVar()
                     client_identification.set(res[0])
@@ -390,7 +399,7 @@ class Main:
                     global Record_List
                     Record_List.destroy()
 
-                    Record_List=Frame(RecordBOX,highlightbackground="black",highlightthickness=2)
+                    Record_List=Frame(RecordBOX)
                     RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
                     for i in range(len(record)):
                         Record_Number=Frame(Record_List,width=427,height=80)
@@ -405,11 +414,12 @@ class Main:
 
                         Client_Name=Label(Record_Page,text="NAME: "+record[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
                         Client_Test=Label(Record_Page,text="TEST: "+record[i][6],font=("Roboto",8,"bold")).place(x=85,y=30) 
-                        Button(Record_Page,text='Select', command=lambda x=record[i][1]: setClient(x)).place(x=85,y=50)
+                        Button(Record_Page,text='Select',font=("Roboto",8),width=6,height=0,borderwidth=5,command=lambda x=record[i][1]: setClient(x)).place(x=360,y=20)
                         
-                Record_search_BT=Button(self.RecordBody,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5,command=search)
-                Record_search_BT.place(x=365,y=94)
-                
+                Record_search_BT=Button(Record_search_Frame,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5,command=search)
+                Record_search_BT.pack(side=LEFT,padx=4)
+                Record_refresh_BT.pack(side=LEFT,padx=4)
+
                 records=self.user.getClients_lab()
                 #print(value)
                 for i in range(len(records)):
@@ -425,14 +435,11 @@ class Main:
 
                     Client_Name=Label(Record_Page,text="NAME: "+records[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
                     Client_Test=Label(Record_Page,text="TEST: "+records[i][6],font=("Roboto",8,"bold")).place(x=85,y=30)
-                    Button(Record_Page,text='Select', command=lambda x=records[i][1]: setClient(x)).place(x=85,y=50)
+                    Button(Record_Page,text='Select',font=("Roboto",8),width=6,height=0,borderwidth=5,command=lambda x=records[i][1]: setClient(x)).place(x=360,y=20)
                     # Take_Button=Button(Record_Page,text="Take",font=("Roboto",8),width=6,height=0,borderwidth=5)
                     # Take_Button.place(x=360,y=37)
             
             elif value == "X_RAY":
-                Record_Title_Xray=Label(self.RecordBody,text="Laboratory Test Records",font='Roboto 25 bold').place(x=10,y=0)
-                Record_paragraph_Xray=Label(self.RecordBody,text="All X-Ray Laboratory TEST be save here and \nrecord of the Test being done ",font='Roboto 12').place(x=80,y=43)
-                
                 def setValue(name):
                     global client_id, test_id
                     res=self.user.getClient_name_Xray(name)
@@ -443,14 +450,13 @@ class Main:
                     self.age.set(res[2])
                     self.Xray_Gender_Mune.set(res[3])
                     client_id=res[0]
-                    
-
+                
                 def search():
                     record=self.user.getClients_XraySearch(Record_search_EN.get())
                     global Record_List
                     Record_List.destroy()
 
-                    Record_List=Frame(RecordBOX,highlightbackground="black",highlightthickness=2)
+                    Record_List=Frame(RecordBOX)
                     RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
                     for i in range(len(record)):
                         Record_Number=Frame(Record_List,width=427,height=80)
@@ -465,10 +471,11 @@ class Main:
 
                         Client_Name=Label(Record_Page,text="NAME: "+record[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
                         Client_Test=Label(Record_Page,text="TEST: "+record[i][6],font=("Roboto",8,"bold")).place(x=85,y=30)
-                        Button(Record_Page,text='Select', command=lambda x=record[i][1]: setValue(x)).place(x=85,y=50)
+                        Button(Record_Page,text='Select',font=("Roboto",8),width=6,height=0,borderwidth=5,command=lambda x=record[i][1]: setValue(x)).place(x=360,y=20)
                         
-                Record_search_BT=Button(self.RecordBody,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5,command=search)
-                Record_search_BT.place(x=365,y=94)
+                Record_search_BT=Button(Record_search_Frame,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5,command=search)
+                Record_search_BT.pack(side=LEFT,padx=4)
+                Record_refresh_BT.pack(side=LEFT,padx=4)
 
                 records=self.user.getClients_Xray()
                 def take(e):
@@ -492,15 +499,84 @@ class Main:
 
                     XRAY_Client_Name=Label(X_RAY_Record_Page,text="NAME: "+records[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
                     XRAY_Client_Test=Label(X_RAY_Record_Page,text="TEST: XRAY TEST",font=("Roboto",8,"bold")).place(x=85,y=30)
-                    Button(X_RAY_Record_Page,text='Select', command=lambda x=records[i][1]: setValue(x)).place(x=85,y=50)
-
-                    # XRAY_Take_Button=Button(X_RAY_Record_Page,text="Take",font=("Roboto",8),width=6,height=0,borderwidth=5,command=lambda e= records[i][0]:take(e))
-                    # XRAY_Take_Button.place(x=360,y=37)
+                    Button(X_RAY_Record_Page,text='Select',font=("Roboto",8),width=6,height=0,borderwidth=5,command=lambda x=records[i][1]: setValue(x)).place(x=360,y=20)
             
+            elif value == "FrontDesk":
+                def setClient(name):
+                    res=self.user.getClient_name(name)
+                    print(res)
+                    age=IntVar()
+                    self.Name_Entry.set(res[1])
+                    age.set(res[2])
+                    self.Gender_Mune.set(res[3])
+                    self.AGE_Entry.config(textvariable=age)
+
+                    client_identification=IntVar()
+                    client_identification.set(res[0])
+                    self.ID_ENTRY.config(textvariable=client_identification)
+                    res=self.user.getclientTests(res[0])
+                    count=0
+                    self.Test_Table.delete(*self.Test_Table.get_children())
+                    for i in res:
+                        self.Test_Table.insert('','end',iid=count,text=res[count][0],values=(i[3],))
+                        count+=1
+
+                def search():
+                    record=self.user.getClients_labSearch(Record_search_EN.get())
+
+                    global Record_List
+                    Record_List.destroy()
+
+                    Record_List=Frame(RecordBOX)
+                    RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
+                    for i in range(len(record)):
+                        Record_Number=Frame(Record_List,width=427,height=80)
+                        Record_Number.grid(row=i,column=0)
+
+                        Record_Page=Frame(Record_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
+                        Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+
+                        Number_BOX=Frame(Record_Page,width=70,height=50,bg="green",highlightbackground="black",highlightthickness=1)
+                        Number_BOX.place(x=10,y=10)
+                        Client_Number=Label(Number_BOX,text=record[i][0],font=("Roboto",17,"bold"),bg="green").place(x=4,y=6)
+
+                        Client_Name=Label(Record_Page,text="NAME: "+record[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
+                        Client_Test=Label(Record_Page,text="TEST: "+record[i][6],font=("Roboto",8,"bold")).place(x=85,y=30) 
+                        # Button(Record_Page,text='Select',font=("Roboto",8),width=6,height=0,borderwidth=5,command=lambda x=record[i][1]: setClient(x)).place(x=360,y=20)
+                        
+                Record_search_BT=Button(Record_search_Frame,text="Search",font='Roboto 10',width=6,height=0,borderwidth=5,command=search)
+                Record_search_BT.pack(side=LEFT,padx=4)
+                Record_refresh_BT.pack(side=LEFT,padx=4)
+
+                records=self.user.getClients_lab()
+                #print(value)
+                for i in range(len(records)):
+                    Record_Number=Frame(Record_List,width=427,height=80)
+                    Record_Number.grid(row=i,column=0)
+
+                    Record_Page=Frame(Record_Number,width=250,height=50,highlightbackground="black",highlightthickness=1)
+                    Record_Page.place(x=5,y=5,relwidth=0.98,relheight=0.9)
+
+                    Number_BOX=Frame(Record_Page,width=70,height=50,highlightbackground="black",highlightthickness=1,bg="green")
+                    Number_BOX.place(x=10,y=10)
+                    Client_Number=Label(Number_BOX,text=records[i][0],font=("Roboto",17,"bold"),bg="green").place(x=4,y=6)
+
+                    Client_Name=Label(Record_Page,text="NAME: "+records[i][1],font=("Roboto",12,"bold")).place(x=85,y=10)
+                    Client_Test=Label(Record_Page,text="TEST: "+records[i][6],font=("Roboto",8,"bold")).place(x=85,y=30)
+                    # Button(Record_Page,text='Select',font=("Roboto",8),width=6,height=0,borderwidth=5,command=lambda x=records[i][1]: setClient(x)).place(x=360,y=20)
+
             PageOpen += 1
+            
 
         else:
             messagebox.showinfo("Error","The Window is already Open!")
+        
+    def re(self,value):
+        global PageOpen
+        PageOpen = 1
+        new = self.Value_Laboratory.index(value)
+        self.RecordPage.destroy()
+        self.Record(self.Value_Laboratory[new])
 
 #Laboratory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def Laboratory(self):
@@ -602,7 +678,7 @@ class Main:
             Date_Entry=DateEntry(Detail_2,width=10,backgroud="magenta3",foreground="White",font="Roboto 12",bd=2,archor=W)
             Date_Entry.pack(side=LEFT)
 
-            Record_Button=Button(Frame_Body,text="Record",bg="green",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
+            Record_Button=Button(Frame_Body,text="List Client",bg="green",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[0]))
             Record_Button.pack(side=RIGHT)
 
             Testlist=Frame(Frame_Body,bg="blue",highlightbackground="black",highlightthickness=1)
@@ -1639,8 +1715,8 @@ class Main:
                         self.user.markTest_as_done(test_id[0])
             XRay_Continer=Frame(Img_Body)
             XRay_Continer.pack(side=BOTTOM,fill=X,pady=40)
-            Submit_Xray=Button(XRay_Continer,text="Submit",width=10,bg="green",font='Roboto 11',borderwidth=5,command=lambda: submit()).pack(side=RIGHT,padx=20)
-            Record_Xray=Button(XRay_Continer,text="Record",width=10,bg="green",font='Roboto 11',borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[1])).pack(side=RIGHT)
+            Submit_Xray=Button(XRay_Continer,text="Submit",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda: submit()).pack(side=RIGHT,padx=20)
+            Record_Xray=Button(XRay_Continer,text="List Client",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[1])).pack(side=RIGHT)
 
 #X_Ray Laboratory  END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
