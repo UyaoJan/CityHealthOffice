@@ -47,23 +47,23 @@ class Loginpage():
         username=StringVar()
         password=StringVar()
 
-        self.LoginFrame1=Frame(self.LoginGUI)
-        self.LoginFrame1.pack(side=LEFT)
+        self.LoginFrame1=Frame(self.LoginGUI,bg="#EAEAEA")
+        self.LoginFrame1.pack(side=LEFT,fill=BOTH)
         H_LOGO = ImageTk.PhotoImage(Image.open("CHO_LOGO.png").resize((300, 300)))
-        self.IMG=Label(self.LoginFrame1,image=H_LOGO)
-        self.IMG.pack(padx=30)
+        self.IMG=Label(self.LoginFrame1,image=H_LOGO,bg="#EAEAEA")
+        self.IMG.pack(padx=30,pady=28)
 
         #Frame2
-        self.LoginFrame2=Frame(self.LoginGUI,width=350,height=350)
+        self.LoginFrame2=Frame(self.LoginGUI,width=350,height=350,bg="#EAEAEA")
         self.LoginFrame2.pack(side=RIGHT)
 
-        self.Label_Login=Label(self.LoginFrame2,text="LOGIN",font='Roboto 60 bold').place(x=20,y=20)
+        self.Label_Login=Label(self.LoginFrame2,text="LOGIN",font='Roboto 60 bold',bg="#EAEAEA").place(x=20,y=20)
 
-        self.Username_Label=Label(self.LoginFrame2,text="Username",font='Roboto 12').place(x=46,y=130)
+        self.Username_Label=Label(self.LoginFrame2,text="Username",font='Roboto 12',bg="#EAEAEA").place(x=46,y=130)
         self.Username=StringVar()
         self.Username_Entry=Entry(self.LoginFrame2,width=40,textvariable=username,borderwidth=3).place(x=50,y=150)
 
-        self.Password_Label=Label(self.LoginFrame2,text="Password",font='Roboto 12').place(x=46,y=180)
+        self.Password_Label=Label(self.LoginFrame2,text="Password",font='Roboto 12',bg="#EAEAEA").place(x=46,y=180)
         self.Password=StringVar()
         self.Password_Entry=Entry(self.LoginFrame2,width=40,textvariable=password,show="*",borderwidth=3,).place(x=50,y=200)
 

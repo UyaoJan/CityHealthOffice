@@ -19,12 +19,7 @@ import matplotlib.pyplot as plt
 import win32api, os, time
 import win32print
 import summary_filter
-
 from dotenv import load_dotenv
-
-# get the handle to the taskbar
-# h = windll.user32.FindWindowA(b'Shell_TrayWnd', None)
-
 
 class Main:
     def __init__(self,init):
@@ -111,7 +106,6 @@ class Main:
                 if int(self.services[i].get()) == 1:
                     self.services[i].set(0)
 
-
         else: messagebox.showerror("Input Error","There is one or More Errors in Data Entered. \nPlease Make sure that the Data you entered followed Specifications")
 
     def logout(self):
@@ -141,7 +135,7 @@ class Main:
         Toggle_Button.menu=Menu(Toggle_Button)
         Toggle_Button["menu"]=Toggle_Button.menu
 
-        Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=lambda:self.HOME_PAGE(self.Close_ID[4]))
+        Toggle_Button.menu.add_command(label="Home",font='Roboto 12',command=lambda:self.HOME_PAGE(self.Close_ID[3]))
         Toggle_Button.menu.add_command(label="Logout",font='Roboto 12',command=lambda:self.logout())
 
         HEADER_USERNAME=Label(Frame_Header,text=str(self.user.username),bg='#BDFFC4',font='Roboto 20 ').pack(side=RIGHT)
@@ -373,8 +367,8 @@ class Main:
             Record_List=Frame(RecordBOX)
             RecordBOX.create_window((0,0),window=Record_List,anchor=NW)
             if value == "Laboratory":
-
                 def setClient(name):
+                    global PageOpen
                     res=self.user.getClient_name(name)
                     print(res)
                     age=IntVar()
@@ -382,6 +376,8 @@ class Main:
                     age.set(res[2])
                     self.Gender_Mune.set(res[3])
                     self.AGE_Entry.config(textvariable=age)
+                    PageOpen = 1
+                    self.RecordPage.destroy()
 
                     client_identification=IntVar()
                     client_identification.set(res[0])
@@ -441,7 +437,7 @@ class Main:
             
             elif value == "X_RAY":
                 def setValue(name):
-                    global client_id, test_id
+                    global client_id, test_id,PageOpen
                     res=self.user.getClient_name_Xray(name)
                     print(res)
                     test_id=res[-1]
@@ -450,6 +446,8 @@ class Main:
                     self.age.set(res[2])
                     self.Xray_Gender_Mune.set(res[3])
                     client_id=res[0]
+                    PageOpen = 1
+                    self.RecordPage.destroy
                 
                 def search():
                     record=self.user.getClients_XraySearch(Record_search_EN.get())
@@ -728,10 +726,10 @@ class Main:
             Frame_Test=Frame(self.Page_Laboratory,highlightbackground="black",highlightthickness=1,bg="blue")
             Frame_Test.pack(expand=1,fill=BOTH)
 
-            Header_Test=Frame(Frame_Test,highlightbackground="black",highlightthickness=1)
+            Header_Test=Frame(Frame_Test,highlightbackground="black",highlightthickness=1,bg="#81BF97")
             Header_Test.pack(fill=X)
 
-            Test_Label=Label(Header_Test,text="Laboratory Test",font="Roboto 15",anchor=W)
+            Test_Label=Label(Header_Test,text="Laboratory Test",font="Roboto 15",anchor=W,bg="#81BF97")
             Test_Label.pack(side=LEFT)
 
             Test=[  
@@ -829,8 +827,8 @@ class Main:
                             self.user.markTest_as_done(test_id[0][0])
 
 
-                    ST_Button=Button(Serology_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=lambda: submit())
-                    ST_Button.place(x=1200,y=430)
+                    ST_Button=Button(Serology_Page,text="Submit",font=("Roboto",10,"bold"),bg="green",width=10,height=1,borderwidth=5,command=lambda: submit())
+                    ST_Button.place(x=1200,y=450)
 
                 elif LabTest_Mune.get() == "Miscelaneous":
                     Serology_Page.pack_forget()
@@ -897,8 +895,8 @@ class Main:
                             test_id=self.user.get_tests_id(int(self.ID_ENTRY.get()),serviceid[0])
                             self.user.markTest_as_done(test_id[0][0])
 
-                    PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=lambda: submit())
-                    PT_Button.place(x=1200,y=430)
+                    PT_Button=Button(Miscelaneous_Page,text="Submit",font=("Roboto",10,"bold"),bg="green",width=10,height=1,borderwidth=5, command=lambda: submit())
+                    PT_Button.place(x=1200,y=450)
                 
                 elif LabTest_Mune.get() == "Urinalysis":
                     Serology_Page.pack_forget()
@@ -1117,8 +1115,8 @@ class Main:
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0][0])
 
-                    ST_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
-                    ST_Button.place(x=1200,y=430)
+                    ST_Button=Button(Urinalysis_Page,text="Submit",font=("Roboto",10,"bold"),bg="green",width=10,height=1,borderwidth=5,command=submit)
+                    ST_Button.place(x=1200,y=450)
                 
                 elif LabTest_Mune.get() == "Complete Blood Count / Hematology":
                     Serology_Page.pack_forget()
@@ -1311,8 +1309,8 @@ class Main:
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0][0])
 
-                    CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5,command=submit)
-                    CBC_Button.place(x=1200,y=430)
+                    CBC_Button=Button(CBC_Page,text="Submit",font=("Roboto",10,"bold"),bg="green",width=10,height=1,borderwidth=5,command=submit)
+                    CBC_Button.place(x=1200,y=450)
                 
                 elif LabTest_Mune.get() == "Fecalysis":
                     Serology_Page.pack_forget()
@@ -1419,15 +1417,15 @@ class Main:
                             test_id=self.user.get_tests_id(client_id[0],serviceid[0])
                             self.user.markTest_as_done(test_id[0][0])
 
-                    FE_Button=Button(FE_Page,text="Submit",font=("Roboto",10,"bold"),width=10,height=1,borderwidth=5, command=submit)
-                    FE_Button.place(x=1200,y=430)
+                    FE_Button=Button(FE_Page,text="Submit",font=("Roboto",10,"bold"),bg="green",width=10,height=1,borderwidth=5, command=submit)
+                    FE_Button.place(x=1200,y=450)
             
-            Nothing=Label(Header_Test,text="",font='Roboto 12 bold').pack(side=RIGHT,padx=5)
+            # Nothing=Label(Header_Test,text="",font='Roboto 12 bold').pack(side=RIGHT,padx=5)
             LabTest_Mune=ttk.Combobox(Header_Test,value=Test,font='Roboto 12',state='readonly')
             # LabTest_Mune.set("Serology")
             LabTest_Mune.bind("<<ComboboxSelected>>",Option_TEST)
-            LabTest_Mune.pack(side=RIGHT)
-            Test_Label=Label(Header_Test,text="TEST:",font='Roboto 12 bold').pack(side=RIGHT)
+            LabTest_Mune.pack(side=RIGHT,padx=5)
+            Test_Label=Label(Header_Test,text="TEST:",font='Roboto 12 bold',bg="#81BF97").pack(side=RIGHT)
 
             Contener = Frame(Frame_Test,highlightbackground="white",highlightthickness=5)
             Contener.pack(expand=True,fill=BOTH)
@@ -1460,19 +1458,21 @@ class Main:
 
             Plus_Body=Frame(self.Plus_Finding_Page)
             Plus_Body.pack(expand=1,fill=BOTH)
-            Plus_Title=Label(Plus_Body,text="ADD Finding",font=("Roboto",35,"bold")).place(x=5,y=10)
+            Plus_Title=Label(Plus_Body,text=" ADD Finding",font=("Roboto",35,"bold"),bg="#81BF97",anchor=W).pack(fill=X)
 
-            Plus_Name=Label(Plus_Body,text="NAME:",font=("Roboto",12,"bold")).place(x=5,y=140)
-            Plus_Name_Entry=Entry(Plus_Body,font=("Roboto",12),borderwidth=5)
-            Plus_Name_Entry.place(x=65,y=137,relwidth=0.7)
+            Plus_detail=Frame(Plus_Body)
+            Plus_detail.pack(fill=X,)
+            Plus_Name=Label(Plus_detail,text="Title Finding:",font=("Roboto",15,"bold")).pack(side=LEFT)
+            Plus_Name_Entry=Entry(Plus_detail,font=("Roboto",12),width=40,borderwidth=5)
+            Plus_Name_Entry.pack(side=LEFT,pady=5)
 
-            Label_Plus_Body=Label(Plus_Body,text="FINDING BODY:",font=("Roboto 15 bold"))
-            Label_Plus_Body.place(x=5,y=170)
-            Plus_Body_Text=Frame(Plus_Body,width=550,height=600,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
-            Plus_Body_Text.place(x=0,y=200)
+            Label_Plus_Body=Label(Plus_Body,text="FINDING BODY:",font=("Roboto 15 bold"),anchor=W)
+            Label_Plus_Body.pack(fill=X)
+            Plus_Body_Text=Frame(Plus_Body,width=550,height=700,padx=5,pady=5,highlightbackground="black",highlightthickness=1)
+            Plus_Body_Text.pack(padx=5)
             Plus__scroll=Scrollbar(Plus_Body_Text,orient='vertical')
             Plus__scroll.pack(side=RIGHT,fill='y')
-            Plus__BOX = Text(Plus_Body_Text,width = 70,height = 19,borderwidth=5,font=("Roboto 11 "),yscrollcommand=Plus__scroll.set)
+            Plus__BOX = Text(Plus_Body_Text,width = 70,height = 23,borderwidth=5,font=("Roboto 11 "),yscrollcommand=Plus__scroll.set)
             Plus__scroll.config(command=Plus__BOX.yview)
             Plus__BOX.pack()
 
@@ -1487,13 +1487,13 @@ class Main:
                     Option=[x[n] for x in opts]
                     self.FINDING_Mune.config(value=Option)
                 self.Plus_Finding_Page.destroy()
-                
-
-            Plus_ADD_button=Button(Plus_Body,text="ADD",font=("Roboto 10"),width=5,borderwidth=5,command=addFinding)
-            Plus_ADD_button.place(x=450,y=560)
-           
-            Plus_Cancel_button=Button(Plus_Body,text="Cancel",font=("Roboto 10"),width=5,borderwidth=5,command=lambda:self.Plus_Finding_Page.destroy())
-            Plus_Cancel_button.place(x=520,y=560)
+            
+            Plus_Button=Frame(Plus_Body)
+            Plus_Button.pack(fill=X,pady=10)
+            Plus_Cancel_button=Button(Plus_Button,text="Cancel",font=("Roboto 10"),bg="#DF6756",width=5,borderwidth=5,command=lambda:self.Plus_Finding_Page.destroy())
+            Plus_Cancel_button.pack(side=RIGHT,padx=10)
+            Plus_ADD_button=Button(Plus_Button,text="ADD",font=("Roboto 10"),bg="#81BF97",width=5,borderwidth=5,command=addFinding)
+            Plus_ADD_button.pack(side=RIGHT)
 
             PageOpen += 1
         else:
@@ -1715,8 +1715,8 @@ class Main:
                         self.user.markTest_as_done(test_id[0])
             XRay_Continer=Frame(Img_Body)
             XRay_Continer.pack(side=BOTTOM,fill=X,pady=40)
-            Submit_Xray=Button(XRay_Continer,text="Submit",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda: submit()).pack(side=RIGHT,padx=20)
-            Record_Xray=Button(XRay_Continer,text="List Client",width=15,height=1,font=("Roboto",10),borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[1])).pack(side=RIGHT)
+            Submit_Xray=Button(XRay_Continer,text="Submit",width=15,height=1,font=("Roboto",10),bg="green",borderwidth=5,command=lambda: submit()).pack(side=RIGHT,padx=20)
+            Record_Xray=Button(XRay_Continer,text="List Client",width=15,height=1,font=("Roboto",10),bg="#4FA9D2",borderwidth=5,command=lambda:self.Record(self.Value_Laboratory[1])).pack(side=RIGHT)
 
 #X_Ray Laboratory  END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -2477,37 +2477,39 @@ class Main:
         CHO_FL=Label(Frame_Profile,image=CHO_F,highlightbackground="black",highlightthickness=1)
         CHO_FL.pack(side=LEFT)
 
-
         USER_ID=Label(Frame_Profile,text="ID: "+str(self.user.id),font='Roboto 13')
         USER_ID.place(x=150,y=5)
-        USER_NAME=Label(Frame_Profile,text="Name: "+str(self.user.username),font='Roboto 15')
+        USER_NAME=Label(Frame_Profile,text="Name: "+str(self.user.username),font='Roboto 25 bold')
         USER_NAME.place(x=150,y=30)
         USER_Role=Label(Frame_Profile,text="Profession:"+str(self.user.role),font='Roboto 13')
-        USER_Role.place(x=150,y=60)
-        # USER_NAME=Label(Frame_Profile,text=str(self.user.username),font='Roboto 20')
-        # USER_NAME.pack(side=LEFT)
+        USER_Role.place(x=150,y=80)
 
         Frame_Works = Frame(Frame_Laboratory,width=200,highlightbackground="black",highlightthickness=1)
         Frame_Works.pack(fill=BOTH,side=RIGHT)
 
         if self.user.return_dept()=='Imaging Center':
+            Title_p=Label(Frame_Center,text="Imaging Center",font=("Roboto",35,"bold"))
+            Title_p.pack(expand=1,fill=BOTH)
             Button_XRay=Button(Frame_Works,text="X_RAY",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.X_Ray)
-            Button_XRay.pack(pady=2)
-            Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Certificate_Page)
+            Button_XRay.pack(pady=1,fill=BOTH,expand=True)
+            Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="#81BF97",borderwidth=5,command=self.Certificate_Page)
             Certificate_Button.pack(pady=1)
 
         elif self.user.return_dept()=='Laboratory Department':
+            Title_p=Label(Frame_Center,text="Laboratory Department",font=("Roboto",35,"bold"))
+            Title_p.pack(expand=1,fill=BOTH)
             Button_LabCH=Button(Frame_Works,text="Laboratory",font=("Roboto",12,"bold"),width=10,height=2,bg="green",borderwidth=5,command=self.Laboratory)
-            Button_LabCH.pack(pady=2)
-            Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Certificate_Page)
+            Button_LabCH.pack(pady=1,fill=BOTH,expand=True)
+            Certificate_Button=Button(Frame_Works,text="Certificate",font=("Roboto",12,"bold"),width=10,height=1,bg="#81BF97",borderwidth=5,command=self.Certificate_Page)
             Certificate_Button.pack(pady=1)
 
         else:
-            # messagebox.showinfo("Error","This Account don't have a Role!")
-            Button_FronDesk=Button(Frame_Works,text="FrontDisk",font=("Roboto",12,"bold"),width=10,height=3,bg="green",borderwidth=5,command=self.FrontDesk)
-            Button_FronDesk.pack()
+            Title_p=Label(Frame_Center,text="Front Desk",font=("Roboto",35,"bold"))
+            Title_p.pack(expand=1,fill=BOTH)
+            Button_FronDesk=Button(Frame_Works,text="FrontDisk",font=("Roboto",12,"bold"),bg="green",borderwidth=5,command=self.FrontDesk)
+            Button_FronDesk.pack(fill=BOTH,expand=True)
 
-        Button_Summary=Button(Frame_Works,text="Summary",font=("Roboto",12,"bold"),width=10,height=1,bg="green",borderwidth=5,command=self.Summary)
+        Button_Summary=Button(Frame_Works,text="Summary",font=("Roboto",12,"bold"),width=10,height=1,bg="#4FA9D2",borderwidth=5,command=self.Summary)
         Button_Summary.pack()
         
         self.Dashboard_GUI.mainloop()
