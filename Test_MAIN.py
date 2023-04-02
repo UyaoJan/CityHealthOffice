@@ -2506,7 +2506,7 @@ class Main:
         else:
             Title_p=Label(Frame_Center,text="Front Desk",font=("Roboto",35,"bold"))
             Title_p.pack(expand=1,fill=BOTH)
-            Button_FronDesk=Button(Frame_Works,text="FrontDisk",font=("Roboto",12,"bold"),bg="green",borderwidth=5,command=self.FrontDesk)
+            Button_FronDesk=Button(Frame_Works,text="Front Desk",font=("Roboto",12,"bold"),bg="green",borderwidth=5,command=self.FrontDesk)
             Button_FronDesk.pack(fill=BOTH,expand=True)
 
         Button_Summary=Button(Frame_Works,text="Summary",font=("Roboto",12,"bold"),width=10,height=1,bg="#4FA9D2",borderwidth=5,command=self.Summary)
